@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "585628982328",
+    "firebase_url": "https://stelynx-collectio.firebaseio.com",
+    "project_id": "stelynx-collectio",
+    "storage_bucket": "stelynx-collectio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585628982328:android:3dcb25b86d62aa61c5dacd",
+        "android_client_info": {
+          "package_name": "com.stelynx.collectio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585628982328-fctve0h7o2mv3nk8m45ce9g1ipl0lbmu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWVn2x7kuMRW_xgXBI0t2MtgQW7OvkFbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585628982328-fctve0h7o2mv3nk8m45ce9g1ipl0lbmu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "585628982328-fgk385tjdc7c1m8rk37rfvc6b83m5p1t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stelynx.collectio"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
