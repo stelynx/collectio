@@ -1,9 +1,10 @@
-import 'package:collectio/core/service/firebase/firebase_auth_service.dart';
 import 'package:collectio/core/utils/error/auth_failure.dart';
 import 'package:collectio/repository/auth/firebase/firebase_auth_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+import '../../../mocks.dart';
 
 void main() {
   final String tEmail = 'test@stelynx.com';
@@ -190,6 +191,17 @@ void main() {
       );
     });
   });
-}
 
-class MockedFirebaseAuthService extends Mock implements FirebaseAuthService {}
+  group('getCurrentUser', () {
+    final String tUserUid = 'userUid';
+
+    test('should return current user if logged in', () async {
+      when(mockedFirebaseAuthService.getCurrentUser())
+          .thenAnswer((_) async => MockedFirebaseUser(tUserUid));
+
+      final String result = await firebaseAuthRepository.getCurrentUser();
+
+      expect(result, equals(tUserUid));
+    });
+  });
+}

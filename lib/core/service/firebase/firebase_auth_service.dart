@@ -25,4 +25,7 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<void> logout() => firebaseAuth.signOut();
+
+  @override
+  Future<FirebaseUser> getCurrentUser() => firebaseAuth.currentUser();
 }

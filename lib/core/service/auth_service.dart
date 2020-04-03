@@ -8,4 +8,6 @@ abstract class AuthService {
       {@required String email, @required String password});
 
   Future logout();
+
+  Future getCurrentUser();
 }

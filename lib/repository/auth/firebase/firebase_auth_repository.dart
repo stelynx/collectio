@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/service/firebase/firebase_auth_service.dart';
@@ -62,5 +63,11 @@ class FirebaseAuthRepository extends AuthRepository {
     } catch (e) {
       return Left(SignUpFailure(message: e.toString()));
     }
+  }
+
+  @override
+  Future<String> getCurrentUser() async {
+    final FirebaseUser user = await authService.getCurrentUser();
+    return user.uid;
   }
 }
