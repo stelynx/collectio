@@ -1,4 +1,3 @@
-import 'package:collectio/core/service/firebase/firebase_auth_service.dart';
 import 'package:collectio/core/utils/error/auth_failure.dart';
 import 'package:collectio/repository/auth/firebase/firebase_auth_repository.dart';
 import 'package:dartz/dartz.dart';
