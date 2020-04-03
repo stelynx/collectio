@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../mocks.dart';
+
 void main() {
   final String _tEmail = 'test@stelynx.com';
   final String _tPassword = 'testpwd';
@@ -58,5 +60,3 @@ void main() {
     });
   });
 }
-
-class MockedFirebaseAuth extends Mock implements FirebaseAuth {}

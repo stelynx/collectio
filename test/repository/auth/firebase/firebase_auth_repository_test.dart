@@ -5,6 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../mocks.dart';
+
 void main() {
   final String tEmail = 'test@stelynx.com';
   final String tPassword = 'testpwd';
@@ -191,5 +193,3 @@ void main() {
     });
   });
 }
-
-class MockedFirebaseAuthService extends Mock implements FirebaseAuthService {}

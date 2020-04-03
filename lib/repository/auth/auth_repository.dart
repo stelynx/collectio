@@ -11,4 +11,6 @@ abstract class AuthRepository {
       {@required email, @required password});
 
   Future<Either<AuthFailure, void>> signOut();
+
+  Future<String> getCurrentUser();
 }
