@@ -9,54 +9,64 @@ void main() {
   final String _tEmail = 'test@stelynx.com';
   final String _tPassword = 'testpwd';
 
-  final FirebaseAuth _mockedFirebaseAuth = MockedFirebaseAuth();
-  FirebaseAuthService _firebaseAuthService;
+  final FirebaseAuth mockedFirebaseAuth = MockedFirebaseAuth();
+  FirebaseAuthService firebaseAuthService;
 
   setUp(() {
-    _firebaseAuthService =
-        FirebaseAuthService(firebaseAuth: _mockedFirebaseAuth);
+    firebaseAuthService = FirebaseAuthService(firebaseAuth: mockedFirebaseAuth);
   });
 
   group('signInWithEmailAndPassword', () {
     test('should forward call to FirebaseAuth', () async {
-      when(_mockedFirebaseAuth.signInWithEmailAndPassword(
+      when(mockedFirebaseAuth.signInWithEmailAndPassword(
               email: anyNamed('email'), password: anyNamed('password')))
           .thenAnswer((_) async => null);
 
-      await _firebaseAuthService.signInWithEmailAndPassword(
+      await firebaseAuthService.signInWithEmailAndPassword(
           email: _tEmail, password: _tPassword);
 
-      verify(_mockedFirebaseAuth.signInWithEmailAndPassword(
+      verify(mockedFirebaseAuth.signInWithEmailAndPassword(
               email: _tEmail, password: _tPassword))
           .called(1);
-      verifyNoMoreInteractions(_mockedFirebaseAuth);
+      verifyNoMoreInteractions(mockedFirebaseAuth);
     });
   });
 
   group('signUpWithEmailAndPassword', () {
     test('should forward call to FirebaseAuth', () async {
-      when(_mockedFirebaseAuth.createUserWithEmailAndPassword(
+      when(mockedFirebaseAuth.createUserWithEmailAndPassword(
               email: anyNamed('email'), password: anyNamed('password')))
           .thenAnswer((_) async => null);
 
-      await _firebaseAuthService.signUpWithEmailAndPassword(
+      await firebaseAuthService.signUpWithEmailAndPassword(
           email: _tEmail, password: _tPassword);
 
-      verify(_mockedFirebaseAuth.createUserWithEmailAndPassword(
+      verify(mockedFirebaseAuth.createUserWithEmailAndPassword(
               email: _tEmail, password: _tPassword))
           .called(1);
-      verifyNoMoreInteractions(_mockedFirebaseAuth);
+      verifyNoMoreInteractions(mockedFirebaseAuth);
     });
   });
 
   group('logout', () {
-    test('should forward call to FirebaseAuth', () async {
-      when(_mockedFirebaseAuth.signOut()).thenAnswer((_) async => null);
+    test('should forward call to FirebaseAuth.signOut', () async {
+      when(mockedFirebaseAuth.signOut()).thenAnswer((_) async => null);
 
-      await _firebaseAuthService.logout();
+      await firebaseAuthService.logout();
 
-      verify(_mockedFirebaseAuth.signOut()).called(1);
-      verifyNoMoreInteractions(_mockedFirebaseAuth);
+      verify(mockedFirebaseAuth.signOut()).called(1);
+      verifyNoMoreInteractions(mockedFirebaseAuth);
+    });
+  });
+
+  group('getCurrentUser', () {
+    test('should forward call to FirebaseAuth.currentUser', () async {
+      when(mockedFirebaseAuth.currentUser()).thenAnswer((_) async => null);
+
+      await firebaseAuthService.getCurrentUser();
+
+      verify(mockedFirebaseAuth.currentUser()).called(1);
+      verifyNoMoreInteractions(mockedFirebaseAuth);
     });
   });
 }

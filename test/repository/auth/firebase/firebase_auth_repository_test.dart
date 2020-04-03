@@ -191,4 +191,17 @@ void main() {
       );
     });
   });
+
+  group('getCurrentUser', () {
+    final String tUserUid = 'userUid';
+
+    test('should return current user if logged in', () async {
+      when(mockedFirebaseAuthService.getCurrentUser())
+          .thenAnswer((_) async => MockedFirebaseUser(tUserUid));
+
+      final String result = await firebaseAuthRepository.getCurrentUser();
+
+      expect(result, equals(tUserUid));
+    });
+  });
 }
