@@ -29,4 +29,7 @@ class UserProfile {
     final UserProfile typedOther = other;
     return userUid == typedOther.userUid;
   }
+
+  @override
+  int get hashCode => userUid.hashCode;
 }
