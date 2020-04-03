@@ -12,9 +12,7 @@ class InitialAuthState extends AuthState {}
 class AuthenticatedAuthState extends AuthState {
   final String userUid;
 
-  const AuthenticatedAuthState({@required this.userUid})
-      : assert(userUid != null),
-        super();
+  const AuthenticatedAuthState({@required this.userUid}) : super();
 
   @override
   List<Object> get props => [userUid];
