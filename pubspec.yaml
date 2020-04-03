@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   cloud_firestore: ^0.13.4+2
   cupertino_icons: ^0.1.2
+  dartz: ^0.8.9
+  equatable: ^1.1.1
   firebase_analytics: ^5.0.11
   firebase_auth: ^0.15.5+3
 
