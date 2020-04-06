@@ -9,7 +9,6 @@ class Password extends Validatable {
   final Either<ValidationFailure, String> value;
 
   factory Password(String input) {
-    assert(input != null);
     return Password._(Validator.isValidPassword(input));
   }
 

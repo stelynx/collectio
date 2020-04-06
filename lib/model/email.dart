@@ -9,7 +9,6 @@ class Email extends Validatable<String> {
   final Either<ValidationFailure, String> value;
 
   factory Email(String input) {
-    assert(input != null);
     return Email._(Validator.isValidEmail(input));
   }
 
