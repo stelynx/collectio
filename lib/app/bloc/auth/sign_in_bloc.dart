@@ -5,10 +5,10 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../facade/auth/auth_facade.dart';
-import '../../../../model/email.dart';
-import '../../../../model/password.dart';
-import '../../../../util/error/auth_failure.dart';
+import '../../../facade/auth/auth_facade.dart';
+import '../../../model/email.dart';
+import '../../../model/password.dart';
+import '../../../util/error/auth_failure.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';

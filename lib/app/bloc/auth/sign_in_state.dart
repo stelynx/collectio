@@ -48,16 +48,16 @@ class InitialSignInState extends SignInState {
 
 class GeneralSignInState extends SignInState {
   GeneralSignInState({
-    @required Email email,
-    @required Password password,
-    @required bool showErrorMessages,
-    @required bool isSubmitting,
-    @required Either<AuthFailure, void> authFailure,
+    Email email,
+    Password password,
+    bool showErrorMessages,
+    bool isSubmitting,
+    Either<AuthFailure, void> authFailure,
   }) : super(
-          email: email,
-          password: password,
-          showErrorMessages: showErrorMessages,
-          isSubmitting: isSubmitting,
-          authFailure: authFailure,
+          email: email ?? Email(''),
+          password: password ?? Password(''),
+          showErrorMessages: showErrorMessages ?? false,
+          isSubmitting: isSubmitting ?? false,
+          authFailure: authFailure ?? null,
         );
 }

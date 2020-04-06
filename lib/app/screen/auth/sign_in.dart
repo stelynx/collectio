@@ -1,10 +1,11 @@
-import 'package:collectio/app/bloc/auth/sign_in/sign_in_bloc.dart';
-import 'package:collectio/app/screen/auth/widgets/sign_in_form.dart';
-import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
-import 'package:collectio/service/firebase/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../facade/auth/firebase/firebase_auth_facade.dart';
+import '../../../service/firebase/firebase_auth_service.dart';
+import '../../bloc/auth/sign_in_bloc.dart';
+import 'widgets/sign_in_form.dart';
 
 class SignInScreen extends StatelessWidget {
   @override

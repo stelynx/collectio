@@ -4,7 +4,7 @@ import '../util/error/failure.dart';
 import '../util/function/validator.dart';
 import 'interface/validatable.dart';
 
-class Password extends Validatable {
+class Password extends Validatable<String> {
   @override
   final Either<ValidationFailure, String> value;
 

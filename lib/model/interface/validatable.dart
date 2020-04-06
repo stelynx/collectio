@@ -10,4 +10,13 @@ abstract class Validatable<T> {
   bool isValid() => value.isRight();
 
   T get() => value.getOrElse(() => null);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is Validatable<T> && value == other.value;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
 }

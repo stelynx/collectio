@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../util/error/auth_failure.dart';
 import '../../../../util/error/validation_failure.dart';
 import '../../../bloc/auth/auth_bloc.dart';
-import '../../../bloc/auth/sign_in/sign_in_bloc.dart';
+import '../../../bloc/auth/sign_in_bloc.dart';
 import '../../../routes/router.dart';
 
 class SignInForm extends StatelessWidget {
