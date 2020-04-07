@@ -15,4 +15,11 @@ void main() {
 
     expect(result.value, equals(Right('a')));
   });
+
+  test('should instances with same email have same hash code', () {
+    final Password password1 = Password('a');
+    final Password password2 = Password('a');
+
+    expect(password1.hashCode, equals(password2.hashCode));
+  });
 }
