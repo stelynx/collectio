@@ -38,3 +38,6 @@ lib/generated_plugin_registrant.dart
 
 # Generated files
 *.iconfig.dart
+
+# Coverage helper
+test/coverage_test.dart
