@@ -1,4 +1,3 @@
-import 'package:collectio/facade/auth/auth_facade.dart';
 import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
 import 'package:collectio/model/email.dart';
 import 'package:collectio/model/password.dart';
