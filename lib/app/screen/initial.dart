@@ -1,8 +1,8 @@
-import 'package:collectio/app/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/auth/auth_bloc.dart';
+import '../routes/router.dart';
 
 class InitialScreen extends StatelessWidget {
   @override

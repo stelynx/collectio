@@ -1,4 +1,4 @@
-import 'package:collectio/util/error/failure.dart';
+import 'failure.dart';
 
 abstract class ValidationFailure extends Failure {}
 
