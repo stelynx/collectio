@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../facade/auth/auth_facade.dart';
@@ -11,6 +12,8 @@ import '../../../util/error/auth_failure.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
+@prod
+@lazySingleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthFacade _authFacade;
 

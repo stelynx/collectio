@@ -1,13 +1,15 @@
-import 'package:collectio/app/routes/router.dart';
-import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
-import 'package:collectio/service/firebase/firebase_auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import 'app/bloc/auth/auth_bloc.dart';
+import 'app/routes/router.dart';
+import 'util/injection/injection.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  configureInjection(Environment.prod);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -15,13 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AuthBloc(
-            authFacade: FirebaseAuthFacade(
-              authService: FirebaseAuthService(
-                firebaseAuth: FirebaseAuth.instance,
-              ),
-            ),
-          )..add(CheckStatusAuthEvent()),
+          create: (_) => getIt<AuthBloc>()..add(CheckStatusAuthEvent()),
         ),
       ],
       child: MaterialApp(
