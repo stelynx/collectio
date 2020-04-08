@@ -1,15 +1,17 @@
 import 'package:collectio/service/firebase/firebase_auth_service.dart';
+import 'package:collectio/util/injection/injection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:injectable/injectable.dart' as injectable;
 import 'package:mockito/mockito.dart';
 
-import '../../mocks.dart';
-
 void main() {
+  configureInjection(injectable.Environment.test);
+
   final String _tEmail = 'test@stelynx.com';
   final String _tPassword = 'testpwd';
 
-  final FirebaseAuth mockedFirebaseAuth = MockedFirebaseAuth();
+  final FirebaseAuth mockedFirebaseAuth = getIt<FirebaseAuth>();
   FirebaseAuthService firebaseAuthService;
 
   setUp(() {

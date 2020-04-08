@@ -1,17 +1,20 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/auth/auth_bloc.dart';
+import 'package:collectio/facade/auth/auth_facade.dart';
+import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
 import 'package:collectio/util/error/auth_failure.dart';
+import 'package:collectio/util/injection/injection.dart';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mocks.dart';
-
 void main() {
+  configureInjection(Environment.test);
+
   final String tUserUid = 'ascklasjdasodka';
 
-  final MockedFirebaseAuthFacade mockedFirebaseAuthFacade =
-      MockedFirebaseAuthFacade();
+  final MockedFirebaseAuthFacade mockedFirebaseAuthFacade = getIt<AuthFacade>();
 
   blocTest(
     'should emit AuthenticatedAuthState when logged in',

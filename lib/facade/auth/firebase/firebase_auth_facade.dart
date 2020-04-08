@@ -1,18 +1,22 @@
-import 'package:collectio/util/constant/constants.dart';
-
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../model/email.dart';
 import '../../../model/password.dart';
-import '../../../service/firebase/firebase_auth_service.dart';
+import '../../../service/auth_service.dart';
+import '../../../util/constant/constants.dart';
 import '../../../util/error/auth_failure.dart';
 import '../auth_facade.dart';
 
+@prod
+@lazySingleton
+@RegisterAs(AuthFacade)
 class FirebaseAuthFacade extends AuthFacade {
-  final FirebaseAuthService authService;
+  final AuthService authService;
 
   FirebaseAuthFacade({@required this.authService}) : super();
 
@@ -73,3 +77,8 @@ class FirebaseAuthFacade extends AuthFacade {
     return user != null ? user.uid : null;
   }
 }
+
+@test
+@lazySingleton
+@RegisterAs(AuthFacade)
+class MockedFirebaseAuthFacade extends Mock implements FirebaseAuthFacade {}

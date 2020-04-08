@@ -1,16 +1,22 @@
 import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
 import 'package:collectio/model/email.dart';
 import 'package:collectio/model/password.dart';
+import 'package:collectio/service/auth_service.dart';
+import 'package:collectio/service/firebase/firebase_auth_service.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/error/auth_failure.dart';
+import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:injectable/injectable.dart' as injectable;
 import 'package:mockito/mockito.dart';
 
 import '../../../mocks.dart';
 
 void main() {
+  configureInjection(injectable.Environment.test);
+
   final Email tEmail = Email('test@stelynx.com');
   final Password tPassword = Password('testpwd');
 
@@ -18,7 +24,7 @@ void main() {
   FirebaseAuthFacade firebaseAuthFacade;
 
   setUp(() {
-    mockedFirebaseAuthService = MockedFirebaseAuthService();
+    mockedFirebaseAuthService = getIt<AuthService>();
     firebaseAuthFacade =
         FirebaseAuthFacade(authService: mockedFirebaseAuthService);
   });
@@ -36,7 +42,6 @@ void main() {
       verify(mockedFirebaseAuthService.signInWithEmailAndPassword(
               email: tEmail.get(), password: tPassword.get()))
           .called(1);
-      verifyNoMoreInteractions(mockedFirebaseAuthService);
     });
 
     test('should return null on success', () async {
@@ -102,7 +107,6 @@ void main() {
       await firebaseAuthFacade.signOut();
 
       verify(mockedFirebaseAuthService.logout()).called(1);
-      verifyNoMoreInteractions(mockedFirebaseAuthService);
     });
 
     test('should return null on successful logout', () async {
@@ -137,7 +141,6 @@ void main() {
       verify(mockedFirebaseAuthService.signUpWithEmailAndPassword(
               email: tEmail.get(), password: tPassword.get()))
           .called(1);
-      verifyNoMoreInteractions(mockedFirebaseAuthService);
     });
 
     test('should return null on success', () async {

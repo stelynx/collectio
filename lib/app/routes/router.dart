@@ -25,6 +25,4 @@ class Router {
             builder: (_) => ErrorScreen(message: 'Unknown route'));
     }
   }
-
-  static void navigate(RouteSettings routeSettings) {}
 }
