@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../facade/auth/auth_facade.dart';
 import '../../../util/error/auth_failure.dart';
@@ -40,3 +41,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 }
+
+@test
+@lazySingleton
+@RegisterAs(AuthBloc)
+class MockedAuthBloc extends Mock implements AuthBloc {}

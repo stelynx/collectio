@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../facade/auth/auth_facade.dart';
 import '../../../model/email.dart';
@@ -74,3 +75,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     }
   }
 }
+
+@test
+@lazySingleton
+@RegisterAs(SignInBloc)
+class MockedSignInBloc extends Mock implements SignInBloc {}
