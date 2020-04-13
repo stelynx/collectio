@@ -21,4 +21,11 @@ void main() {
 
     expect(result.value, equals(Right('a@b.c')));
   });
+
+  test('should instances with same email have same hash code', () {
+    final Email email1 = Email('a@b.c');
+    final Email email2 = Email('a@b.c');
+
+    expect(email1.hashCode, equals(email2.hashCode));
+  });
 }

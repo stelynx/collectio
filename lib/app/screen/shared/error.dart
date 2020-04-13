@@ -5,6 +5,8 @@ class ErrorScreen extends StatelessWidget {
 
   const ErrorScreen({@required String message}) : _errorMessage = message;
 
+  String get errorMessage => _errorMessage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

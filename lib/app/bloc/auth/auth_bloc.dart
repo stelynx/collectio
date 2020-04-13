@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -40,3 +41,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 }
+
+@test
+@lazySingleton
+@RegisterAs(AuthBloc)
+class MockedAuthBloc extends MockBloc<AuthEvent, AuthState>
+    implements AuthBloc {}

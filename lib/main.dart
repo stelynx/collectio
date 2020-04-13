@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import 'app/bloc/auth/auth_bloc.dart';
 import 'app/routes/router.dart';
+import 'app/routes/routes.dart';
 import 'util/injection/injection.dart';
 
 void main() {
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Stelynx Collectio',
         debugShowCheckedModeBanner: false,
-        initialRoute: Router.initial,
+        initialRoute: Routes.initial,
         onGenerateRoute: Router.onGenerateRoute,
       ),
     );
