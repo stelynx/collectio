@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../util/constant/constants.dart';
 import '../screen/auth/sign_in.dart';
 import '../screen/initial.dart';
 import '../screen/shared/error.dart';
@@ -19,7 +20,8 @@ abstract class Router {
             builder: (_) => ErrorScreen(message: routeArguments));
       default:
         return MaterialPageRoute(
-            builder: (_) => ErrorScreen(message: 'Unknown route'));
+            builder: (_) =>
+                ErrorScreen(message: Constants.unknownRouteMessage));
     }
   }
 }
