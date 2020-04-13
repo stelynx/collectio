@@ -5,7 +5,7 @@ import '../../../../util/error/auth_failure.dart';
 import '../../../../util/error/validation_failure.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/auth/sign_in_bloc.dart';
-import '../../../routes/routes.dart';
+import '../../../bloc/navigation/navigation_bloc.dart';
 
 class SignInForm extends StatelessWidget {
   const SignInForm({Key key}) : super(key: key);
@@ -20,10 +20,9 @@ class SignInForm extends StatelessWidget {
               print(failure);
             },
             (_) {
-              Navigator.of(context).pushReplacementNamed(
-                Routes.error,
-                arguments: 'Not yet implemented',
-              );
+              context
+                  .bloc<NavigationBloc>()
+                  .add(GoToHomeScreenAfterSignInNavigationEvent());
               context.bloc<AuthBloc>().add(CheckStatusAuthEvent());
             },
           );

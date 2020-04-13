@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/auth/auth_bloc.dart';
-import '../routes/routes.dart';
+import '../bloc/navigation/navigation_bloc.dart';
 
 class InitialScreen extends StatelessWidget {
   @override
@@ -11,10 +11,11 @@ class InitialScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is InitialAuthState) {
         } else if (state is AuthenticatedAuthState) {
-          Navigator.of(context).pushReplacementNamed(Routes.error,
-              arguments: 'Not yet implemented');
+          context
+              .bloc<NavigationBloc>()
+              .add(GoToHomeScreenAfterSignInNavigationEvent());
         } else if (state is UnauthenticatedAuthState) {
-          Navigator.of(context).pushReplacementNamed(Routes.signIn);
+          context.bloc<NavigationBloc>().add(GoToSignInScreenNavigationEvent());
         }
       },
       child: _InitialScreenWidget(),

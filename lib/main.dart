@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app/bloc/auth/auth_bloc.dart';
+import 'app/bloc/navigation/navigation_bloc.dart';
 import 'app/routes/router.dart';
-import 'app/routes/routes.dart';
 import 'util/injection/injection.dart';
 
 void main() {
@@ -20,11 +20,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => getIt<AuthBloc>()..add(CheckStatusAuthEvent()),
         ),
+        BlocProvider(
+          create: (_) => getIt<NavigationBloc>()..add(InitialNavigationEvent()),
+        ),
       ],
       child: MaterialApp(
         title: 'Stelynx Collectio',
         debugShowCheckedModeBanner: false,
-        initialRoute: Routes.initial,
+        navigatorKey: getIt<NavigationBloc>().navigatorKey,
         onGenerateRoute: Router.onGenerateRoute,
       ),
     );
