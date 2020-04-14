@@ -1,18 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../model/collection.dart';
-import '../../../service/firebase/firebase_data_service.dart';
+import '../../../service/data_service.dart';
 import '../../../util/error/data_failure.dart';
 import '../collections_facade.dart';
 
+@prod
+@lazySingleton
+@RegisterAs(CollectionsFacade)
 class FirebaseCollectionsFacade extends CollectionsFacade {
-  final FirebaseDataService _dataService;
+  final DataService _dataService;
 
-  FirebaseDataService get dataService => _dataService;
+  DataService get dataService => _dataService;
 
-  FirebaseCollectionsFacade({@required FirebaseDataService dataService})
+  FirebaseCollectionsFacade({@required DataService dataService})
       : _dataService = dataService;
 
   @override
@@ -32,3 +37,9 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
     }
   }
 }
+
+@test
+@lazySingleton
+@RegisterAs(CollectionsFacade)
+class MockedFirebaseCollectionsFacade extends Mock
+    implements CollectionsFacade {}
