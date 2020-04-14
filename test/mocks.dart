@@ -14,9 +14,19 @@ class MockedFirebaseUser extends Mock implements FirebaseUser {
 class MockedCollectionReference extends Mock implements CollectionReference {}
 
 class MockedQuerySnapshot extends Mock implements QuerySnapshot {
-  final Object _documents;
+  final List<DocumentSnapshot> _documents;
 
   MockedQuerySnapshot(this._documents);
 
-  Object getDocuments() => _documents;
+  List<DocumentSnapshot> get documents => _documents;
+}
+
+class MockedDocumentSnapshot extends Mock implements DocumentSnapshot {
+  final Map<String, dynamic> _data;
+  final String _documentID;
+
+  MockedDocumentSnapshot(this._documentID, this._data);
+
+  Map<String, dynamic> get data => _data;
+  String get documentID => _documentID;
 }
