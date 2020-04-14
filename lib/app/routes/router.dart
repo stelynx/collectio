@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../util/constant/constants.dart';
 import '../screen/auth/sign_in.dart';
+import '../screen/collections/all/collections.dart';
 import '../screen/initial.dart';
 import '../screen/shared/error.dart';
 import 'routes.dart';
@@ -15,6 +16,8 @@ abstract class Router {
         return MaterialPageRoute(builder: (_) => InitialScreen());
       case Routes.signIn:
         return MaterialPageRoute(builder: (_) => SignInScreen());
+      case Routes.myCollections:
+        return MaterialPageRoute(builder: (_) => CollectionsScreen());
       case Routes.error:
         return MaterialPageRoute(
             builder: (_) => ErrorScreen(message: routeArguments));
