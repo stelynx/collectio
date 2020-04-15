@@ -10,4 +10,7 @@ class Constants {
   // Firestore
   static String userCollection = 'stelynx_user';
   static String userUidField = 'userUid';
+
+  // DataFailure messages
+  static String notExactlyOneObjectFound = 'Zero or too many objects found';
 }

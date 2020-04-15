@@ -1,3 +1,4 @@
+import 'package:collectio/util/function/enum_helper.dart';
 import 'package:meta/meta.dart';
 
 import '../util/constant/country.dart';
@@ -21,11 +22,21 @@ class UserProfile {
     @required this.username,
   });
 
+  factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
+        email: json['email'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        country: enumFromString<Country>(json['country'], Country.values),
+        profileImg: json['profileImg'],
+        userUid: json['userUid'],
+        username: json['username'],
+      );
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'email': email,
         'firstName': firstName ?? '',
         'lastName': lastName ?? '',
-        'country': country ?? '',
+        'country': country != null ? enumToString(country) : '',
         'profileImg': profileImg ?? '',
         'userUid': userUid,
         'username': username,

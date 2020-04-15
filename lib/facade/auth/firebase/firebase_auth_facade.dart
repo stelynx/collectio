@@ -81,4 +81,4 @@ class FirebaseAuthFacade extends AuthFacade {
 @test
 @lazySingleton
 @RegisterAs(AuthFacade)
-class MockedFirebaseAuthFacade extends Mock implements FirebaseAuthFacade {}
+class MockedFirebaseAuthFacade extends Mock implements AuthFacade {}

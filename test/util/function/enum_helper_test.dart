@@ -12,4 +12,14 @@ void main() {
       expect(result, equals('SI'));
     });
   });
+
+  group('enumFromString', () {
+    test('should return correct Enum representation', () {
+      final String country = 'SI';
+
+      final Country result = enumFromString<Country>(country, Country.values);
+
+      expect(result, equals(Country.SI));
+    });
+  });
 }
