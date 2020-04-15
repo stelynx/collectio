@@ -1,7 +1,7 @@
-import 'package:collectio/util/function/enum_helper.dart';
 import 'package:meta/meta.dart';
 
 import '../util/constant/country.dart';
+import '../util/function/enum_helper.dart';
 
 class UserProfile {
   String email;
