@@ -13,13 +13,23 @@ class UserProfile {
 
   UserProfile({
     @required this.email,
-    @required this.firstName,
-    @required this.lastName,
-    @required this.country,
-    @required this.profileImg,
+    this.firstName,
+    this.lastName,
+    this.country,
+    this.profileImg,
     @required this.userUid,
     @required this.username,
   });
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'email': email,
+        'firstName': firstName ?? '',
+        'lastName': lastName ?? '',
+        'country': country ?? '',
+        'profileImg': profileImg ?? '',
+        'userUid': userUid,
+        'username': username,
+      };
 
   @override
   bool operator ==(dynamic other) {

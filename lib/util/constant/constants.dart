@@ -6,4 +6,8 @@ class Constants {
 
   // Unknown route message
   static String unknownRouteMessage = 'Unknown route';
+
+  // Firestore
+  static String userCollection = 'stelynx_user';
+  static String userUidField = 'userUid';
 }

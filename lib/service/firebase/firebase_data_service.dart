@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../util/constant/constants.dart';
 import '../data_service.dart';
 
 @prod
@@ -21,12 +22,28 @@ class FirebaseDataService extends DataService {
 
   @override
   Future<QuerySnapshot> getItemsInCollection({
-    String username,
-    String collectionName,
+    @required String username,
+    @required String collectionName,
   }) =>
       _firestore
           .collection("${username}_collection/$collectionName/items")
           .getDocuments();
+
+  @override
+  Future<QuerySnapshot> getUserProfile({@required String userUid}) => _firestore
+      .collection(Constants.userCollection)
+      .where(Constants.userUidField, isEqualTo: userUid)
+      .getDocuments();
+
+  @override
+  Future<void> addUserProfile({
+    @required String id,
+    @required Map<String, dynamic> userProfile,
+  }) =>
+      _firestore
+          .collection(Constants.userCollection)
+          .document(id)
+          .setData(userProfile);
 }
 
 @test

@@ -30,3 +30,5 @@ class MockedDocumentSnapshot extends Mock implements DocumentSnapshot {
   Map<String, dynamic> get data => _data;
   String get documentID => _documentID;
 }
+
+class MockedDocumentReference extends Mock implements DocumentReference {}
