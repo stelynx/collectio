@@ -49,4 +49,4 @@ class FirebaseDataService extends DataService {
 @test
 @lazySingleton
 @RegisterAs(DataService)
-class MockedFirebaseDataService extends Mock implements FirebaseDataService {}
+class MockedFirebaseDataService extends Mock implements DataService {}

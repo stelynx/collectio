@@ -38,4 +38,4 @@ class FirebaseAuthService extends AuthService {
 @test
 @lazySingleton
 @RegisterAs(AuthService)
-class MockedFirebaseAuthService extends Mock implements FirebaseAuthService {}
+class MockedFirebaseAuthService extends Mock implements AuthService {}
