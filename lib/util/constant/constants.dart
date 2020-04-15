@@ -16,4 +16,5 @@ class Constants {
 
   // DataFailure messages
   static String notExactlyOneObjectFound = 'Zero or too many objects found';
+  static String noItems = 'There were no items matching this criteria.';
 }

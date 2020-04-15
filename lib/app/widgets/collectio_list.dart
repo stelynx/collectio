@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/interface/listable.dart';
+import '../../util/constant/constants.dart';
 
 class CollectioList<T extends Listable> extends StatelessWidget {
   final List<T> items;
@@ -22,7 +23,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                   size: 80,
                 ),
                 SizedBox(height: 10),
-                Text('There were no items matching this criteria.'),
+                Text(Constants.noItems),
               ],
             ),
           )
