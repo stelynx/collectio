@@ -1,8 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/collections/collections_bloc.dart';
 import 'package:collectio/app/screen/collections/all/collections.dart';
-import 'package:collectio/app/screen/shared/error.dart';
-import 'package:collectio/app/widgets/collectio_list.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/injection/injection.dart';
