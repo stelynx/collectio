@@ -84,6 +84,8 @@ void main() {
       expect(titleFinder, findsNWidgets(collections.length));
       expect(subtitleFinder, findsNWidgets(collections.length));
       expect(iconFinder, findsNWidgets(collections.length));
+
+      tester.tap(ltFinder.first);
     },
   );
 }
