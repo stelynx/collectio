@@ -74,19 +74,19 @@ void main() {
 
     test('should call data service with correct arguments', () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(userUid: anyNamed('userUid')))
+              .getUserProfile(username: anyNamed('username')))
           .thenAnswer((_) async => null);
 
       await firebaseProfileFacade.getUserProfile(username: username);
 
       verify(firebaseProfileFacade.dataService
-              .getUserProfile(userUid: username))
+              .getUserProfile(username: username))
           .called(1);
     });
 
     test('should return Right(UserProfile) on success', () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(userUid: anyNamed('userUid')))
+              .getUserProfile(username: anyNamed('username')))
           .thenAnswer((_) async => MockedQuerySnapshot(
               [MockedDocumentSnapshot(username, userProfileJson)]));
 
@@ -100,7 +100,7 @@ void main() {
         'should return Left(DataFailure) with appropriate message when 0 matches',
         () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(userUid: anyNamed('userUid')))
+              .getUserProfile(username: anyNamed('username')))
           .thenAnswer((_) async => MockedQuerySnapshot([]));
 
       final Either<DataFailure, UserProfile> result =
@@ -116,7 +116,7 @@ void main() {
         'should return Left(DataFailure) with appropriate message when 2+ matches',
         () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(userUid: anyNamed('userUid')))
+              .getUserProfile(username: anyNamed('username')))
           .thenAnswer(
         (_) async => MockedQuerySnapshot([
           MockedDocumentSnapshot(username, userProfileJson),
@@ -135,7 +135,7 @@ void main() {
 
     test('should return Left(DataFailure) on exception', () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(userUid: anyNamed('userUid')))
+              .getUserProfile(username: anyNamed('username')))
           .thenThrow(Exception());
 
       final Either<DataFailure, UserProfile> result =

@@ -65,11 +65,11 @@ void main() {
                 isEqualTo: anyNamed('isEqualTo')))
             .thenReturn(MockedCollectionReference());
 
-        await firebaseDataService.getUserProfile(userUid: userUid);
+        await firebaseDataService.getUserProfile(username: username);
 
         verify(mockedCollectionReference.where(
           Constants.usernameField,
-          isEqualTo: userUid,
+          isEqualTo: username,
         )).called(1);
       },
     );

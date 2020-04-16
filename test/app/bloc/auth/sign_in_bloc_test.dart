@@ -7,6 +7,8 @@ import 'package:collectio/facade/profile/profile_facade.dart';
 import 'package:collectio/model/email.dart';
 import 'package:collectio/model/password.dart';
 import 'package:collectio/model/username.dart';
+import 'package:collectio/util/constant/constants.dart';
+import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/error/failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -326,5 +328,148 @@ void main() {
         authFailure: Right(null),
       ),
     ],
+  );
+
+  blocTest(
+    'should be able to register when username not in use',
+    build: () async {
+      when(mockedFirebaseProfileFacade.getUserProfile(username: 'username'))
+          .thenAnswer((_) async =>
+              Left(DataFailure(message: Constants.notExactlyOneObjectFound)));
+      when(mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
+              email: anyNamed('email'), password: anyNamed('password')))
+          .thenAnswer((_) async => Right(null));
+      return SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade,
+      );
+    },
+    act: (SignInBloc bloc) async => bloc
+      ..add(EmailChangedSignInEvent(email: 'a@b.c'))
+      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(UsernameChangedSignInEvent(username: 'username'))
+      ..add(RegisterWithEmailAndPasswordSignInEvent()),
+    expect: [
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        username: Username('username'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        username: Username('username'),
+        isSubmitting: true,
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        username: Username('username'),
+        isSubmitting: false,
+        showErrorMessages: true,
+        authFailure: Right(null),
+      ),
+    ],
+  );
+
+  blocTest(
+    'should not be able to register when username is in use',
+    build: () async {
+      when(mockedFirebaseProfileFacade.getUserProfile(username: 'username'))
+          .thenAnswer((_) async => Right(null));
+      return SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade,
+      );
+    },
+    act: (SignInBloc bloc) async => bloc
+      ..add(EmailChangedSignInEvent(email: 'a@b.com'))
+      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(UsernameChangedSignInEvent(username: 'username'))
+      ..add(RegisterWithEmailAndPasswordSignInEvent()),
+    expect: [
+      GeneralSignInState(
+        email: Email('a@b.com'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.com'),
+        password: Password('a'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.com'),
+        password: Password('a'),
+        username: Username('username'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.com'),
+        password: Password('a'),
+        username: Username('username'),
+        isRegistering: true,
+        showErrorMessages: true,
+        authFailure: Left(UsernameAlreadyInUseFailure()),
+      ),
+    ],
+    verify: (_) async => verifyNever(
+        mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
+            email: Email('a@b.com'), password: Password('a'))),
+  );
+
+  blocTest(
+    'should not be able to register when failed to check for username',
+    build: () async {
+      when(mockedFirebaseProfileFacade.getUserProfile(username: 'username'))
+          .thenAnswer((_) async => Left(DataFailure()));
+      return SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade,
+      );
+    },
+    act: (SignInBloc bloc) async => bloc
+      ..add(EmailChangedSignInEvent(email: 'a@b.comm'))
+      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(UsernameChangedSignInEvent(username: 'username'))
+      ..add(RegisterWithEmailAndPasswordSignInEvent()),
+    expect: [
+      GeneralSignInState(
+        email: Email('a@b.comm'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.comm'),
+        password: Password('a'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.comm'),
+        password: Password('a'),
+        username: Username('username'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.comm'),
+        password: Password('a'),
+        username: Username('username'),
+        isRegistering: true,
+        showErrorMessages: true,
+        authFailure: Left(ServerFailure()),
+      ),
+    ],
+    verify: (_) async => verifyNever(
+        mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
+            email: Email('a@b.com'), password: Password('a'))),
   );
 }

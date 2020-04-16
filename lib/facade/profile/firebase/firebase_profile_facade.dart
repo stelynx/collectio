@@ -39,7 +39,7 @@ class FirebaseProfileFacade extends ProfileFacade {
   }) async {
     try {
       final QuerySnapshot userProfileQuerySnapshot =
-          await dataService.getUserProfile(userUid: username);
+          await dataService.getUserProfile(username: username);
 
       final List<DocumentSnapshot> documents =
           userProfileQuerySnapshot.documents;
