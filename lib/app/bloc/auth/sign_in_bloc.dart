@@ -40,6 +40,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInEvent event,
   ) async* {
     if (event is EmailChangedSignInEvent) {
+      print(event.email);
+      print(Email(event.email).isValid());
       yield state.copyWith(
         email: Email(event.email),
         showErrorMessages: true,
@@ -120,6 +122,16 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         email: state.email,
         password: state.password,
       );
+
+      // Create user profile upon successful registration.
+      if (state.isRegistering && result.isRight()) {
+        final String userUid = await _authFacade.getCurrentUser();
+        final UserProfile newUserProfile = UserProfile(
+            email: state.email.get(),
+            userUid: userUid,
+            username: state.username.get());
+        await _profileFacade.addUserProfile(userProfile: newUserProfile);
+      }
 
       yield state.copyWith(
         isSubmitting: false,

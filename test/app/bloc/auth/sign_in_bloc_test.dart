@@ -6,6 +6,7 @@ import 'package:collectio/facade/profile/firebase/firebase_profile_facade.dart';
 import 'package:collectio/facade/profile/profile_facade.dart';
 import 'package:collectio/model/email.dart';
 import 'package:collectio/model/password.dart';
+import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/model/username.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/error/data_failure.dart';
@@ -331,7 +332,7 @@ void main() {
   );
 
   blocTest(
-    'should be able to register when username not in use',
+    'should be able to register when username not in use and create user profile',
     build: () async {
       when(mockedFirebaseProfileFacade.getUserProfile(username: 'username'))
           .thenAnswer((_) async =>
@@ -339,6 +340,8 @@ void main() {
       when(mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
               email: anyNamed('email'), password: anyNamed('password')))
           .thenAnswer((_) async => Right(null));
+      when(mockedFirebaseAuthFacade.getCurrentUser())
+          .thenAnswer((_) async => 'userUid');
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
         profileFacade: mockedFirebaseProfileFacade,
@@ -348,6 +351,7 @@ void main() {
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
       ..add(PasswordChangedSignInEvent(password: 'a'))
       ..add(UsernameChangedSignInEvent(username: 'username'))
+      ..add(CheckIfEmailExistsSignInEvent())
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
@@ -369,7 +373,25 @@ void main() {
         email: Email('a@b.c'),
         password: Password('a'),
         username: Username('username'),
+        showErrorMessages: true,
+        isRegistering: true,
         isSubmitting: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        username: Username('username'),
+        showErrorMessages: true,
+        isRegistering: true,
+        isSubmitting: false,
+        authFailure: Right(null),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        username: Username('username'),
+        isSubmitting: true,
+        isRegistering: true,
         showErrorMessages: true,
       ),
       GeneralSignInState(
@@ -377,10 +399,20 @@ void main() {
         password: Password('a'),
         username: Username('username'),
         isSubmitting: false,
+        isRegistering: false,
         showErrorMessages: true,
         authFailure: Right(null),
       ),
     ],
+    verify: (_) async => verify(
+      mockedFirebaseProfileFacade.addUserProfile(
+        userProfile: UserProfile(
+          email: 'a@b.c',
+          userUid: 'userUid',
+          username: 'username',
+        ),
+      ),
+    ),
   );
 
   blocTest(
