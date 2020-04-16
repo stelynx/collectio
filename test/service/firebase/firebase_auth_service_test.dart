@@ -71,4 +71,40 @@ void main() {
       verifyNoMoreInteractions(mockedFirebaseAuth);
     });
   });
+
+  group('emailExists', () {
+    final String email = 'email';
+
+    test('should call FirebaseAuth.fetchSignInMethodsForEmail', () async {
+      when(mockedFirebaseAuth.fetchSignInMethodsForEmail(
+              email: anyNamed('email')))
+          .thenAnswer((_) async => []);
+
+      await firebaseAuthService.emailExists(email);
+
+      verify(mockedFirebaseAuth.fetchSignInMethodsForEmail(email: email))
+          .called(1);
+      verifyNoMoreInteractions(mockedFirebaseAuth);
+    });
+
+    test('should return true if sign in methods available', () async {
+      when(mockedFirebaseAuth.fetchSignInMethodsForEmail(
+              email: anyNamed('email')))
+          .thenAnswer((_) async => ['a', 'b']);
+
+      final bool result = await firebaseAuthService.emailExists(email);
+
+      expect(result, isTrue);
+    });
+
+    test('should return false if no sign in methods', () async {
+      when(mockedFirebaseAuth.fetchSignInMethodsForEmail(
+              email: anyNamed('email')))
+          .thenAnswer((_) async => []);
+
+      final bool result = await firebaseAuthService.emailExists(email);
+
+      expect(result, isFalse);
+    });
+  });
 }

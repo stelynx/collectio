@@ -196,4 +196,42 @@ void main() {
       expect(result, equals(tUserUid));
     });
   });
+
+  group('emailNotExists', () {
+    test('should return Right(null) if email does not exist yet', () async {
+      when(mockedFirebaseAuthService.emailExists(any))
+          .thenAnswer((_) async => false);
+
+      final Either<AuthFailure, void> result =
+          await firebaseAuthFacade.emailNotExists(tEmail);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test(
+      'should return Left(EmailAlreadyInUseFailure) if email does already exists',
+      () async {
+        when(mockedFirebaseAuthService.emailExists(any))
+            .thenAnswer((_) async => true);
+
+        final Either<AuthFailure, void> result =
+            await firebaseAuthFacade.emailNotExists(tEmail);
+
+        expect(result, equals(Left(EmailAlreadyInUseFailure())));
+      },
+    );
+
+    test(
+      'should return Left(ServerFailure(message)) if error occured',
+      () async {
+        when(mockedFirebaseAuthService.emailExists(any))
+            .thenThrow(PlatformException(code: 'some code'));
+
+        final Either<AuthFailure, void> result =
+            await firebaseAuthFacade.emailNotExists(tEmail);
+
+        expect(result, equals(Left(ServerFailure(message: 'some code'))));
+      },
+    );
+  });
 }

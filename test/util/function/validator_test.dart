@@ -73,4 +73,33 @@ void main() {
       expect(result, equals(Left(PasswordValidationFailure())));
     });
   });
+
+  group('isValidUsername', () {
+    test('should return failure on short username', () {
+      final String username = 'asd';
+
+      final Either<ValidationFailure, String> result =
+          Validator.isValidUsername(username);
+
+      expect(result, equals(Left(UsernameTooShortValidationFailure())));
+    });
+
+    test('should return failure on bad username', () {
+      final String username = 'asda@f';
+
+      final Either<ValidationFailure, String> result =
+          Validator.isValidUsername(username);
+
+      expect(result, equals(Left(UsernameValidationFailure())));
+    });
+
+    test('should return username on valid input', () {
+      final String username = 'as3dA4';
+
+      final Either<ValidationFailure, String> result =
+          Validator.isValidUsername(username);
+
+      expect(result, equals(Right(username)));
+    });
+  });
 }

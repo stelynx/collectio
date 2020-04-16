@@ -6,7 +6,7 @@ abstract class DataService {
   Future getItemsInCollection(
       {@required String username, @required String collectionName});
 
-  Future getUserProfile({@required String userUid});
+  Future getUserProfile({@required String username});
 
   Future<void> addUserProfile(
       {@required String id, @required Map<String, dynamic> userProfile});

@@ -33,6 +33,13 @@ class FirebaseAuthService extends AuthService {
 
   @override
   Future<FirebaseUser> getCurrentUser() => firebaseAuth.currentUser();
+
+  @override
+  Future<bool> emailExists(String email) async {
+    List<String> signInMethods =
+        await firebaseAuth.fetchSignInMethodsForEmail(email: email);
+    return signInMethods.length > 0;
+  }
 }
 
 @test

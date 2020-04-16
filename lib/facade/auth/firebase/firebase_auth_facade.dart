@@ -76,6 +76,16 @@ class FirebaseAuthFacade extends AuthFacade {
     final FirebaseUser user = await authService.getCurrentUser();
     return user != null ? user.uid : null;
   }
+
+  @override
+  Future<Either<AuthFailure, void>> emailNotExists(Email email) async {
+    try {
+      final bool doesEmailExist = await authService.emailExists(email.get());
+      return doesEmailExist ? Left(EmailAlreadyInUseFailure()) : Right(null);
+    } on PlatformException catch (e) {
+      return Left(ServerFailure(message: e.code));
+    }
+  }
 }
 
 @test

@@ -16,6 +16,14 @@ class PasswordChangedSignInEvent extends SignInEvent {
   const PasswordChangedSignInEvent({@required this.password});
 }
 
+class UsernameChangedSignInEvent extends SignInEvent {
+  final String username;
+
+  const UsernameChangedSignInEvent({@required this.username});
+}
+
 class SignInWithEmailAndPasswordSignInEvent extends SignInEvent {}
 
 class RegisterWithEmailAndPasswordSignInEvent extends SignInEvent {}
+
+class CheckIfEmailExistsSignInEvent extends SignInEvent {}

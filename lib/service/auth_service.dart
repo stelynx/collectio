@@ -10,4 +10,6 @@ abstract class AuthService {
   Future logout();
 
   Future getCurrentUser();
+
+  Future<bool> emailExists(String email);
 }

@@ -18,4 +18,6 @@ abstract class AuthFacade {
   Future<Either<AuthFailure, void>> signOut();
 
   Future<String> getCurrentUser();
+
+  Future<Either<AuthFailure, void>> emailNotExists(Email email);
 }
