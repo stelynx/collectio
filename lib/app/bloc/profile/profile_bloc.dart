@@ -16,7 +16,6 @@ part 'profile_state.dart';
 
 @prod
 @lazySingleton
-@RegisterAs(ProfileBloc)
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileFacade _profileFacade;
 
