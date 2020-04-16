@@ -6,6 +6,7 @@ import 'package:collectio/facade/profile/firebase/firebase_profile_facade.dart';
 import 'package:collectio/facade/profile/profile_facade.dart';
 import 'package:collectio/model/email.dart';
 import 'package:collectio/model/password.dart';
+import 'package:collectio/model/username.dart';
 import 'package:collectio/util/error/failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -56,6 +57,23 @@ void main() {
   );
 
   blocTest(
+    'should change state.username on username change',
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
+    act: (SignInBloc bloc) async =>
+        bloc..add(UsernameChangedSignInEvent(username: 'a')),
+    expect: [
+      GeneralSignInState(
+        username: Username('a'),
+        showErrorMessages: true,
+        authFailure: null,
+      ),
+    ],
+  );
+
+  blocTest(
     'should not change state when signing in with invalid email',
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
@@ -93,26 +111,58 @@ void main() {
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(UsernameChangedSignInEvent(username: 'aasd'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
         password: Password('a'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        password: Password('a'),
+        username: Username('aasd'),
         showErrorMessages: true,
       )
     ],
   );
 
   blocTest(
-    'should not change state when registering in with invalid password',
+    'should not change state when registering with invalid password',
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
+      ..add(UsernameChangedSignInEvent(username: 'aasd'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(email: Email('a@b.c'), showErrorMessages: true),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        username: Username('aasd'),
+        showErrorMessages: true,
+      ),
+    ],
+  );
+
+  blocTest(
+    'should not change state when registering with invalid username',
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
+    act: (SignInBloc bloc) async => bloc
+      ..add(EmailChangedSignInEvent(email: 'a@b.c'))
+      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(RegisterWithEmailAndPasswordSignInEvent()),
+    expect: [
+      GeneralSignInState(email: Email('a@b.c'), showErrorMessages: true),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        showErrorMessages: true,
+      ),
     ],
   );
 
@@ -204,5 +254,77 @@ void main() {
             mockedFirebaseAuthFacade.signInWithEmailAndPassword(
                 email: Email('a@b.c'), password: Password('a')))
         .called(1),
+  );
+
+  blocTest(
+    'should not change state when checking for existing email with invalid email',
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
+    act: (SignInBloc bloc) async => bloc
+      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(CheckIfEmailExistsSignInEvent()),
+    expect: [
+      GeneralSignInState(
+        password: Password('a'),
+        showErrorMessages: true,
+      )
+    ],
+  );
+
+  blocTest(
+    'should not change state when checking for existing email with invalid password',
+    build: () async => SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade),
+    act: (SignInBloc bloc) async => bloc
+      ..add(EmailChangedSignInEvent(email: 'a@b.c'))
+      ..add(CheckIfEmailExistsSignInEvent()),
+    expect: [
+      GeneralSignInState(email: Email('a@b.c'), showErrorMessages: true),
+    ],
+  );
+
+  blocTest(
+    'should have state.authFailure Right(null) on check for email exists and no email was present',
+    build: () async {
+      when(mockedFirebaseAuthFacade.emailNotExists(any))
+          .thenAnswer((_) async => Right(null));
+      return SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade,
+      );
+    },
+    act: (SignInBloc bloc) async => bloc
+      ..add(EmailChangedSignInEvent(email: 'a@b.c'))
+      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(CheckIfEmailExistsSignInEvent()),
+    expect: [
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        showErrorMessages: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        isSubmitting: true,
+        showErrorMessages: true,
+        isRegistering: true,
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('a'),
+        isSubmitting: false,
+        showErrorMessages: true,
+        isRegistering: true,
+        authFailure: Right(null),
+      ),
+    ],
   );
 }

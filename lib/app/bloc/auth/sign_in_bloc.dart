@@ -96,7 +96,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         }
       }
     } else if (event is CheckIfEmailExistsSignInEvent) {
-      yield* _callAuthFacadeWithEmail(_authFacade.emailExists);
+      yield* _callAuthFacadeWithEmail(_authFacade.emailNotExists);
     }
   }
 

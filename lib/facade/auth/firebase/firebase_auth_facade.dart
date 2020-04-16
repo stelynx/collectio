@@ -78,7 +78,7 @@ class FirebaseAuthFacade extends AuthFacade {
   }
 
   @override
-  Future<Either<AuthFailure, void>> emailExists(Email email) async {
+  Future<Either<AuthFailure, void>> emailNotExists(Email email) async {
     try {
       final bool doesEmailExist = await authService.emailExists(email.get());
       return doesEmailExist ? Left(EmailAlreadyInUseFailure()) : Right(null);
