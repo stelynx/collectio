@@ -22,8 +22,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc({@required ProfileFacade profileFacade})
       : _profileFacade = profileFacade;
 
-  ProfileFacade get profileFacade => _profileFacade;
-
   @override
   ProfileState get initialState => InitialProfileState();
 
