@@ -68,7 +68,7 @@ void main() {
         await firebaseDataService.getUserProfile(userUid: userUid);
 
         verify(mockedCollectionReference.where(
-          Constants.userUidField,
+          Constants.usernameField,
           isEqualTo: userUid,
         )).called(1);
       },

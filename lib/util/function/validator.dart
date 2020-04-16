@@ -19,4 +19,13 @@ class Validator {
         ? Right(password.trim())
         : Left(PasswordValidationFailure());
   }
+
+  static Either<ValidationFailure, String> isValidUsername(String username) {
+    if (username.length < 4) return Left(UsernameTooShortValidationFailure());
+
+    RegExp usernameRegex = RegExp(r"^[a-zA-Z0-9]+");
+    return usernameRegex.hasMatch(username)
+        ? Right(username)
+        : Left(UsernameValidationFailure());
+  }
 }

@@ -23,6 +23,10 @@ class EmailAlreadyInUseFailure extends AuthFailure {
   const EmailAlreadyInUseFailure({String message}) : super(message);
 }
 
+class UsernameAlreadyInUseFailure extends AuthFailure {
+  const UsernameAlreadyInUseFailure({String message}) : super(message);
+}
+
 class ServerFailure extends AuthFailure {
   const ServerFailure({String message}) : super(message);
 }

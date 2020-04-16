@@ -2,6 +2,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/auth/sign_in_bloc.dart';
 import 'package:collectio/facade/auth/auth_facade.dart';
 import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
+import 'package:collectio/facade/profile/firebase/firebase_profile_facade.dart';
+import 'package:collectio/facade/profile/profile_facade.dart';
 import 'package:collectio/model/email.dart';
 import 'package:collectio/model/password.dart';
 import 'package:collectio/util/error/failure.dart';
@@ -14,10 +16,15 @@ void main() {
   configureInjection(Environment.test);
 
   final MockedFirebaseAuthFacade mockedFirebaseAuthFacade = getIt<AuthFacade>();
+  final MockedFirebaseProfileFacade mockedFirebaseProfileFacade =
+      getIt<ProfileFacade>();
 
   blocTest(
     'should change state.email on email change',
-    build: () async => SignInBloc(authFacade: mockedFirebaseAuthFacade),
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
     act: (SignInBloc bloc) async =>
         bloc..add(EmailChangedSignInEvent(email: 'a')),
     expect: [
@@ -32,7 +39,10 @@ void main() {
 
   blocTest(
     'should change state.password on password change',
-    build: () async => SignInBloc(authFacade: mockedFirebaseAuthFacade),
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
     act: (SignInBloc bloc) async =>
         bloc..add(PasswordChangedSignInEvent(password: 'a')),
     expect: [
@@ -47,7 +57,10 @@ void main() {
 
   blocTest(
     'should not change state when signing in with invalid email',
-    build: () async => SignInBloc(authFacade: mockedFirebaseAuthFacade),
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
     act: (SignInBloc bloc) async => bloc
       ..add(PasswordChangedSignInEvent(password: 'a'))
       ..add(SignInWithEmailAndPasswordSignInEvent()),
@@ -61,7 +74,9 @@ void main() {
 
   blocTest(
     'should not change state when signing in with invalid password',
-    build: () async => SignInBloc(authFacade: mockedFirebaseAuthFacade),
+    build: () async => SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
       ..add(SignInWithEmailAndPasswordSignInEvent()),
@@ -72,7 +87,10 @@ void main() {
 
   blocTest(
     'should not change state when registering with invalid email',
-    build: () async => SignInBloc(authFacade: mockedFirebaseAuthFacade),
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
     act: (SignInBloc bloc) async => bloc
       ..add(PasswordChangedSignInEvent(password: 'a'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
@@ -86,7 +104,10 @@ void main() {
 
   blocTest(
     'should not change state when registering in with invalid password',
-    build: () async => SignInBloc(authFacade: mockedFirebaseAuthFacade),
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
@@ -101,7 +122,10 @@ void main() {
       when(mockedFirebaseAuthFacade.signInWithEmailAndPassword(
               email: anyNamed('email'), password: anyNamed('password')))
           .thenAnswer((_) async => Left(InvalidCombinationFailure()));
-      return SignInBloc(authFacade: mockedFirebaseAuthFacade);
+      return SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade,
+      );
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
@@ -143,7 +167,10 @@ void main() {
       when(mockedFirebaseAuthFacade.signInWithEmailAndPassword(
               email: anyNamed('email'), password: anyNamed('password')))
           .thenAnswer((_) async => Right(null));
-      return SignInBloc(authFacade: mockedFirebaseAuthFacade);
+      return SignInBloc(
+        authFacade: mockedFirebaseAuthFacade,
+        profileFacade: mockedFirebaseProfileFacade,
+      );
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))

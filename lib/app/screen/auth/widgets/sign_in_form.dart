@@ -20,11 +20,13 @@ class SignInForm extends StatelessWidget {
               print(failure);
             },
             (_) {
-              Navigator.of(context).pushReplacementNamed(
-                Routes.error,
-                arguments: 'Not yet implemented',
-              );
-              context.bloc<AuthBloc>().add(CheckStatusAuthEvent());
+              if (!state.isRegistering) {
+                Navigator.of(context).pushReplacementNamed(
+                  Routes.error,
+                  arguments: 'Not yet implemented',
+                );
+                context.bloc<AuthBloc>().add(CheckStatusAuthEvent());
+              }
             },
           );
         }
@@ -73,6 +75,29 @@ class SignInForm extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
+                if (state.isRegistering) ...[
+                  // Username field
+                  TextField(
+                    autocorrect: false,
+                    onChanged: (String value) => context
+                        .bloc<SignInBloc>()
+                        .add(UsernameChangedSignInEvent(username: value)),
+                    decoration: InputDecoration(
+                      errorText: state.showErrorMessages &&
+                              !state.username.isValid()
+                          ? state.username.value.fold(
+                              (ValidationFailure failure) => failure
+                                      is UsernameTooShortValidationFailure
+                                  ? 'Username too short'
+                                  : 'Invalid username. Use only alphanumeric values!',
+                              (_) => null)
+                          : null,
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
+                ],
+
                 // Sign in with email and password button
                 RaisedButton(
                   onPressed: () => context
@@ -85,9 +110,17 @@ class SignInForm extends StatelessWidget {
 
                 // Sign in with email and password button
                 RaisedButton(
-                  onPressed: () => context
-                      .bloc<SignInBloc>()
-                      .add(RegisterWithEmailAndPasswordSignInEvent()),
+                  onPressed: () {
+                    if (state.isRegistering && state.username.isValid()) {
+                      context
+                          .bloc<SignInBloc>()
+                          .add(RegisterWithEmailAndPasswordSignInEvent());
+                    } else {
+                      context
+                          .bloc<SignInBloc>()
+                          .add(CheckIfEmailExistsSignInEvent());
+                    }
+                  },
                   child: const Text('Register'),
                 ),
 
