@@ -30,10 +30,17 @@ class FirebaseDataService extends DataService {
           .getDocuments();
 
   @override
-  Future<QuerySnapshot> getUserProfile({@required String username}) =>
+  Future<QuerySnapshot> getUserProfileByUsername({@required String username}) =>
       _firestore
           .collection(Constants.userCollection)
           .where(Constants.usernameField, isEqualTo: username)
+          .getDocuments();
+
+  @override
+  Future<QuerySnapshot> getUserProfileByUserUid({@required String userUid}) =>
+      _firestore
+          .collection(Constants.userCollection)
+          .where(Constants.userUidField, isEqualTo: userUid)
           .getDocuments();
 
   @override

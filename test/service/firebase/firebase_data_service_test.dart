@@ -55,7 +55,7 @@ void main() {
     });
   });
 
-  group('getUserProfile', () {
+  group('getUserProfileByUsername', () {
     test(
       'should call Firestore.collection with correct collection and where clause',
       () async {
@@ -65,11 +65,31 @@ void main() {
                 isEqualTo: anyNamed('isEqualTo')))
             .thenReturn(MockedCollectionReference());
 
-        await firebaseDataService.getUserProfile(username: username);
+        await firebaseDataService.getUserProfileByUsername(username: username);
 
         verify(mockedCollectionReference.where(
           Constants.usernameField,
           isEqualTo: username,
+        )).called(1);
+      },
+    );
+  });
+
+  group('getUserProfileByUserUid', () {
+    test(
+      'should call Firestore.collection with correct collection and where clause',
+      () async {
+        when(firebaseDataService.firestore.collection(any))
+            .thenReturn(mockedCollectionReference);
+        when(mockedCollectionReference.where(any,
+                isEqualTo: anyNamed('isEqualTo')))
+            .thenReturn(MockedCollectionReference());
+
+        await firebaseDataService.getUserProfileByUserUid(userUid: userUid);
+
+        verify(mockedCollectionReference.where(
+          Constants.userUidField,
+          isEqualTo: userUid,
         )).called(1);
       },
     );

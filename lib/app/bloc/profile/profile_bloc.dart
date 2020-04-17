@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:collectio/app/bloc/auth/auth_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -18,9 +19,26 @@ part 'profile_state.dart';
 @lazySingleton
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileFacade _profileFacade;
+  final AuthBloc _authBloc;
+  StreamSubscription _authBlocStreamSubscription;
 
-  ProfileBloc({@required ProfileFacade profileFacade})
-      : _profileFacade = profileFacade;
+  ProfileBloc({
+    @required ProfileFacade profileFacade,
+    @required AuthBloc authBloc,
+  })  : _profileFacade = profileFacade,
+        _authBloc = authBloc {
+    _authBlocStreamSubscription = _authBloc.listen((AuthState state) {
+      if (state is AuthenticatedAuthState) {
+        this.add(GetUserProfileEvent(userUid: state.userUid));
+      }
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    _authBlocStreamSubscription.cancel();
+    super.close();
+  }
 
   @override
   ProfileState get initialState => InitialProfileState();
@@ -33,7 +51,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     if (event is GetUserProfileEvent) {
       Either<DataFailure, UserProfile> profileOrFailure =
-          await _profileFacade.getUserProfile(username: event.username);
+          await _profileFacade.getUserProfileByUserUid(userUid: event.userUid);
 
       yield profileOrFailure.fold(
         (DataFailure failure) => ErrorProfileState(failure),

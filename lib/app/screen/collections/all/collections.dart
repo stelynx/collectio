@@ -16,8 +16,7 @@ class CollectionsScreen extends StatelessWidget {
         title: Text('My collections'),
       ),
       body: BlocBuilder<CollectionsBloc, CollectionsState>(
-        bloc: getIt<CollectionsBloc>()
-          ..add(GetCollectionsEvent(username: 'username1')),
+        bloc: getIt<CollectionsBloc>(),
         builder: (BuildContext context, CollectionsState state) {
           if (state is InitialCollectionsState ||
               state is LoadingCollectionsState) {

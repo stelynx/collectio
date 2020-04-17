@@ -5,9 +5,9 @@ abstract class ProfileEvent {
 }
 
 class GetUserProfileEvent extends ProfileEvent {
-  final String username;
+  final String userUid;
 
-  const GetUserProfileEvent(this.username);
+  const GetUserProfileEvent({this.userUid});
 }
 
 class AddUserProfileEvent extends ProfileEvent {
