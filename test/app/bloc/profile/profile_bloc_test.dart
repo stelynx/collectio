@@ -18,6 +18,10 @@ void main() {
   ProfileFacade mockedProfileFacade = getIt<ProfileFacade>();
   MockedAuthBloc mockedAuthBloc = getIt<AuthBloc>();
 
+  tearDownAll(() {
+    mockedAuthBloc.close();
+  });
+
   final UserProfile userProfile = UserProfile(
     email: 'email',
     userUid: 'userUid',

@@ -7,6 +7,7 @@ import 'package:collectio/model/collection.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mockito/mockito.dart';
 
@@ -32,6 +33,10 @@ void main() {
   final MockedFirebaseCollectionsFacade mockedFirebaseCollectionsFacade =
       getIt<CollectionsFacade>();
   final MockedProfileBloc mockedProfileBloc = getIt<ProfileBloc>();
+
+  tearDownAll(() {
+    mockedProfileBloc.close();
+  });
 
   blocTest(
     'should emit Loading and Loaded on success',
