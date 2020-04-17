@@ -35,9 +35,9 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
   }
 
   @override
-  Future<void> close() async {
+  Future<void> close() {
     _profileBlocStreamSubscription.cancel();
-    super.close();
+    return super.close();
   }
 
   @override
