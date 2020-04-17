@@ -10,10 +10,12 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mockito/mockito.dart';
+
 import '../../../mocks.dart';
 
 void main() {
   configureInjection(Environment.test);
+
   final String username = 'username';
   final List<Collection> collections = [
     Collection.fromJson(
@@ -27,12 +29,15 @@ void main() {
       },
     ),
   ];
+
   final MockedFirebaseCollectionsFacade mockedFirebaseCollectionsFacade =
       getIt<CollectionsFacade>();
   final MockedProfileBloc mockedProfileBloc = getIt<ProfileBloc>();
+
   tearDownAll(() {
     mockedProfileBloc.close();
   });
+
   blocTest(
     'should emit Loading and Loaded on success',
     build: () async {
@@ -52,6 +57,7 @@ void main() {
       LoadedCollectionsState(collections: collections),
     ],
   );
+
   blocTest(
     'should emit Loading and Error on failure',
     build: () async {

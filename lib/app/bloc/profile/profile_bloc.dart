@@ -35,9 +35,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   @override
-  Future<void> close() async {
+  Future<void> close() {
     _authBlocStreamSubscription.cancel();
-    super.close();
+    return super.close();
   }
 
   @override
