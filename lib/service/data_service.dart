@@ -10,6 +10,12 @@ abstract class DataService {
 
   Future getUserProfileByUserUid({@required String userUid});
 
+  Future<void> addCollection({
+    @required String owner,
+    @required String id,
+    @required Map<String, dynamic> collection,
+  });
+
   Future<void> addUserProfile(
       {@required String id, @required Map<String, dynamic> userProfile});
 }

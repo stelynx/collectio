@@ -16,5 +16,14 @@ class Constants {
 
   // DataFailure messages
   static String notExactlyOneObjectFound = 'Zero or too many objects found';
-  static String noItems = 'There were no items matching this criteria.';
+  static String noItems = 'There were no items matching this criteria';
+  static String collectionTitleExists =
+      'A title provided maps to the existing collection';
+
+  // ValidationFailure messages
+  static String emptyValidationFailure = 'Cannot be empty';
+  static String titleValidationFailure =
+      'Title can contain only alphanumeric values and spaces';
+  static String subtitleValidationFailure = 'Invalid subtitle';
+  static String descriptionValidationFailure = 'Invalid description';
 }

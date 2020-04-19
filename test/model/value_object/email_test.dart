@@ -1,4 +1,4 @@
-import 'package:collectio/model/email.dart';
+import 'package:collectio/model/value_object/email.dart';
 import 'package:collectio/util/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';

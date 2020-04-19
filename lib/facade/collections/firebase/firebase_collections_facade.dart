@@ -36,6 +36,20 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
       return Left(DataFailure());
     }
   }
+
+  @override
+  Future<Either<DataFailure, void>> addCollection(Collection collection) async {
+    try {
+      await _dataService.addCollection(
+        owner: collection.owner,
+        id: collection.id,
+        collection: collection.toJson(),
+      );
+      return Right(null);
+    } catch (e) {
+      return Left(DataFailure());
+    }
+  }
 }
 
 @test

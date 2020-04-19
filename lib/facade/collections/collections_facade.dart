@@ -6,4 +6,6 @@ import '../../util/error/data_failure.dart';
 abstract class CollectionsFacade {
   Future<Either<DataFailure, List<Collection>>> getCollectionsForUser(
       String username);
+
+  Future<Either<DataFailure, void>> addCollection(Collection collection);
 }
