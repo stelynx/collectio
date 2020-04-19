@@ -69,29 +69,30 @@ void main() {
     });
   });
 
-  group('getUserProfile', () {
+  group('getUserProfileByUsername', () {
     final String username = 'username';
 
     test('should call data service with correct arguments', () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(username: anyNamed('username')))
+              .getUserProfileByUsername(username: anyNamed('username')))
           .thenAnswer((_) async => null);
 
-      await firebaseProfileFacade.getUserProfile(username: username);
+      await firebaseProfileFacade.getUserProfileByUsername(username: username);
 
       verify(firebaseProfileFacade.dataService
-              .getUserProfile(username: username))
+              .getUserProfileByUsername(username: username))
           .called(1);
     });
 
     test('should return Right(UserProfile) on success', () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(username: anyNamed('username')))
+              .getUserProfileByUsername(username: anyNamed('username')))
           .thenAnswer((_) async => MockedQuerySnapshot(
               [MockedDocumentSnapshot(username, userProfileJson)]));
 
       final Either<DataFailure, UserProfile> result =
-          await firebaseProfileFacade.getUserProfile(username: username);
+          await firebaseProfileFacade.getUserProfileByUsername(
+              username: username);
 
       expect(result, equals(Right(userProfile)));
     });
@@ -100,11 +101,12 @@ void main() {
         'should return Left(DataFailure) with appropriate message when 0 matches',
         () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(username: anyNamed('username')))
+              .getUserProfileByUsername(username: anyNamed('username')))
           .thenAnswer((_) async => MockedQuerySnapshot([]));
 
       final Either<DataFailure, UserProfile> result =
-          await firebaseProfileFacade.getUserProfile(username: username);
+          await firebaseProfileFacade.getUserProfileByUsername(
+              username: username);
 
       expect(
         result,
@@ -116,7 +118,7 @@ void main() {
         'should return Left(DataFailure) with appropriate message when 2+ matches',
         () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(username: anyNamed('username')))
+              .getUserProfileByUsername(username: anyNamed('username')))
           .thenAnswer(
         (_) async => MockedQuerySnapshot([
           MockedDocumentSnapshot(username, userProfileJson),
@@ -125,7 +127,8 @@ void main() {
       );
 
       final Either<DataFailure, UserProfile> result =
-          await firebaseProfileFacade.getUserProfile(username: username);
+          await firebaseProfileFacade.getUserProfileByUsername(
+              username: username);
 
       expect(
         result,
@@ -135,11 +138,91 @@ void main() {
 
     test('should return Left(DataFailure) on exception', () async {
       when(firebaseProfileFacade.dataService
-              .getUserProfile(username: anyNamed('username')))
+              .getUserProfileByUsername(username: anyNamed('username')))
           .thenThrow(Exception());
 
       final Either<DataFailure, UserProfile> result =
-          await firebaseProfileFacade.getUserProfile(username: username);
+          await firebaseProfileFacade.getUserProfileByUsername(
+              username: username);
+
+      expect(
+        result,
+        equals(Left(DataFailure(message: Exception().toString()))),
+      );
+    });
+  });
+
+  group('getUserProfileByUserUid', () {
+    final String userUid = 'userUid';
+
+    test('should call data service with correct arguments', () async {
+      when(firebaseProfileFacade.dataService
+              .getUserProfileByUserUid(userUid: anyNamed('userUid')))
+          .thenAnswer((_) async => null);
+
+      await firebaseProfileFacade.getUserProfileByUserUid(userUid: userUid);
+
+      verify(firebaseProfileFacade.dataService
+              .getUserProfileByUserUid(userUid: userUid))
+          .called(1);
+    });
+
+    test('should return Right(UserProfile) on success', () async {
+      when(firebaseProfileFacade.dataService
+              .getUserProfileByUserUid(userUid: anyNamed('userUid')))
+          .thenAnswer((_) async => MockedQuerySnapshot(
+              [MockedDocumentSnapshot(userUid, userProfileJson)]));
+
+      final Either<DataFailure, UserProfile> result =
+          await firebaseProfileFacade.getUserProfileByUserUid(userUid: userUid);
+
+      expect(result, equals(Right(userProfile)));
+    });
+
+    test(
+        'should return Left(DataFailure) with appropriate message when 0 matches',
+        () async {
+      when(firebaseProfileFacade.dataService
+              .getUserProfileByUserUid(userUid: anyNamed('userUid')))
+          .thenAnswer((_) async => MockedQuerySnapshot([]));
+
+      final Either<DataFailure, UserProfile> result =
+          await firebaseProfileFacade.getUserProfileByUserUid(userUid: userUid);
+
+      expect(
+        result,
+        equals(Left(DataFailure(message: Constants.notExactlyOneObjectFound))),
+      );
+    });
+
+    test(
+        'should return Left(DataFailure) with appropriate message when 2+ matches',
+        () async {
+      when(firebaseProfileFacade.dataService
+              .getUserProfileByUserUid(userUid: anyNamed('userUid')))
+          .thenAnswer(
+        (_) async => MockedQuerySnapshot([
+          MockedDocumentSnapshot(userUid, userProfileJson),
+          MockedDocumentSnapshot(userUid, userProfileJson),
+        ]),
+      );
+
+      final Either<DataFailure, UserProfile> result =
+          await firebaseProfileFacade.getUserProfileByUserUid(userUid: userUid);
+
+      expect(
+        result,
+        equals(Left(DataFailure(message: Constants.notExactlyOneObjectFound))),
+      );
+    });
+
+    test('should return Left(DataFailure) on exception', () async {
+      when(firebaseProfileFacade.dataService
+              .getUserProfileByUserUid(userUid: anyNamed('userUid')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, UserProfile> result =
+          await firebaseProfileFacade.getUserProfileByUserUid(userUid: userUid);
 
       expect(
         result,

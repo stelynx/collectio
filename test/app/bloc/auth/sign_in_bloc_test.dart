@@ -334,7 +334,8 @@ void main() {
   blocTest(
     'should be able to register when username not in use and create user profile',
     build: () async {
-      when(mockedFirebaseProfileFacade.getUserProfile(username: 'username'))
+      when(mockedFirebaseProfileFacade.getUserProfileByUsername(
+              username: 'username'))
           .thenAnswer((_) async =>
               Left(DataFailure(message: Constants.notExactlyOneObjectFound)));
       when(mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
@@ -418,7 +419,8 @@ void main() {
   blocTest(
     'should not be able to register when username is in use',
     build: () async {
-      when(mockedFirebaseProfileFacade.getUserProfile(username: 'username'))
+      when(mockedFirebaseProfileFacade.getUserProfileByUsername(
+              username: 'username'))
           .thenAnswer((_) async => Right(null));
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
@@ -463,7 +465,8 @@ void main() {
   blocTest(
     'should not be able to register when failed to check for username',
     build: () async {
-      when(mockedFirebaseProfileFacade.getUserProfile(username: 'username'))
+      when(mockedFirebaseProfileFacade.getUserProfileByUsername(
+              username: 'username'))
           .thenAnswer((_) async => Left(DataFailure()));
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,

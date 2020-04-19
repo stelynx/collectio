@@ -8,8 +8,11 @@ import '../../util/error/data_failure.dart';
 abstract class ProfileFacade {
   DataService dataService;
 
-  Future<Either<DataFailure, UserProfile>> getUserProfile(
+  Future<Either<DataFailure, UserProfile>> getUserProfileByUsername(
       {@required String username});
+
+  Future<Either<DataFailure, UserProfile>> getUserProfileByUserUid(
+      {@required String userUid});
 
   Future<Either<DataFailure, void>> addUserProfile(
       {@required UserProfile userProfile});

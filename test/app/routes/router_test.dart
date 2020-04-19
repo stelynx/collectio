@@ -1,6 +1,7 @@
 import 'package:collectio/app/routes/router.dart';
 import 'package:collectio/app/routes/routes.dart';
 import 'package:collectio/app/screen/auth/sign_in.dart';
+import 'package:collectio/app/screen/collections/all/collections.dart';
 import 'package:collectio/app/screen/initial.dart';
 import 'package:collectio/app/screen/shared/error.dart';
 import 'package:collectio/util/constant/constants.dart';
@@ -25,6 +26,15 @@ void main() {
       final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
 
       expect(result.builder(null), isA<SignInScreen>());
+    });
+
+    test('should map Routes.myCollections to CollectionsScreen', () {
+      final String path = Routes.myCollections;
+      final RouteSettings routeSettings = RouteSettings(name: path);
+
+      final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+
+      expect(result.builder(null), isA<CollectionsScreen>());
     });
 
     test('should map Routes.error to ErrorScreen with appropriate message', () {

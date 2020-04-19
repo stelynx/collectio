@@ -21,11 +21,9 @@ class SignInForm extends StatelessWidget {
             },
             (_) {
               if (!state.isRegistering) {
-                Navigator.of(context).pushReplacementNamed(
-                  Routes.error,
-                  arguments: 'Not yet implemented',
-                );
                 context.bloc<AuthBloc>().add(CheckStatusAuthEvent());
+                Navigator.of(context)
+                    .pushReplacementNamed(Routes.myCollections);
               }
             },
           );

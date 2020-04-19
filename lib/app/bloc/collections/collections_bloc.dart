@@ -10,6 +10,7 @@ import 'package:meta/meta.dart';
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
 import '../../../util/error/data_failure.dart';
+import '../profile/profile_bloc.dart';
 
 part 'collections_event.dart';
 part 'collections_state.dart';
@@ -18,9 +19,26 @@ part 'collections_state.dart';
 @lazySingleton
 class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
   final CollectionsFacade _collectionsFacade;
+  final ProfileBloc _profileBloc;
+  StreamSubscription _profileBlocStreamSubscription;
 
-  CollectionsBloc({@required CollectionsFacade collectionsFacade})
-      : _collectionsFacade = collectionsFacade;
+  CollectionsBloc(
+      {@required CollectionsFacade collectionsFacade,
+      @required ProfileBloc profileBloc})
+      : _collectionsFacade = collectionsFacade,
+        _profileBloc = profileBloc {
+    _profileBlocStreamSubscription = _profileBloc.listen((ProfileState state) {
+      if (state is CompleteProfileState) {
+        this.add(GetCollectionsEvent(username: state.userProfile.username));
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _profileBlocStreamSubscription.cancel();
+    return super.close();
+  }
 
   @override
   CollectionsState get initialState => InitialCollectionsState();

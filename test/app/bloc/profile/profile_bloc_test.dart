@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:collectio/app/bloc/auth/auth_bloc.dart';
 import 'package:collectio/app/bloc/profile/profile_bloc.dart';
 import 'package:collectio/facade/profile/profile_facade.dart';
 import 'package:collectio/model/user_profile.dart';
@@ -9,10 +10,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart' show Environment;
 import 'package:mockito/mockito.dart';
 
+import '../../../mocks.dart';
+
 void main() {
   configureInjection(Environment.test);
 
   ProfileFacade mockedProfileFacade = getIt<ProfileFacade>();
+  MockedAuthBloc mockedAuthBloc = getIt<AuthBloc>();
+
+  tearDownAll(() {
+    mockedAuthBloc.close();
+  });
 
   final UserProfile userProfile = UserProfile(
     email: 'email',
@@ -24,24 +32,32 @@ void main() {
     blocTest(
       'should yield Loading and Complete on success',
       build: () async {
-        when(mockedProfileFacade.getUserProfile(username: anyNamed('username')))
+        when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        when(mockedProfileFacade.getUserProfileByUserUid(
+                userUid: anyNamed('userUid')))
             .thenAnswer((_) async => Right(userProfile));
-        return ProfileBloc(profileFacade: mockedProfileFacade);
+        return ProfileBloc(
+          profileFacade: mockedProfileFacade,
+          authBloc: mockedAuthBloc,
+        );
       },
       act: (ProfileBloc bloc) async =>
-          bloc.add(GetUserProfileEvent(userProfile.username)),
+          bloc.add(GetUserProfileEvent(userUid: userProfile.userUid)),
       expect: [LoadingProfileState(), CompleteProfileState(userProfile)],
     );
 
     blocTest(
       'should yield Loading and Error on failure',
       build: () async {
-        when(mockedProfileFacade.getUserProfile(username: anyNamed('username')))
+        when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        when(mockedProfileFacade.getUserProfileByUserUid(
+                userUid: anyNamed('userUid')))
             .thenAnswer((_) async => Left(DataFailure()));
-        return ProfileBloc(profileFacade: mockedProfileFacade);
+        return ProfileBloc(
+            profileFacade: mockedProfileFacade, authBloc: mockedAuthBloc);
       },
       act: (ProfileBloc bloc) async =>
-          bloc.add(GetUserProfileEvent(userProfile.username)),
+          bloc.add(GetUserProfileEvent(userUid: userProfile.userUid)),
       expect: [LoadingProfileState(), ErrorProfileState(DataFailure())],
     );
   });
@@ -50,10 +66,14 @@ void main() {
     blocTest(
       'should yield Loading and Complete on success',
       build: () async {
+        when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
         when(mockedProfileFacade.addUserProfile(
                 userProfile: anyNamed('userProfile')))
             .thenAnswer((_) async => Right(null));
-        return ProfileBloc(profileFacade: mockedProfileFacade);
+        return ProfileBloc(
+          profileFacade: mockedProfileFacade,
+          authBloc: mockedAuthBloc,
+        );
       },
       act: (ProfileBloc bloc) async =>
           bloc.add(AddUserProfileEvent(userProfile)),
@@ -63,10 +83,14 @@ void main() {
     blocTest(
       'should yield Loading and Error on failure',
       build: () async {
+        when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
         when(mockedProfileFacade.addUserProfile(
                 userProfile: anyNamed('userProfile')))
             .thenAnswer((_) async => Left(DataFailure()));
-        return ProfileBloc(profileFacade: mockedProfileFacade);
+        return ProfileBloc(
+          profileFacade: mockedProfileFacade,
+          authBloc: mockedAuthBloc,
+        );
       },
       act: (ProfileBloc bloc) async =>
           bloc.add(AddUserProfileEvent(userProfile)),

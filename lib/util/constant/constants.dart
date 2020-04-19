@@ -5,8 +5,9 @@ class Constants {
   static String userNotFoundError = 'ERROR_USER_NOT_FOUND';
   static String emailMalformedError = 'ERROR_INVALID_CREDENTIAL';
 
-  // Unknown route message
+  // Messages for ErrorScreen
   static String unknownRouteMessage = 'Unknown route';
+  static String unknownStateMessage = 'Your app is in unknown state!';
 
   // Firestore
   static String userCollection = 'stelynx_user';
@@ -15,4 +16,5 @@ class Constants {
 
   // DataFailure messages
   static String notExactlyOneObjectFound = 'Zero or too many objects found';
+  static String noItems = 'There were no items matching this criteria.';
 }

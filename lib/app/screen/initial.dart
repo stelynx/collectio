@@ -11,8 +11,7 @@ class InitialScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is InitialAuthState) {
         } else if (state is AuthenticatedAuthState) {
-          Navigator.of(context).pushReplacementNamed(Routes.error,
-              arguments: 'Not yet implemented');
+          Navigator.of(context).pushReplacementNamed(Routes.myCollections);
         } else if (state is UnauthenticatedAuthState) {
           Navigator.of(context).pushReplacementNamed(Routes.signIn);
         }

@@ -40,8 +40,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInEvent event,
   ) async* {
     if (event is EmailChangedSignInEvent) {
-      print(event.email);
-      print(Email(event.email).isValid());
       yield state.copyWith(
         email: Email(event.email),
         showErrorMessages: true,
@@ -68,7 +66,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     } else if (event is RegisterWithEmailAndPasswordSignInEvent) {
       if (state.username.isValid()) {
         final Either<DataFailure, UserProfile> userProfileOrFailure =
-            await _profileFacade.getUserProfile(username: state.username.get());
+            await _profileFacade.getUserProfileByUsername(
+                username: state.username.get());
 
         bool isUsernameInUse = true;
         Either<AuthFailure, void> authFailure;

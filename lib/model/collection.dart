@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-class Collection extends Equatable {
+import 'interface/listable.dart';
+
+class Collection extends Equatable implements Listable {
   final String id; // this is also a name of the collection
   final String owner;
   final String title;

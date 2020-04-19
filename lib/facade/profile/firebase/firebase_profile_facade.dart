@@ -34,12 +34,33 @@ class FirebaseProfileFacade extends ProfileFacade {
   }
 
   @override
-  Future<Either<DataFailure, UserProfile>> getUserProfile({
+  Future<Either<DataFailure, UserProfile>> getUserProfileByUsername({
     @required String username,
   }) async {
     try {
       final QuerySnapshot userProfileQuerySnapshot =
-          await dataService.getUserProfile(username: username);
+          await dataService.getUserProfileByUsername(username: username);
+
+      final List<DocumentSnapshot> documents =
+          userProfileQuerySnapshot.documents;
+      if (documents.length != 1) {
+        return Left(DataFailure(message: Constants.notExactlyOneObjectFound));
+      }
+
+      final UserProfile userProfile = UserProfile.fromJson(documents[0].data);
+      return Right(userProfile);
+    } catch (e) {
+      return Left(DataFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<DataFailure, UserProfile>> getUserProfileByUserUid({
+    @required String userUid,
+  }) async {
+    try {
+      final QuerySnapshot userProfileQuerySnapshot =
+          await dataService.getUserProfileByUserUid(userUid: userUid);
 
       final List<DocumentSnapshot> documents =
           userProfileQuerySnapshot.documents;
