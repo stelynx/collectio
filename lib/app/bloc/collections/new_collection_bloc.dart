@@ -78,8 +78,6 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         if (ListableFinder.findById(
                 loadedCollectionsState.collections, state.id) ==
             null) {
-          print('here');
-          print(state.thumbnail);
           final Collection newCollection = Collection(
             id: state.id,
             owner: completeProfileState.userProfile.username,

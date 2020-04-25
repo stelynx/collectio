@@ -29,7 +29,7 @@ abstract class NewCollectionState extends Equatable {
     bool showErrorMessages,
     bool isSubmitting,
     Either<DataFailure, void> dataFailure,
-    bool overrideDataFailure = true,
+    bool overrideDataFailure = false,
   }) =>
       GeneralNewCollectionState(
         title: title ?? this.title,

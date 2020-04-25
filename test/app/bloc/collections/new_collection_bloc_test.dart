@@ -8,6 +8,7 @@ import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/model/value_object/description.dart' as model;
 import 'package:collectio/model/value_object/subtitle.dart';
 import 'package:collectio/model/value_object/title.dart';
+import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -22,13 +23,13 @@ void main() {
   ProfileBloc mockedProfileBloc;
   CollectionsBloc mockedCollectionsBloc;
 
-  setUpAll(() {
+  setUp(() {
     mockedCollectionsFacade = getIt<CollectionsFacade>();
     mockedProfileBloc = getIt<ProfileBloc>();
     mockedCollectionsBloc = getIt<CollectionsBloc>();
   });
 
-  tearDownAll(() {
+  tearDown(() {
     mockedProfileBloc.close();
     mockedCollectionsBloc.close();
   });
@@ -366,6 +367,67 @@ void main() {
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure: Right(null)),
+      ],
+    );
+
+    blocTest(
+      'should have message about collection exists in DataFailure if collection exists',
+      build: () async {
+        when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
+          UserProfile(
+            email: 'email',
+            userUid: 'userUid',
+            username: 'username',
+            firstName: 'firstName',
+            lastName: 'lastName',
+          ),
+        ));
+        when(mockedCollectionsFacade.addCollection(any))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsBloc.state).thenReturn(LoadedCollectionsState(
+          collections: [
+            Collection(
+              id: 'title',
+              owner: 'username',
+              title: 'title',
+              subtitle: 'subtitle',
+              description: 'description',
+              thumbnail: '',
+            )
+          ],
+        ));
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async => bloc
+        ..add(TitleChangedNewCollectionEvent('title'))
+        ..add(SubtitleChangedNewCollectionEvent('subtitle'))
+        ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(SubmitNewCollectionEvent()),
+      expect: [
+        GeneralNewCollectionState(title: Title('title')),
+        GeneralNewCollectionState(
+            title: Title('title'), subtitle: Subtitle('subtitle')),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description')),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            isSubmitting: true),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            isSubmitting: false,
+            showErrorMessages: true,
+            dataFailure:
+                Left(DataFailure(message: Constants.collectionTitleExists))),
       ],
     );
 
