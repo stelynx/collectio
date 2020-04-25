@@ -2,6 +2,7 @@ import 'package:collectio/app/routes/router.dart';
 import 'package:collectio/app/routes/routes.dart';
 import 'package:collectio/app/screen/auth/sign_in.dart';
 import 'package:collectio/app/screen/collections/all/collections.dart';
+import 'package:collectio/app/screen/collections/new/new_collection_screen.dart';
 import 'package:collectio/app/screen/initial.dart';
 import 'package:collectio/app/screen/shared/error.dart';
 import 'package:collectio/util/constant/constants.dart';
@@ -36,6 +37,19 @@ void main() {
 
       expect(result.builder(null), isA<CollectionsScreen>());
     });
+
+    test(
+      'should map Routes.newCollection to NewCollectionsScreen as fullscreen dialog',
+      () {
+        final String path = Routes.newCollection;
+        final RouteSettings routeSettings = RouteSettings(name: path);
+
+        final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+
+        expect(result.fullscreenDialog, isTrue);
+        expect(result.builder(null), isA<NewCollectionScreen>());
+      },
+    );
 
     test('should map Routes.error to ErrorScreen with appropriate message', () {
       final String path = Routes.error;

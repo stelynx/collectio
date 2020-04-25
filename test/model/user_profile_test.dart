@@ -49,4 +49,54 @@ void main() {
 
     expect(userProfile1.hashCode, equals(userProfile2.hashCode));
   });
+
+  test('should get correct JSON from toJson()', () {
+    final UserProfile userProfile = UserProfile(
+      email: 'a@b.co',
+      firstName: 'firstName',
+      lastName: 'lastName',
+      country: Country.SI,
+      profileImg: '',
+      userUid: '123456',
+      username: 'username',
+    );
+    final Map<String, dynamic> userProfileJson = <String, dynamic>{
+      'email': 'a@b.co',
+      'firstName': 'firstName',
+      'lastName': 'lastName',
+      'country': 'SI',
+      'profileImg': '',
+      'userUid': '123456',
+      'username': 'username',
+    };
+
+    final Map<String, dynamic> result = userProfile.toJson();
+
+    expect(result, equals(userProfileJson));
+  });
+
+  test('should get correct UserProfile from UserProfile.fromJson()', () {
+    final UserProfile userProfile = UserProfile(
+      email: 'a@b.co',
+      firstName: 'firstName',
+      lastName: 'lastName',
+      country: Country.SI,
+      profileImg: '',
+      userUid: '123456',
+      username: 'username',
+    );
+    final Map<String, dynamic> userProfileJson = <String, dynamic>{
+      'email': 'a@b.co',
+      'firstName': 'firstName',
+      'lastName': 'lastName',
+      'country': 'SI',
+      'profileImg': '',
+      'userUid': '123456',
+      'username': 'username',
+    };
+
+    final UserProfile result = UserProfile.fromJson(userProfileJson);
+
+    expect(result, equals(userProfile));
+  });
 }

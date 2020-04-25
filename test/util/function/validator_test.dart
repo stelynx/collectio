@@ -102,4 +102,106 @@ void main() {
       expect(result, equals(Right(username)));
     });
   });
+
+  group('isValidTitle', () {
+    test(
+      'should return Left(TitleEmptyValidationFailure) when title is empty',
+      () {
+        final String title = ' ';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidTitle(title);
+
+        expect(result, equals(Left(TitleEmptyValidationFailure())));
+      },
+    );
+
+    test(
+      'should return Left(TitleValidationFailure) when title contains illegal characters',
+      () {
+        final String title = 'ckasd@';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidTitle(title);
+
+        expect(result, equals(Left(TitleValidationFailure())));
+      },
+    );
+
+    test(
+      'should return Right(title) when title is ok',
+      () {
+        final String title = 'New Collection 3';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidTitle(title);
+
+        expect(result, equals(Right(title)));
+      },
+    );
+  });
+
+  group('isValidSubtitle', () {
+    test(
+      'should return Left(SubtitleEmptyValidationFailure) when subtitle is empty',
+      () {
+        final String subtitle = ' ';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidSubtitle(subtitle);
+
+        expect(result, equals(Left(SubtitleEmptyValidationFailure())));
+      },
+    );
+
+    test(
+      'should return Left(SubtitleValidationFailure) when subtitle contains illegal characters',
+      () {
+        final String subtitle = 'ckasd@';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidSubtitle(subtitle);
+
+        expect(result, equals(Left(SubtitleValidationFailure())));
+      },
+    );
+
+    test(
+      'should return Right(subtitle) when subtitle is ok',
+      () {
+        final String subtitle = 'New Collection 3 Subtitle';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidSubtitle(subtitle);
+
+        expect(result, equals(Right(subtitle)));
+      },
+    );
+  });
+
+  group('isValidDescription', () {
+    test(
+      'should return Left(DescriptionEmptyValidationFailure) when description is empty',
+      () {
+        final String description = ' ';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidDescription(description);
+
+        expect(result, equals(Left(DescriptionEmptyValidationFailure())));
+      },
+    );
+
+    test(
+      'should return Right(description) when description is ok',
+      () {
+        final String description = 'New Collection 3';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidDescription(description);
+
+        expect(result, equals(Right(description)));
+      },
+    );
+  });
 }

@@ -23,5 +23,3 @@ class SubtitleEmptyValidationFailure extends ValidationFailure {}
 class SubtitleValidationFailure extends ValidationFailure {}
 
 class DescriptionEmptyValidationFailure extends ValidationFailure {}
-
-class DescriptionValidationFailure extends ValidationFailure {}

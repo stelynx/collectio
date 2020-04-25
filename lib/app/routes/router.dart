@@ -20,7 +20,8 @@ abstract class Router {
       case Routes.myCollections:
         return MaterialPageRoute(builder: (_) => CollectionsScreen());
       case Routes.newCollection:
-        return MaterialPageRoute(builder: (_) => NewCollectionScreen());
+        return MaterialPageRoute(
+            builder: (_) => NewCollectionScreen(), fullscreenDialog: true);
       case Routes.error:
         return MaterialPageRoute(
             builder: (_) => ErrorScreen(message: routeArguments));
