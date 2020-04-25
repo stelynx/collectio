@@ -89,4 +89,77 @@ void main() {
       expect(result, equals(Left(DataFailure())));
     });
   });
+
+  group('addCollection', () {
+    test(
+        'should call FirebaseDataService with owner, id, and collection as JSON',
+        () async {
+      final Collection collection = Collection(
+        id: 'title',
+        owner: 'owner',
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        thumbnail: 'thumbnail',
+      );
+
+      when(firebaseCollectionsFacade.dataService.addCollection(
+              owner: anyNamed('owner'),
+              id: anyNamed('id'),
+              collection: anyNamed('collection')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.addCollection(collection);
+
+      verify(firebaseCollectionsFacade.dataService.addCollection(
+              owner: collection.owner,
+              id: collection.id,
+              collection: collection.toJson()))
+          .called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      final Collection collection = Collection(
+        id: 'title',
+        owner: 'owner',
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        thumbnail: 'thumbnail',
+      );
+
+      when(firebaseCollectionsFacade.dataService.addCollection(
+              owner: anyNamed('owner'),
+              id: anyNamed('id'),
+              collection: anyNamed('collection')))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.addCollection(collection);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any error', () async {
+      final Collection collection = Collection(
+        id: 'title',
+        owner: 'owner',
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        thumbnail: 'thumbnail',
+      );
+
+      when(firebaseCollectionsFacade.dataService.addCollection(
+              owner: anyNamed('owner'),
+              id: anyNamed('id'),
+              collection: anyNamed('collection')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.addCollection(collection);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
 }

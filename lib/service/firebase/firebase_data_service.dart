@@ -44,6 +44,18 @@ class FirebaseDataService extends DataService {
           .getDocuments();
 
   @override
+  Future<void> addCollection({
+    @required String owner,
+    @required String id,
+    @required Map<String, dynamic> collection,
+  }) async {
+    _firestore
+        .collection('${owner}_collection')
+        .document(id)
+        .setData(collection);
+  }
+
+  @override
   Future<void> addUserProfile({
     @required String id,
     @required Map<String, dynamic> userProfile,

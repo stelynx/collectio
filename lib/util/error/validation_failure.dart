@@ -13,3 +13,13 @@ class PasswordValidationFailure extends ValidationFailure {}
 class UsernameTooShortValidationFailure extends ValidationFailure {}
 
 class UsernameValidationFailure extends ValidationFailure {}
+
+class TitleEmptyValidationFailure extends ValidationFailure {}
+
+class TitleValidationFailure extends ValidationFailure {}
+
+class SubtitleEmptyValidationFailure extends ValidationFailure {}
+
+class SubtitleValidationFailure extends ValidationFailure {}
+
+class DescriptionEmptyValidationFailure extends ValidationFailure {}

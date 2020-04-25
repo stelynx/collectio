@@ -1,3 +1,4 @@
+import 'package:collectio/app/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,6 +35,11 @@ class CollectionsScreen extends StatelessWidget {
 
           return ErrorScreen(message: Constants.unknownStateMessage);
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).pushNamed(Routes.newCollection),
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
       ),
     );
   }

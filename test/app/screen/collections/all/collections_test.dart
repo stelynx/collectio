@@ -92,4 +92,15 @@ void main() {
       tester.tap(ltFinder);
     },
   );
+
+  testWidgets(
+    'should have a FloatingActionButton for adding new collection',
+    (WidgetTester tester) async {
+      final Finder fabFinder = find.byType(FloatingActionButton);
+
+      await tester.pumpWidget(makeTestableWidget());
+
+      expect(fabFinder, findsOneWidget);
+    },
+  );
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/service/firebase/firebase_data_service.dart';
 import 'package:collectio/util/constant/constants.dart';
@@ -93,6 +94,36 @@ void main() {
         )).called(1);
       },
     );
+  });
+
+  group('addCollection', () {
+    test('should call Firestore with correct collection, document id and data',
+        () async {
+      final Map<String, dynamic> collectionJson = Collection(
+        id: 'collectionId',
+        owner: 'owner',
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        thumbnail: 'thumbnail',
+      ).toJson();
+
+      when(firebaseDataService.firestore.collection(any))
+          .thenReturn(mockedCollectionReference);
+      when(mockedCollectionReference.document(any))
+          .thenReturn(mockedDocumentReference);
+      when(mockedDocumentReference.setData(any)).thenAnswer((_) async => null);
+
+      await firebaseDataService.addCollection(
+        owner: collectionJson['owner'],
+        id: collectionJson['id'],
+        collection: collectionJson,
+      );
+
+      verify(mockedCollectionReference.document(collectionJson['id']))
+          .called(1);
+      verify(mockedDocumentReference.setData(collectionJson)).called(1);
+    });
   });
 
   group('addUserProfile', () {

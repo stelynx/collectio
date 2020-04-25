@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:collectio/model/value_object/email.dart';
+import 'package:collectio/model/value_object/password.dart';
+import 'package:collectio/model/value_object/username.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -9,10 +12,7 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/auth/auth_facade.dart';
 import '../../../facade/profile/profile_facade.dart';
-import '../../../model/email.dart';
-import '../../../model/password.dart';
 import '../../../model/user_profile.dart';
-import '../../../model/username.dart';
 import '../../../util/constant/constants.dart';
 import '../../../util/error/auth_failure.dart';
 import '../../../util/error/data_failure.dart';

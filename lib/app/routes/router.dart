@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../util/constant/constants.dart';
 import '../screen/auth/sign_in.dart';
 import '../screen/collections/all/collections.dart';
+import '../screen/collections/new/new_collection_screen.dart';
 import '../screen/initial.dart';
 import '../screen/shared/error.dart';
 import 'routes.dart';
@@ -18,6 +19,9 @@ abstract class Router {
         return MaterialPageRoute(builder: (_) => SignInScreen());
       case Routes.myCollections:
         return MaterialPageRoute(builder: (_) => CollectionsScreen());
+      case Routes.newCollection:
+        return MaterialPageRoute(
+            builder: (_) => NewCollectionScreen(), fullscreenDialog: true);
       case Routes.error:
         return MaterialPageRoute(
             builder: (_) => ErrorScreen(message: routeArguments));

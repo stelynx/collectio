@@ -5,8 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../model/email.dart';
-import '../../../model/password.dart';
+import '../../../model/value_object/email.dart';
+import '../../../model/value_object/password.dart';
 import '../../../service/auth_service.dart';
 import '../../../util/constant/constants.dart';
 import '../../../util/error/auth_failure.dart';

@@ -32,4 +32,32 @@ class Validator {
         ? Right(trimmedUsername)
         : Left(UsernameValidationFailure());
   }
+
+  static Either<ValidationFailure, String> isValidTitle(String title) {
+    final String trimmedTitle = title.trim();
+    if (trimmedTitle == '') return Left(TitleEmptyValidationFailure());
+
+    final RegExp titleRegex = RegExp(r"^[a-zA-Z0-9 ]+$");
+    return titleRegex.hasMatch(trimmedTitle)
+        ? Right(trimmedTitle)
+        : Left(TitleValidationFailure());
+  }
+
+  static Either<ValidationFailure, String> isValidSubtitle(String subtitle) {
+    final String trimmedSubtitle = subtitle.trim();
+    if (trimmedSubtitle == '') return Left(SubtitleEmptyValidationFailure());
+
+    final RegExp subtitleRegex = RegExp(r"^[a-zA-Z0-9 ]+$");
+    return subtitleRegex.hasMatch(trimmedSubtitle)
+        ? Right(trimmedSubtitle)
+        : Left(SubtitleValidationFailure());
+  }
+
+  static Either<ValidationFailure, String> isValidDescription(
+      String description) {
+    final String trimmedDescription = description.trim();
+    if (trimmedDescription == '')
+      return Left(DescriptionEmptyValidationFailure());
+    return Right(trimmedDescription);
+  }
 }

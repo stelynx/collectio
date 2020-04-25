@@ -1,6 +1,6 @@
 import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
-import 'package:collectio/model/email.dart';
-import 'package:collectio/model/password.dart';
+import 'package:collectio/model/value_object/email.dart';
+import 'package:collectio/model/value_object/password.dart';
 import 'package:collectio/service/auth_service.dart';
 import 'package:collectio/service/firebase/firebase_auth_service.dart';
 import 'package:collectio/util/constant/constants.dart';

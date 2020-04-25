@@ -30,105 +30,103 @@ class SignInForm extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          body: Center(
-            child: ListView(
-              padding: const EdgeInsets.all(10),
-              children: <Widget>[
-                // Email field
+        return Center(
+          child: ListView(
+            padding: const EdgeInsets.all(10),
+            children: <Widget>[
+              // Email field
+              TextField(
+                autocorrect: false,
+                onChanged: (String value) => context
+                    .bloc<SignInBloc>()
+                    .add(EmailChangedSignInEvent(email: value)),
+                decoration: InputDecoration(
+                  errorText: state.showErrorMessages && !state.email.isValid()
+                      ? state.email.value.fold(
+                          (ValidationFailure failure) =>
+                              failure is EmailEmptyValidationFailure
+                                  ? 'Fill in email'
+                                  : 'Invalid email',
+                          (_) => null,
+                        )
+                      : null,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // Password field
+              TextField(
+                autocorrect: false,
+                obscureText: true,
+                onChanged: (String value) => context
+                    .bloc<SignInBloc>()
+                    .add(PasswordChangedSignInEvent(password: value)),
+                decoration: InputDecoration(
+                  errorText:
+                      state.showErrorMessages && !state.password.isValid()
+                          ? 'Invalid password'
+                          : null,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              if (state.isRegistering) ...[
+                // Username field
                 TextField(
                   autocorrect: false,
                   onChanged: (String value) => context
                       .bloc<SignInBloc>()
-                      .add(EmailChangedSignInEvent(email: value)),
+                      .add(UsernameChangedSignInEvent(username: value)),
                   decoration: InputDecoration(
-                    errorText: state.showErrorMessages && !state.email.isValid()
-                        ? state.email.value.fold(
-                            (ValidationFailure failure) =>
-                                failure is EmailEmptyValidationFailure
-                                    ? 'Fill in email'
-                                    : 'Invalid email',
-                            (_) => null,
-                          )
+                    errorText: state.showErrorMessages &&
+                            !state.username.isValid()
+                        ? state.username.value.fold(
+                            (ValidationFailure failure) => failure
+                                    is UsernameTooShortValidationFailure
+                                ? 'Username too short'
+                                : 'Invalid username. Use only alphanumeric values!',
+                            (_) => null)
                         : null,
                   ),
                 ),
 
-                const SizedBox(height: 10),
-
-                // Password field
-                TextField(
-                  autocorrect: false,
-                  obscureText: true,
-                  onChanged: (String value) => context
-                      .bloc<SignInBloc>()
-                      .add(PasswordChangedSignInEvent(password: value)),
-                  decoration: InputDecoration(
-                    errorText:
-                        state.showErrorMessages && !state.password.isValid()
-                            ? 'Invalid password'
-                            : null,
-                  ),
-                ),
-
-                const SizedBox(height: 10),
-
-                if (state.isRegistering) ...[
-                  // Username field
-                  TextField(
-                    autocorrect: false,
-                    onChanged: (String value) => context
-                        .bloc<SignInBloc>()
-                        .add(UsernameChangedSignInEvent(username: value)),
-                    decoration: InputDecoration(
-                      errorText: state.showErrorMessages &&
-                              !state.username.isValid()
-                          ? state.username.value.fold(
-                              (ValidationFailure failure) => failure
-                                      is UsernameTooShortValidationFailure
-                                  ? 'Username too short'
-                                  : 'Invalid username. Use only alphanumeric values!',
-                              (_) => null)
-                          : null,
-                    ),
-                  ),
-
-                  SizedBox(height: 10),
-                ],
-
-                // Sign in with email and password button
-                RaisedButton(
-                  onPressed: () => context
-                      .bloc<SignInBloc>()
-                      .add(SignInWithEmailAndPasswordSignInEvent()),
-                  child: const Text('Sign in'),
-                ),
-
-                const SizedBox(height: 10),
-
-                // Sign in with email and password button
-                RaisedButton(
-                  onPressed: () {
-                    if (state.isRegistering && state.username.isValid()) {
-                      context
-                          .bloc<SignInBloc>()
-                          .add(RegisterWithEmailAndPasswordSignInEvent());
-                    } else {
-                      context
-                          .bloc<SignInBloc>()
-                          .add(CheckIfEmailExistsSignInEvent());
-                    }
-                  },
-                  child: const Text('Register'),
-                ),
-
-                // Linear progress indicator if submitting the form
-                if (state.isSubmitting) ...[
-                  const SizedBox(height: 10),
-                  const LinearProgressIndicator(),
-                ],
+                SizedBox(height: 10),
               ],
-            ),
+
+              // Sign in with email and password button
+              RaisedButton(
+                onPressed: () => context
+                    .bloc<SignInBloc>()
+                    .add(SignInWithEmailAndPasswordSignInEvent()),
+                child: const Text('Sign in'),
+              ),
+
+              const SizedBox(height: 10),
+
+              // Sign in with email and password button
+              RaisedButton(
+                onPressed: () {
+                  if (state.isRegistering && state.username.isValid()) {
+                    context
+                        .bloc<SignInBloc>()
+                        .add(RegisterWithEmailAndPasswordSignInEvent());
+                  } else {
+                    context
+                        .bloc<SignInBloc>()
+                        .add(CheckIfEmailExistsSignInEvent());
+                  }
+                },
+                child: const Text('Register'),
+              ),
+
+              // Linear progress indicator if submitting the form
+              if (state.isSubmitting) ...[
+                const SizedBox(height: 10),
+                const LinearProgressIndicator(),
+              ],
+            ],
           ),
         );
       },
