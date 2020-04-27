@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/interface/listable.dart';
 import '../../util/constant/constants.dart';
+import 'circular_network_image.dart';
 
 class CollectioList<T extends Listable> extends StatelessWidget {
   final List<T> items;
@@ -28,7 +29,6 @@ class CollectioList<T extends Listable> extends StatelessWidget {
             ),
           )
         : Container(
-            height: double.infinity,
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
@@ -36,6 +36,8 @@ class CollectioList<T extends Listable> extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) => ListTile(
                 title: Text(items[index].title),
                 subtitle: Text(items[index].subtitle),
+                leading:
+                    CircularNetworkImage(items[index].thumbnail, radius: 25),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () => onTap(items[index]),
               ),

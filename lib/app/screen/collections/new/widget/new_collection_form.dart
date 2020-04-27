@@ -1,9 +1,10 @@
-import 'package:collectio/app/bloc/collections/new_collection_bloc.dart';
-import 'package:collectio/util/constant/constants.dart';
-import 'package:collectio/util/error/data_failure.dart';
-import 'package:collectio/util/error/failure.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../util/constant/constants.dart';
+import '../../../../../util/error/data_failure.dart';
+import '../../../../../util/error/failure.dart';
+import '../../../../bloc/collections/new_collection_bloc.dart';
 
 class NewCollectionForm extends StatelessWidget {
   const NewCollectionForm();
@@ -12,7 +13,7 @@ class NewCollectionForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<NewCollectionBloc, NewCollectionState>(
       listener: (BuildContext context, NewCollectionState state) {
-        if (state.dataFailure.isRight()) {
+        if (state.dataFailure != null && state.dataFailure.isRight()) {
           Navigator.of(context).pop();
         }
       },

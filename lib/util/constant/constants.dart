@@ -20,6 +20,8 @@ class Constants {
   static String collectionTitleExists =
       'A title provided maps to the existing collection';
 
+  static String collectionItemsFailure =
+      'An error occured while fetching items, please refresh';
   // ValidationFailure messages
   static String emptyValidationFailure = 'Cannot be empty';
   static String titleValidationFailure =

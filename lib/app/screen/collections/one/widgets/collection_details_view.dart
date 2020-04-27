@@ -1,6 +1,7 @@
-import 'package:collectio/app/widgets/circular_network_image.dart';
-import 'package:collectio/model/collection.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../model/collection.dart';
+import '../../../../widgets/circular_network_image.dart';
 
 class CollectionDetailsView extends StatelessWidget {
   final Collection _collection;
@@ -61,7 +62,7 @@ class CollectionDetailsView extends StatelessWidget {
           ? TableCellVerticalAlignment.middle
           : TableCellVerticalAlignment.bottom,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 5, 15, 5),
+        padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
         child: Text(
           text.toUpperCase(),
           textAlign: TextAlign.end,
