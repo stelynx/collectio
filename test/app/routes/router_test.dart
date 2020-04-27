@@ -3,8 +3,10 @@ import 'package:collectio/app/routes/routes.dart';
 import 'package:collectio/app/screen/auth/sign_in.dart';
 import 'package:collectio/app/screen/collections/all/collections.dart';
 import 'package:collectio/app/screen/collections/new/new_collection_screen.dart';
+import 'package:collectio/app/screen/collections/one/collection.dart';
 import 'package:collectio/app/screen/initial.dart';
 import 'package:collectio/app/screen/shared/error.dart';
+import 'package:collectio/model/collection.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -48,6 +50,27 @@ void main() {
 
         expect(result.fullscreenDialog, isTrue);
         expect(result.builder(null), isA<NewCollectionScreen>());
+      },
+    );
+
+    test(
+      'should map Routes.collection to CollectionScreen with given collection for display',
+      () {
+        final String path = Routes.collection;
+        final Collection collection = Collection(
+          id: 'title',
+          title: 'title',
+          subtitle: 'subtitle',
+          description: 'description',
+          thumbnail: '',
+          owner: 'username',
+        );
+        final RouteSettings routeSettings =
+            RouteSettings(name: path, arguments: collection);
+
+        final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+
+        expect(result.builder(null), isA<CollectionScreen>());
       },
     );
 

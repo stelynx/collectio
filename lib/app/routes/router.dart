@@ -1,3 +1,4 @@
+import '../screen/collections/one/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/constant/constants.dart';
@@ -22,6 +23,9 @@ abstract class Router {
       case Routes.newCollection:
         return MaterialPageRoute(
             builder: (_) => NewCollectionScreen(), fullscreenDialog: true);
+      case Routes.collection:
+        return MaterialPageRoute(
+            builder: (_) => CollectionScreen(routeArguments));
       case Routes.error:
         return MaterialPageRoute(
             builder: (_) => ErrorScreen(message: routeArguments));

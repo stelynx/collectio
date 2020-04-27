@@ -29,7 +29,8 @@ class CollectionsScreen extends StatelessWidget {
           if (state is LoadedCollectionsState) {
             return CollectioList(
               items: state.collections,
-              onTap: (Collection collection) => print(collection.title),
+              onTap: (Collection collection) => Navigator.of(context)
+                  .pushNamed(Routes.collection, arguments: collection),
             );
           }
 

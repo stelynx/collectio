@@ -88,8 +88,6 @@ void main() {
       await tester.pump();
 
       expect(ltFinder, findsOneWidget);
-
-      tester.tap(ltFinder);
     },
   );
 

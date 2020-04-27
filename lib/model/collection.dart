@@ -11,6 +11,7 @@ class Collection extends Equatable implements Listable {
   final String subtitle;
   final String description;
   final String thumbnail;
+  final int numberOfItems;
 
   Collection({
     @required this.id,
@@ -19,6 +20,7 @@ class Collection extends Equatable implements Listable {
     @required this.subtitle,
     @required this.description,
     @required this.thumbnail,
+    this.numberOfItems = 0,
   });
 
   factory Collection.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class Collection extends Equatable implements Listable {
       subtitle: json['subtitle'],
       description: json['description'],
       thumbnail: json['thumbnail'],
+      numberOfItems: json['numberOfItems'],
     );
   }
 
@@ -39,10 +42,11 @@ class Collection extends Equatable implements Listable {
       'subtitle': subtitle,
       'description': description,
       'thumbnail': thumbnail,
+      'numberOfItems': numberOfItems,
     };
   }
 
   @override
   List<Object> get props =>
-      [id, owner, title, subtitle, description, thumbnail];
+      [id, owner, title, subtitle, description, thumbnail, numberOfItems];
 }
