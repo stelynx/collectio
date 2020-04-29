@@ -7,6 +7,7 @@ import 'package:collectio/util/injection/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart' show Environment;
+import 'package:network_image_mock/network_image_mock.dart';
 
 void main() {
   configureInjection(Environment.test);
@@ -63,31 +64,33 @@ void main() {
   testWidgets(
     'should show ListView on Loaded with items',
     (WidgetTester tester) async {
-      final List<CollectionsState> states = [
-        InitialCollectionsState(),
-        LoadedCollectionsState(
-          collections: [
-            Collection.fromJson(
-              {
-                'id': 'id',
-                'owner': 'owner',
-                'title': 'title',
-                'subtitle': 'subtitle',
-                'thumbnail': 'thumbnail',
-                'description': 'description',
-              },
-            )
-          ],
-        ),
-      ];
-      whenListen(collectionsBloc, Stream.fromIterable(states));
+      mockNetworkImagesFor(() async {
+        final List<CollectionsState> states = [
+          InitialCollectionsState(),
+          LoadedCollectionsState(
+            collections: [
+              Collection.fromJson(
+                {
+                  'id': 'id',
+                  'owner': 'owner',
+                  'title': 'title',
+                  'subtitle': 'subtitle',
+                  'thumbnail': 'thumbnail',
+                  'description': 'description',
+                },
+              )
+            ],
+          ),
+        ];
+        whenListen(collectionsBloc, Stream.fromIterable(states));
 
-      final Finder ltFinder = find.byType(ListTile);
+        final Finder ltFinder = find.byType(ListTile);
 
-      await tester.pumpWidget(makeTestableWidget());
-      await tester.pump();
+        await tester.pumpWidget(makeTestableWidget());
+        await tester.pump();
 
-      expect(ltFinder, findsOneWidget);
+        expect(ltFinder, findsOneWidget);
+      });
     },
   );
 
