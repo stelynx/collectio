@@ -64,4 +64,14 @@ void main() {
       expect(dividerFinder, findsOneWidget);
     },
   );
+
+  testWidgets(
+    'should have CircularProgressIndicator when items not loaded',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(makeTestableWidget());
+
+      final Finder cpiFinder = find.byType(CircularProgressIndicator);
+      expect(cpiFinder, findsOneWidget);
+    },
+  );
 }
