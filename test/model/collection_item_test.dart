@@ -52,4 +52,20 @@ void main() {
 
     expect(result, equals(collectionItem));
   });
+
+  test('should implement Listable get thumbnail', () {
+    final CollectionItem collectionItem = CollectionItem(
+      id: 'title',
+      description: 'description',
+      title: 'title',
+      subtitle: 'subtitle',
+      imageUrl: 'imageUrl',
+      raiting: 10,
+      added: null,
+    );
+
+    final String thumbnail = collectionItem.thumbnail;
+
+    expect(thumbnail, equals(collectionItem.imageUrl));
+  });
 }
