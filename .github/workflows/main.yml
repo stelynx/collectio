@@ -2,7 +2,7 @@ on: push
 name: Lint & Test
 jobs:
   build:
-    name: Build and Test on ${{ matrix.os }}
+    name: Lint and Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     strategy:
@@ -22,7 +22,6 @@ jobs:
           ignore: "*_event.dart, *_state.dart"
       - run: flutter pub get
       - run: flutter packages pub run build_runner build
-      - run: flutter build aot
       - run: flutter analyze
       - run: flutter test --coverage .
       - uses: codecov/codecov-action@v1.0.2

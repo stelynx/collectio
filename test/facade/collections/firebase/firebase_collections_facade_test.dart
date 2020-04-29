@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collectio/facade/collections/firebase/firebase_collections_facade.dart';
 import 'package:collectio/model/collection.dart';
+import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/service/data_service.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
@@ -160,6 +161,72 @@ void main() {
           await firebaseCollectionsFacade.addCollection(collection);
 
       expect(result, equals(Left(DataFailure())));
+    });
+  });
+
+  group('getItemsInCollection', () {
+    test('should call FirebaseDataService.getItemsInCollection', () async {
+      when(firebaseCollectionsFacade.dataService.getItemsInCollection(
+              username: anyNamed('username'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.getItemsInCollection(
+          'owner', 'collectionId');
+
+      verify(firebaseCollectionsFacade.dataService.getItemsInCollection(
+              username: 'owner', collectionName: 'collectionId'))
+          .called(1);
+    });
+
+    test('should return Left(DataFailure) on any error', () async {
+      when(firebaseCollectionsFacade.dataService.getItemsInCollection(
+              username: anyNamed('username'),
+              collectionName: anyNamed('collectionName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, List<CollectionItem>> result =
+          await firebaseCollectionsFacade.getItemsInCollection(
+              'owner', 'collectionId');
+
+      expect(result, equals(Left(DataFailure())));
+    });
+
+    test('should return Right(List<CollectionItem>) on success', () async {
+      final Map<String, dynamic> firestoreCollectionItem = <String, dynamic>{
+        'added': Timestamp.fromMillisecondsSinceEpoch(10000),
+        'title': 'title',
+        'subtitle': 'subtitle',
+        'description': 'description',
+        'image': 'imageUrl',
+        'raiting': 10,
+      };
+      final CollectionItem collectionItem = CollectionItem(
+        id: 'documentId',
+        added: DateTime.fromMillisecondsSinceEpoch(10000),
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        imageUrl: 'imageUrl',
+        raiting: 10,
+      );
+      final MockedDocumentSnapshot documentSnapshot =
+          MockedDocumentSnapshot('documentID', firestoreCollectionItem);
+      final MockedDocumentReference documentReference =
+          MockedDocumentReference();
+      when(documentSnapshot.reference).thenReturn(documentReference);
+      when(documentReference.documentID).thenReturn('documentId');
+      when(firebaseCollectionsFacade.dataService.getItemsInCollection(
+              username: anyNamed('username'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => MockedQuerySnapshot([documentSnapshot]));
+
+      final Either<DataFailure, List<CollectionItem>> result =
+          await firebaseCollectionsFacade.getItemsInCollection(
+              'owner', 'collectionId');
+
+      expect(result.isRight(), isTrue);
+      expect(result.getOrElse(null)[0], equals(collectionItem));
     });
   });
 }

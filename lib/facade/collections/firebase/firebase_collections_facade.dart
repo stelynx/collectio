@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../model/collection.dart';
+import '../../../model/collection_item.dart';
 import '../../../service/data_service.dart';
 import '../../../util/error/data_failure.dart';
 import '../collections_facade.dart';
@@ -32,7 +33,7 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
           .map((Map<String, dynamic> json) => Collection.fromJson(json))
           .toList();
       return Right(collections);
-    } catch (e) {
+    } catch (_) {
       return Left(DataFailure());
     }
   }
@@ -46,7 +47,30 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
         collection: collection.toJson(),
       );
       return Right(null);
-    } catch (e) {
+    } catch (_) {
+      return Left(DataFailure());
+    }
+  }
+
+  @override
+  Future<Either<DataFailure, List<CollectionItem>>> getItemsInCollection(
+    String owner,
+    String collectionId,
+  ) async {
+    try {
+      final QuerySnapshot items = await _dataService.getItemsInCollection(
+          username: owner, collectionName: collectionId);
+
+      final List<CollectionItem> collectionItems = [];
+      items.documents.forEach((DocumentSnapshot document) {
+        Map<String, dynamic> json = document.data;
+        json['added'] = (json['added'] as Timestamp).millisecondsSinceEpoch;
+        json['id'] = document.reference.documentID;
+        collectionItems.add(CollectionItem.fromJson(json));
+      });
+
+      return Right(collectionItems);
+    } catch (_) {
       return Left(DataFailure());
     }
   }

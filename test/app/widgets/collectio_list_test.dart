@@ -6,6 +6,7 @@ import 'package:collectio/util/injection/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 
 void main() {
   configureInjection(Environment.test);
@@ -38,54 +39,56 @@ void main() {
   testWidgets(
     'should find a ListView and n ListTiles',
     (WidgetTester tester) async {
-      final List<Collection> collections = [
-        Collection.fromJson(
-          {
-            'id': 'id',
-            'owner': 'owner',
-            'title': 'title',
-            'subtitle': 'subtitle',
-            'thumbnail': 'thumbnail',
-            'description': 'description',
-          },
-        ),
-        Collection.fromJson(
-          {
-            'id': 'id',
-            'owner': 'owner',
-            'title': 'title',
-            'subtitle': 'subtitle',
-            'thumbnail': 'thumbnail',
-            'description': 'description',
-          },
-        ),
-        Collection.fromJson(
-          {
-            'id': 'id',
-            'owner': 'owner',
-            'title': 'title',
-            'subtitle': 'subtitle',
-            'thumbnail': 'thumbnail',
-            'description': 'description',
-          },
-        ),
-      ];
+      mockNetworkImagesFor(() async {
+        final List<Collection> collections = [
+          Collection.fromJson(
+            {
+              'id': 'id',
+              'owner': 'owner',
+              'title': 'title',
+              'subtitle': 'subtitle',
+              'thumbnail': 'thumbnail',
+              'description': 'description',
+            },
+          ),
+          Collection.fromJson(
+            {
+              'id': 'id',
+              'owner': 'owner',
+              'title': 'title',
+              'subtitle': 'subtitle',
+              'thumbnail': 'thumbnail',
+              'description': 'description',
+            },
+          ),
+          Collection.fromJson(
+            {
+              'id': 'id',
+              'owner': 'owner',
+              'title': 'title',
+              'subtitle': 'subtitle',
+              'thumbnail': 'thumbnail',
+              'description': 'description',
+            },
+          ),
+        ];
 
-      final Finder lvFinder = find.byType(ListView);
-      final Finder ltFinder = find.byType(ListTile);
-      final Finder titleFinder = find.text('title');
-      final Finder subtitleFinder = find.text('subtitle');
-      final Finder iconFinder = find.byIcon(Icons.chevron_right);
+        final Finder lvFinder = find.byType(ListView);
+        final Finder ltFinder = find.byType(ListTile);
+        final Finder titleFinder = find.text('title');
+        final Finder subtitleFinder = find.text('subtitle');
+        final Finder iconFinder = find.byIcon(Icons.chevron_right);
 
-      await tester.pumpWidget(makeTestableWidget(collections, (_) {}));
+        await tester.pumpWidget(makeTestableWidget(collections, (_) {}));
 
-      expect(lvFinder, findsOneWidget);
-      expect(ltFinder, findsNWidgets(collections.length));
-      expect(titleFinder, findsNWidgets(collections.length));
-      expect(subtitleFinder, findsNWidgets(collections.length));
-      expect(iconFinder, findsNWidgets(collections.length));
+        expect(lvFinder, findsOneWidget);
+        expect(ltFinder, findsNWidgets(collections.length));
+        expect(titleFinder, findsNWidgets(collections.length));
+        expect(subtitleFinder, findsNWidgets(collections.length));
+        expect(iconFinder, findsNWidgets(collections.length));
 
-      tester.tap(ltFinder.first);
+        tester.tap(ltFinder.first);
+      });
     },
   );
 }
