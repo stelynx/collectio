@@ -15,7 +15,7 @@ class CollectionItem extends Equatable implements Listable {
   String get thumbnail => imageUrl;
 
   CollectionItem({
-    @required this.id,
+    this.id,
     @required this.added,
     @required this.title,
     @required this.subtitle,

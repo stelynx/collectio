@@ -26,7 +26,7 @@ class FirebaseDataService extends DataService {
     @required String collectionName,
   }) =>
       _firestore
-          .collection("${username}_collection/$collectionName/items")
+          .collection('${username}_collection/$collectionName/items')
           .getDocuments();
 
   @override
@@ -54,6 +54,16 @@ class FirebaseDataService extends DataService {
         .document(id)
         .setData(collection);
   }
+
+  @override
+  Future<void> addItemToCollection({
+    @required String owner,
+    @required String collectionName,
+    @required Map<String, dynamic> item,
+  }) =>
+      _firestore
+          .collection('${owner}_collection/$collectionName/items')
+          .add(item);
 
   @override
   Future<void> addUserProfile({
