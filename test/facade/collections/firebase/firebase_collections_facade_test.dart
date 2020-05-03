@@ -229,4 +229,62 @@ void main() {
       expect(result.getOrElse(null)[0], equals(collectionItem));
     });
   });
+
+  group('addItemToCollection', () {
+    final CollectionItem item = CollectionItem(
+      id: 'title',
+      description: 'description',
+      title: 'title',
+      subtitle: 'subtitle',
+      imageUrl: 'imageUrl',
+      raiting: 10,
+      added: DateTime.now(),
+    );
+
+    final Map<String, dynamic> itemJson = item.toJson();
+    itemJson['added'] = Timestamp.fromMillisecondsSinceEpoch(itemJson['added']);
+
+    test('should call FirebaseDataService', () async {
+      when(firebaseCollectionsFacade.dataService.addItemToCollection(
+        owner: anyNamed('owner'),
+        collectionName: anyNamed('collectionName'),
+        item: anyNamed('item'),
+      )).thenAnswer((_) async => Right(null));
+
+      await firebaseCollectionsFacade.addItemToCollection(
+          owner: 'owner', collectionName: 'collectionName', item: item);
+
+      verify(firebaseCollectionsFacade.dataService.addItemToCollection(
+              owner: 'owner', collectionName: 'collectionName', item: itemJson))
+          .called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      when(firebaseCollectionsFacade.dataService.addItemToCollection(
+        owner: anyNamed('owner'),
+        collectionName: anyNamed('collectionName'),
+        item: anyNamed('item'),
+      )).thenAnswer((_) async => Right(null));
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.addItemToCollection(
+              owner: 'owner', collectionName: 'collectionName', item: item);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any failure', () async {
+      when(firebaseCollectionsFacade.dataService.addItemToCollection(
+        owner: anyNamed('owner'),
+        collectionName: anyNamed('collectionName'),
+        item: anyNamed('item'),
+      )).thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.addItemToCollection(
+              owner: 'owner', collectionName: 'collectionName', item: item);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
 }

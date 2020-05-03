@@ -45,7 +45,6 @@ class CollectionItem extends Equatable implements Listable {
   @override
   List<Object> get props => [
         id,
-        added.millisecondsSinceEpoch,
         title,
         subtitle,
         description,

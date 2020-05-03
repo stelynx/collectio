@@ -67,7 +67,9 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         overrideDataFailure: true,
       );
     } else if (event is SubmitNewItemEvent) {
-      if (state.title.isValid() &&
+      if (state.owner != null &&
+          state.collectionName != null &&
+          state.title.isValid() &&
           state.subtitle.isValid() &&
           state.description.isValid() &&
           state.raiting != null) {
