@@ -1,6 +1,6 @@
 part of 'collection_items_bloc.dart';
 
-abstract class CollectionItemsEvent {
+abstract class CollectionItemsEvent extends Equatable {
   const CollectionItemsEvent();
 }
 
@@ -10,4 +10,7 @@ class GetCollectionItemsEvent extends CollectionItemsEvent {
 
   const GetCollectionItemsEvent(
       {@required this.collectionOwner, @required this.collectionName});
+
+  @override
+  List<Object> get props => [collectionOwner, collectionName];
 }

@@ -74,6 +74,29 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
       return Left(DataFailure());
     }
   }
+
+  @override
+  Future<Either<DataFailure, void>> addItemToCollection({
+    @required String owner,
+    @required String collectionName,
+    @required CollectionItem item,
+  }) async {
+    try {
+      final Map<String, dynamic> itemJson = item.toJson();
+      itemJson['added'] =
+          Timestamp.fromMillisecondsSinceEpoch(itemJson['added']);
+
+      await _dataService.addItemToCollection(
+        owner: owner,
+        collectionName: collectionName,
+        item: itemJson,
+      );
+
+      return Right(null);
+    } catch (_) {
+      return Left(DataFailure());
+    }
+  }
 }
 
 @test

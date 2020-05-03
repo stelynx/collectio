@@ -1,10 +1,11 @@
-import '../screen/collections/one/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/constant/constants.dart';
 import '../screen/auth/sign_in.dart';
 import '../screen/collections/all/collections.dart';
 import '../screen/collections/new/new_collection_screen.dart';
+import '../screen/collections/new_item/new_item.dart';
+import '../screen/collections/one/collection.dart';
 import '../screen/initial.dart';
 import '../screen/shared/error.dart';
 import 'routes.dart';
@@ -26,6 +27,16 @@ abstract class Router {
       case Routes.collection:
         return MaterialPageRoute(
             builder: (_) => CollectionScreen(routeArguments));
+      case Routes.newItem:
+        final Map<String, dynamic> routeArgumentsMap =
+            routeArguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => NewItemScreen(
+            owner: routeArgumentsMap['owner'],
+            collectionName: routeArgumentsMap['collectionName'],
+          ),
+          fullscreenDialog: true,
+        );
       case Routes.error:
         return MaterialPageRoute(
             builder: (_) => ErrorScreen(message: routeArguments));

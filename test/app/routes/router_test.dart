@@ -3,6 +3,7 @@ import 'package:collectio/app/routes/routes.dart';
 import 'package:collectio/app/screen/auth/sign_in.dart';
 import 'package:collectio/app/screen/collections/all/collections.dart';
 import 'package:collectio/app/screen/collections/new/new_collection_screen.dart';
+import 'package:collectio/app/screen/collections/new_item/new_item.dart';
 import 'package:collectio/app/screen/collections/one/collection.dart';
 import 'package:collectio/app/screen/initial.dart';
 import 'package:collectio/app/screen/shared/error.dart';
@@ -73,6 +74,26 @@ void main() {
         expect(result.builder(null), isA<CollectionScreen>());
       },
     );
+
+    test('should map Routes.newItem to NewItemScreen with correct arguments',
+        () {
+      final String path = Routes.newItem;
+      final Map<String, dynamic> arguments = <String, dynamic>{
+        'owner': 'owner',
+        'collectionName': 'collectionName',
+      };
+      final RouteSettings routeSettings =
+          RouteSettings(name: path, arguments: arguments);
+
+      final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+      final Widget screen = result.builder(null);
+
+      expect(screen, isA<NewItemScreen>());
+
+      NewItemScreen newItemScreen = screen as NewItemScreen;
+      expect(newItemScreen.owner, arguments['owner']);
+      expect(newItemScreen.collectionName, arguments['collectionName']);
+    });
 
     test('should map Routes.error to ErrorScreen with appropriate message', () {
       final String path = Routes.error;

@@ -126,6 +126,30 @@ void main() {
     });
   });
 
+  group('addItemToCollection', () {
+    test('should call Firestore with correct collection and document',
+        () async {
+      final Map<String, dynamic> item = <String, dynamic>{
+        'description': 'description',
+        'title': 'title',
+        'subtitle': 'subtitle',
+        'image': 'imageUrl',
+        'raiting': 10,
+        'added': Timestamp.fromMillisecondsSinceEpoch(
+            DateTime.now().millisecondsSinceEpoch),
+      };
+      when(firebaseDataService.firestore.collection(any))
+          .thenReturn(mockedCollectionReference);
+      when(mockedCollectionReference.add(any))
+          .thenAnswer((_) async => mockedDocumentReference);
+
+      await firebaseDataService.addItemToCollection(
+          owner: 'owner', collectionName: 'collectionName', item: item);
+
+      verify(mockedCollectionReference.add(item)).called(1);
+    });
+  });
+
   group('addUserProfile', () {
     test(
       'should call Firestore with correct collection, document and setData',

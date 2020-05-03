@@ -3,21 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../util/constant/constants.dart';
 import '../../../../../util/error/data_failure.dart';
-import '../../../../../util/error/failure.dart';
-import '../../../../bloc/collections/new_collection_bloc.dart';
+import '../../../../../util/error/validation_failure.dart';
+import '../../../../bloc/collections/new_item_bloc.dart';
 
-class NewCollectionForm extends StatelessWidget {
-  const NewCollectionForm();
+class NewItemForm extends StatelessWidget {
+  const NewItemForm();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NewCollectionBloc, NewCollectionState>(
-      listener: (BuildContext context, NewCollectionState state) {
+    return BlocConsumer<NewItemBloc, NewItemState>(
+      listener: (BuildContext context, NewItemState state) {
         if (state.dataFailure != null && state.dataFailure.isRight()) {
           Navigator.of(context).pop();
         }
       },
-      builder: (BuildContext context, NewCollectionState state) {
+      builder: (BuildContext context, NewItemState state) {
         return Center(
           child: ListView(
             padding: EdgeInsets.all(20),
@@ -37,8 +37,8 @@ class NewCollectionForm extends StatelessWidget {
                             (_) => null)
                         : null),
                 onChanged: (String value) => context
-                    .bloc<NewCollectionBloc>()
-                    .add(TitleChangedNewCollectionEvent(value)),
+                    .bloc<NewItemBloc>()
+                    .add(TitleChangedNewItemEvent(value)),
               ),
 
               SizedBox(height: 10),
@@ -58,8 +58,8 @@ class NewCollectionForm extends StatelessWidget {
                                 (_) => null)
                             : null),
                 onChanged: (String value) => context
-                    .bloc<NewCollectionBloc>()
-                    .add(SubtitleChangedNewCollectionEvent(value)),
+                    .bloc<NewItemBloc>()
+                    .add(SubtitleChangedNewItemEvent(value)),
               ),
 
               SizedBox(height: 10),
@@ -80,8 +80,26 @@ class NewCollectionForm extends StatelessWidget {
                             (_) => null)
                         : null),
                 onChanged: (String value) => context
-                    .bloc<NewCollectionBloc>()
-                    .add(DescriptionChangedNewCollectionEvent(value)),
+                    .bloc<NewItemBloc>()
+                    .add(DescriptionChangedNewItemEvent(value)),
+              ),
+
+              SizedBox(height: 10),
+
+              // Raiting
+              DropdownButton(
+                value: state.raiting,
+                items: (List<int>.generate(10, (int i) => i + 1))
+                    .map(
+                      (int i) => DropdownMenuItem(
+                        child: Text(i.toString()),
+                        value: i,
+                      ),
+                    )
+                    .toList(),
+                onChanged: (int value) => context
+                    .bloc<NewItemBloc>()
+                    .add(RaitingChangedNewItemEvent(value)),
               ),
 
               SizedBox(height: 10),
@@ -100,9 +118,8 @@ class NewCollectionForm extends StatelessWidget {
               ] else ...[
                 // Submit
                 RaisedButton(
-                  onPressed: () => context
-                      .bloc<NewCollectionBloc>()
-                      .add(SubmitNewCollectionEvent()),
+                  onPressed: () =>
+                      context.bloc<NewItemBloc>().add(SubmitNewItemEvent()),
                   child: Text('Submit'),
                 ),
 

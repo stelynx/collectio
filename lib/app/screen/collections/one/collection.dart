@@ -6,6 +6,7 @@ import '../../../../model/collection_item.dart';
 import '../../../../util/constant/constants.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collection_items_bloc.dart';
+import '../../../routes/routes.dart';
 import '../../../widgets/collectio_list.dart';
 import 'widgets/collection_details_view.dart';
 
@@ -82,6 +83,17 @@ class CollectionScreen extends StatelessWidget {
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).pushNamed(
+          Routes.newItem,
+          arguments: {
+            'owner': _collection.owner,
+            'collectionName': _collection.id,
+          },
+        ),
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
       ),
     );
   }
