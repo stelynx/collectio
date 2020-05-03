@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -34,11 +35,18 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
   NewItemState get initialState => InitialNewItemState();
 
   @override
+  Future<void> close() {
+    print('CLOSED\n\n\n\n\n');
+    return super.close();
+  }
+
+  @override
   Stream<NewItemState> mapEventToState(
     NewItemEvent event,
   ) async* {
+    print(event);
     if (event is InitializeNewItemEvent) {
-      yield state.copyWith(
+      yield InitialNewItemState().copyWith(
         owner: event.owner,
         collectionName: event.collection,
       );
@@ -63,6 +71,12 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
     } else if (event is RaitingChangedNewItemEvent) {
       yield state.copyWith(
         raiting: event.raiting,
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ImageChangedNewItemEvent) {
+      yield state.copyWith(
+        localImage: event.image,
         dataFailure: null,
         overrideDataFailure: true,
       );

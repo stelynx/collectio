@@ -9,18 +9,20 @@ abstract class NewItemState extends Equatable {
   final Description description;
   final int raiting;
   final String imageUrl;
+  final File localImage;
   final bool isSubmitting;
   final bool showErrorMessages;
   final Either<DataFailure, void> dataFailure;
 
   NewItemState({
-    this.owner,
-    this.collectionName,
+    @required this.owner,
+    @required this.collectionName,
     @required this.title,
     @required this.subtitle,
     @required this.description,
     @required this.raiting,
     @required this.imageUrl,
+    @required this.localImage,
     @required this.isSubmitting,
     @required this.showErrorMessages,
     @required this.dataFailure,
@@ -34,6 +36,7 @@ abstract class NewItemState extends Equatable {
     Description description,
     int raiting,
     String imageUrl,
+    File localImage,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -47,6 +50,7 @@ abstract class NewItemState extends Equatable {
         description: description ?? this.description,
         raiting: raiting ?? this.raiting,
         imageUrl: imageUrl ?? this.imageUrl,
+        localImage: localImage ?? this.localImage,
         isSubmitting: isSubmitting ?? this.isSubmitting,
         showErrorMessages: showErrorMessages ?? this.showErrorMessages,
         dataFailure: (dataFailure != null || overrideDataFailure)
@@ -63,6 +67,7 @@ abstract class NewItemState extends Equatable {
         description,
         raiting,
         imageUrl,
+        localImage,
         isSubmitting,
         showErrorMessages,
         dataFailure
@@ -72,11 +77,14 @@ abstract class NewItemState extends Equatable {
 class InitialNewItemState extends NewItemState {
   InitialNewItemState()
       : super(
+            owner: null,
+            collectionName: null,
             title: Title(''),
             subtitle: Subtitle(''),
             description: Description(''),
             raiting: null,
             imageUrl: '',
+            localImage: null,
             isSubmitting: false,
             showErrorMessages: false,
             dataFailure: null);
@@ -91,6 +99,7 @@ class GeneralNewItemState extends NewItemState {
     Description description,
     int raiting,
     String imageUrl,
+    File localImage,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -102,6 +111,7 @@ class GeneralNewItemState extends NewItemState {
           description: description ?? Description(''),
           raiting: raiting,
           imageUrl: imageUrl ?? '',
+          localImage: localImage ?? null,
           isSubmitting: isSubmitting ?? false,
           showErrorMessages: showErrorMessages ?? false,
           dataFailure: dataFailure ?? null,

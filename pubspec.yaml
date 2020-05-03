@@ -17,6 +17,8 @@ dependencies:
   firebase_auth: ^0.15.5+3
   flutter_bloc: ^3.2.0
   get_it: ^4.0.1
+  image_cropper: ^1.2.1
+  image_picker: ^0.6.5+3
   injectable: ^0.3.0
 
 dev_dependencies:
