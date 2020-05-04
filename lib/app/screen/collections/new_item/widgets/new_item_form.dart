@@ -7,7 +7,6 @@ import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/constants.dart';
 import '../../../../../util/error/data_failure.dart';
 import '../../../../../util/error/validation_failure.dart';
-import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_item_bloc.dart';
 
 class NewItemForm extends StatelessWidget {
