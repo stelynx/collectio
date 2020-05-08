@@ -48,9 +48,11 @@ class CollectionScreen extends StatelessWidget {
                   collectionName: _collection.id)),
             builder: (BuildContext context, CollectionItemsState state) {
               if (state is LoadedCollectionItemsState)
-                return CollectioList(
-                  items: state.collectionItems,
-                  onTap: (CollectionItem item) => print(item.title),
+                return Expanded(
+                  child: CollectioList(
+                    items: state.collectionItems,
+                    onTap: (CollectionItem item) => print(item.title),
+                  ),
                 );
 
               if (state is ErrorCollectionItemsState)

@@ -41,8 +41,13 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
           .toList();
 
       for (Map<String, dynamic> collectionJson in collectionJsons) {
-        collectionJson['thumbnail'] = await _storageService
-            .getCollectionThumbnailUrl(imageName: collectionJson['thumbnail']);
+        try {
+          collectionJson['thumbnail'] =
+              await _storageService.getCollectionThumbnailUrl(
+                  imageName: collectionJson['thumbnail']);
+        } catch (_) {
+          collectionJson['thumbnail'] = null;
+        }
       }
 
       final List<Collection> collections = collectionJsons
@@ -82,8 +87,19 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
         Map<String, dynamic> json = document.data;
         json['added'] = (json['added'] as Timestamp).millisecondsSinceEpoch;
         json['id'] = document.reference.documentID;
-        json['image'] =
-            await _storageService.getItemImageUrl(imageName: json['image']);
+        print(json['id']);
+
+        try {
+          print(json['title']);
+          print(json['image']);
+          json['image'] =
+              await _storageService.getItemImageUrl(imageName: json['image']);
+        } catch (_) {
+          print('catch');
+          json['image'] = null;
+        }
+        print(json['image']);
+
         collectionItems.add(CollectionItem.fromJson(json));
       }
 

@@ -35,6 +35,10 @@ class CollectionsScreen extends StatelessWidget {
             );
           }
 
+          if (state is ErrorCollectionsState) {
+            return ErrorScreen(message: 'Error occured');
+          }
+
           return ErrorScreen(message: Constants.unknownStateMessage);
         },
       ),
