@@ -238,7 +238,6 @@ void main() {
               'owner', 'collectionId');
 
       expect(result.isRight(), isTrue);
-      print(result.getOrElse(null)[0].imageUrl);
       expect(result.getOrElse(null)[0], equals(collectionItem));
     });
   });

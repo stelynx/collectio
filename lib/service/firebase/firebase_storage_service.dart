@@ -16,18 +16,26 @@ class FirebaseStorageService extends StorageService {
   FirebaseStorageService({@required FirebaseStorage storage})
       : _storage = storage;
 
-  @override
-  void uploadCollectionThumbnail(
-      {@required File image, @required String destinationName}) {
+  Future<bool> uploadCollectionThumbnail(
+      {@required File image, @required String destinationName}) async {
     final String storagePath = 'collectionThumbnail/$destinationName';
-    _storage.ref().child(storagePath).putFile(image);
+    final StorageUploadTask storageUploadTask =
+        _storage.ref().child(storagePath).putFile(image);
+
+    await storageUploadTask.onComplete;
+
+    return storageUploadTask.isSuccessful;
   }
 
   @override
-  void uploadItemImage(
-      {@required File image, @required String destinationName}) {
+  Future<bool> uploadItemImage(
+      {@required File image, @required String destinationName}) async {
     final String storagePath = 'collectionItemImg/$destinationName';
-    _storage.ref().child(storagePath).putFile(image);
+    final StorageUploadTask storageUploadTask =
+        _storage.ref().child(storagePath).putFile(image);
+    await storageUploadTask.onComplete;
+
+    return storageUploadTask.isSuccessful;
   }
 
   @override

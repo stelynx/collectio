@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:meta/meta.dart';
 
 abstract class StorageService {
-  void uploadCollectionThumbnail(
+  Future<bool> uploadCollectionThumbnail(
       {@required File image, @required String destinationName});
 
-  void uploadItemImage(
+  Future<bool> uploadItemImage(
       {@required File image, @required String destinationName});
 
   Future<String> getCollectionThumbnailUrl({@required String imageName});

@@ -87,18 +87,13 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
         Map<String, dynamic> json = document.data;
         json['added'] = (json['added'] as Timestamp).millisecondsSinceEpoch;
         json['id'] = document.reference.documentID;
-        print(json['id']);
 
         try {
-          print(json['title']);
-          print(json['image']);
           json['image'] =
               await _storageService.getItemImageUrl(imageName: json['image']);
         } catch (_) {
-          print('catch');
           json['image'] = null;
         }
-        print(json['image']);
 
         collectionItems.add(CollectionItem.fromJson(json));
       }
@@ -138,9 +133,12 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
     @required String destinationName,
   }) async {
     try {
-      _storageService.uploadCollectionThumbnail(
+      final bool isSuccessful = await _storageService.uploadCollectionThumbnail(
           image: image, destinationName: destinationName);
-      return Right(null);
+      if (isSuccessful)
+        return Right(null);
+      else
+        return Left(DataFailure());
     } catch (_) {
       return Left(DataFailure());
     }
@@ -152,9 +150,12 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
     @required String destinationName,
   }) async {
     try {
-      _storageService.uploadItemImage(
+      final bool isSuccessful = await _storageService.uploadItemImage(
           image: image, destinationName: destinationName);
-      return Right(null);
+      if (isSuccessful)
+        return Right(null);
+      else
+        return Left(DataFailure());
     } catch (_) {
       return Left(DataFailure());
     }
