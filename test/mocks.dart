@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,3 +38,5 @@ class MockedDocumentSnapshot extends Mock implements DocumentSnapshot {
 }
 
 class MockedDocumentReference extends Mock implements DocumentReference {}
+
+class MockedFile extends Mock implements File {}

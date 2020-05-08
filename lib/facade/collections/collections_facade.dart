@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 
@@ -18,5 +20,15 @@ abstract class CollectionsFacade {
     @required String owner,
     @required String collectionName,
     @required CollectionItem item,
+  });
+
+  Future<Either<DataFailure, void>> uploadCollectionThumbnail({
+    @required File image,
+    @required String destinationName,
+  });
+
+  Future<Either<DataFailure, void>> uploadCollectionItemImage({
+    @required File image,
+    @required String destinationName,
   });
 }

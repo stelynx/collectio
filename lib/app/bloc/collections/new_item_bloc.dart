@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:collectio/util/function/image_name_generator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -14,6 +15,7 @@ import '../../../model/value_object/description.dart';
 import '../../../model/value_object/subtitle.dart';
 import '../../../model/value_object/title.dart';
 import '../../../util/error/data_failure.dart';
+import '../../../util/function/id_generator.dart';
 import 'collection_items_bloc.dart';
 
 part 'new_item_event.dart';
@@ -35,18 +37,11 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
   NewItemState get initialState => InitialNewItemState();
 
   @override
-  Future<void> close() {
-    print('CLOSED\n\n\n\n\n');
-    return super.close();
-  }
-
-  @override
   Stream<NewItemState> mapEventToState(
     NewItemEvent event,
   ) async* {
-    print(event);
     if (event is InitializeNewItemEvent) {
-      yield InitialNewItemState().copyWith(
+      yield state.copyWith(
         owner: event.owner,
         collectionName: event.collection,
       );
@@ -86,15 +81,25 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           state.title.isValid() &&
           state.subtitle.isValid() &&
           state.description.isValid() &&
-          state.raiting != null) {
+          state.raiting != null &&
+          state.localImage != null) {
         yield state.copyWith(isSubmitting: true);
+
+        final String fileExtension = state.localImage.path
+            .substring(state.localImage.path.lastIndexOf('.') + 1);
+        final String imageUrl = getItemImageName(
+          state.owner,
+          state.collectionName,
+          state.title.get(),
+          fileExtension,
+        );
 
         final CollectionItem collectionItem = CollectionItem(
           added: DateTime.now(),
           title: state.title.get(),
           subtitle: state.subtitle.get(),
           description: state.description.get(),
-          imageUrl: '',
+          imageUrl: imageUrl,
           raiting: state.raiting,
         );
 
@@ -104,17 +109,23 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
                 collectionName: state.collectionName,
                 item: collectionItem);
 
+        Either<DataFailure, void> uploadResult;
         if (result.isRight()) {
-          _collectionItemsBloc.add(GetCollectionItemsEvent(
-            collectionOwner: state.owner,
-            collectionName: state.collectionName,
-          ));
+          uploadResult = await _collectionsFacade.uploadCollectionItemImage(
+              image: state.localImage, destinationName: imageUrl);
+
+          if (uploadResult.isRight()) {
+            _collectionItemsBloc.add(GetCollectionItemsEvent(
+              collectionOwner: state.owner,
+              collectionName: state.collectionName,
+            ));
+          }
         }
 
         yield state.copyWith(
           isSubmitting: false,
           showErrorMessages: true,
-          dataFailure: result,
+          dataFailure: result.isLeft() ? result : uploadResult,
         );
       } else {
         yield state.copyWith(showErrorMessages: true);

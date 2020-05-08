@@ -3,6 +3,7 @@ import 'package:collectio/facade/collections/firebase/firebase_collections_facad
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/service/data_service.dart';
+import 'package:collectio/service/storage_service.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -20,8 +21,10 @@ void main() {
   FirebaseCollectionsFacade firebaseCollectionsFacade;
 
   setUp(() {
-    firebaseCollectionsFacade =
-        FirebaseCollectionsFacade(dataService: getIt<DataService>());
+    firebaseCollectionsFacade = FirebaseCollectionsFacade(
+      dataService: getIt<DataService>(),
+      storageService: getIt<StorageService>(),
+    );
   });
 
   group(('getCollectionsForUser'), () {
@@ -55,6 +58,9 @@ void main() {
             ),
         ),
       );
+      when(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => 'thumbnail');
 
       final Either<DataFailure, List<Collection>> result =
           await firebaseCollectionsFacade.getCollectionsForUser(username);
@@ -220,12 +226,16 @@ void main() {
               username: anyNamed('username'),
               collectionName: anyNamed('collectionName')))
           .thenAnswer((_) async => MockedQuerySnapshot([documentSnapshot]));
+      when(firebaseCollectionsFacade.storageService
+              .getItemImageUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => 'imageUrl');
 
       final Either<DataFailure, List<CollectionItem>> result =
           await firebaseCollectionsFacade.getItemsInCollection(
               'owner', 'collectionId');
 
       expect(result.isRight(), isTrue);
+      print(result.getOrElse(null)[0].imageUrl);
       expect(result.getOrElse(null)[0], equals(collectionItem));
     });
   });

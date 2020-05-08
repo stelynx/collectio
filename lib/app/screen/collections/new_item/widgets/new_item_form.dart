@@ -33,11 +33,6 @@ class NewItemForm extends StatelessWidget {
         }
       },
       builder: (BuildContext context, NewItemState state) {
-        print('title ${state.title.get()}');
-        print('subtitle ${state.subtitle.get()}');
-        print('desc ${state.description.get()}');
-        print('raiting ${state.raiting}');
-        print('img ${state.localImage?.path}');
         return Center(
           child: ListView(
             padding: EdgeInsets.all(20),
