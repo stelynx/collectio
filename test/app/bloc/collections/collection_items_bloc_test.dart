@@ -28,7 +28,7 @@ void main() {
       getIt<CollectionsFacade>();
 
   blocTest(
-    'should yield Loaded on successful GetCollectionItemsEvent',
+    'should yield Loading and Loaded on successful GetCollectionItemsEvent',
     build: () async {
       when(mockedFirebaseCollectionsFacade.getItemsInCollection(any, any))
           .thenAnswer((_) async => Right(collectionItems));
@@ -37,7 +37,10 @@ void main() {
     },
     act: (CollectionItemsBloc bloc) async => bloc.add(GetCollectionItemsEvent(
         collectionOwner: 'owner', collectionName: 'name')),
-    expect: [LoadedCollectionItemsState(collectionItems)],
+    expect: [
+      LoadingCollectionItemsState(),
+      LoadedCollectionItemsState(collectionItems)
+    ],
   );
 
   blocTest(
@@ -50,6 +53,6 @@ void main() {
     },
     act: (CollectionItemsBloc bloc) async => bloc.add(GetCollectionItemsEvent(
         collectionOwner: 'owner', collectionName: 'name')),
-    expect: [ErrorCollectionItemsState()],
+    expect: [LoadingCollectionItemsState(), ErrorCollectionItemsState()],
   );
 }
