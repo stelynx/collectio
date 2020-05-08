@@ -31,6 +31,8 @@ class CollectionItemsBloc
     CollectionItemsEvent event,
   ) async* {
     if (event is GetCollectionItemsEvent) {
+      yield LoadingCollectionItemsState();
+
       final Either<DataFailure, List<CollectionItem>> items =
           await _collectionsFacade.getItemsInCollection(
               event.collectionOwner, event.collectionName);

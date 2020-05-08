@@ -41,13 +41,6 @@ class CollectionDetailsView extends StatelessWidget {
                     ),
                   ],
                 ),
-                TableRow(
-                  children: <TableCell>[
-                    _buildFirstColumnCell('Items'),
-                    _buildSecondColumnCell(
-                        _collection.numberOfItems.toString()),
-                  ],
-                ),
               ],
             ),
           ),

@@ -21,7 +21,7 @@ part 'new_item_event.dart';
 part 'new_item_state.dart';
 
 @prod
-@lazySingleton
+@injectable
 class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
   final CollectionsFacade _collectionsFacade;
   final CollectionItemsBloc _collectionItemsBloc;

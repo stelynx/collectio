@@ -23,7 +23,7 @@ part 'new_collection_event.dart';
 part 'new_collection_state.dart';
 
 @prod
-@lazySingleton
+@injectable
 class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
   final CollectionsFacade _collectionsFacade;
   final CollectionsBloc _collectionsBloc;
