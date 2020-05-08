@@ -532,9 +532,9 @@ void main() {
   );
 
   blocTest(
-    'should add GetCollectionItemsEvent to CollectionItemsBloc if adding item successful',
+    'should call CollectionsFacade to upload image if saving item was successful',
     build: () async {
-      when(mockedFile.path).thenReturn('path.jpg');
+      when(mockedFile.path).thenReturn('image.jpg');
       when(mockedCollectionsFacade.addItemToCollection(
               owner: anyNamed('owner'),
               collectionName: anyNamed('collectionName'),
@@ -557,9 +557,43 @@ void main() {
       ..add(RaitingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
+    verify: (_) async => verify(
+            mockedCollectionsFacade.uploadCollectionItemImage(
+                image: mockedFile,
+                destinationName: getItemImageName(
+                    'owner', 'collectionName', 'title', 'jpg')))
+        .called(1),
+  );
+
+  blocTest(
+    'should add GetCollectionItemsEvent to CollectionItemsBloc if adding item and image successful',
+    build: () async {
+      when(mockedFile.path).thenReturn('path.jpg');
+      when(mockedCollectionsFacade.addItemToCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName'),
+              item: anyNamed('item')))
+          .thenAnswer((_) async => Right(null));
+      when(mockedCollectionsFacade.uploadCollectionItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => Right(null));
+      return NewItemBloc(
+          collectionItemsBloc: mockedCollectionItemsBloc,
+          collectionsFacade: mockedCollectionsFacade);
+    },
+    act: (NewItemBloc bloc) async => bloc
+      ..add(
+          InitializeNewItemEvent(owner: 'owner1', collection: 'collectionName'))
+      ..add(TitleChangedNewItemEvent('title'))
+      ..add(SubtitleChangedNewItemEvent('subtitle'))
+      ..add(DescriptionChangedNewItemEvent('description'))
+      ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(SubmitNewItemEvent()),
     verify: (_) async => verify(mockedCollectionItemsBloc.add(
       GetCollectionItemsEvent(
-          collectionOwner: 'owner', collectionName: 'collectionName'),
+          collectionOwner: 'owner1', collectionName: 'collectionName'),
     )).called(1),
   );
 

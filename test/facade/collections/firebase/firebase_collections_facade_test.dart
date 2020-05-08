@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collectio/facade/collections/firebase/firebase_collections_facade.dart';
 import 'package:collectio/model/collection.dart';
@@ -17,6 +19,7 @@ void main() {
   configureInjection(Environment.test);
 
   final String username = 'username';
+  final File mockedFile = MockedFile();
 
   FirebaseCollectionsFacade firebaseCollectionsFacade;
 
@@ -293,6 +296,90 @@ void main() {
       final Either<DataFailure, void> result =
           await firebaseCollectionsFacade.addItemToCollection(
               owner: 'owner', collectionName: 'collectionName', item: item);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
+  group('uploadCollectionThumbnail', () {
+    test('should call FirebaseStorageService with same arguments', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.uploadCollectionThumbnail(
+          image: mockedFile, destinationName: 'destinationName');
+
+      verify(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName'))
+          .called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any failure', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
+  group('uploadCollectionItemImage', () {
+    test('should call FirebaseStorageService with same arguments', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.uploadCollectionItemImage(
+          image: mockedFile, destinationName: 'destinationName');
+
+      verify(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: mockedFile, destinationName: 'destinationName'))
+          .called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionItemImage(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any failure', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionItemImage(
+              image: mockedFile, destinationName: 'destinationName');
 
       expect(result, equals(Left(DataFailure())));
     });

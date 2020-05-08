@@ -107,11 +107,13 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
                 owner: state.owner,
                 collectionName: state.collectionName,
                 item: collectionItem);
+        print(result);
 
         Either<DataFailure, void> uploadResult;
         if (result.isRight()) {
           uploadResult = await _collectionsFacade.uploadCollectionItemImage(
               image: state.localImage, destinationName: imageUrl);
+          print('here');
 
           if (uploadResult.isRight()) {
             _collectionItemsBloc.add(GetCollectionItemsEvent(

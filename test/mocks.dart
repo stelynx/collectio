@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mockito/mockito.dart';
 
 class MockedStreamSubscription<T> extends Mock
@@ -38,5 +39,7 @@ class MockedDocumentSnapshot extends Mock implements DocumentSnapshot {
 }
 
 class MockedDocumentReference extends Mock implements DocumentReference {}
+
+class MockedStorageReference extends Mock implements StorageReference {}
 
 class MockedFile extends Mock implements File {}
