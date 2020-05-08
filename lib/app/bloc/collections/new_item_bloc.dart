@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:collectio/util/function/image_name_generator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -15,7 +14,7 @@ import '../../../model/value_object/description.dart';
 import '../../../model/value_object/subtitle.dart';
 import '../../../model/value_object/title.dart';
 import '../../../util/error/data_failure.dart';
-import '../../../util/function/id_generator.dart';
+import '../../../util/function/image_name_generator.dart';
 import 'collection_items_bloc.dart';
 
 part 'new_item_event.dart';
