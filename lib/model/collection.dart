@@ -43,6 +43,5 @@ class Collection extends Equatable implements Listable {
   }
 
   @override
-  List<Object> get props =>
-      [id, owner, title, subtitle, description, thumbnail];
+  List<Object> get props => [id, owner, title, subtitle, description];
 }

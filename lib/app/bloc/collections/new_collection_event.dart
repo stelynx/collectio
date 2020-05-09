@@ -23,4 +23,10 @@ class DescriptionChangedNewCollectionEvent extends NewCollectionEvent {
   const DescriptionChangedNewCollectionEvent(this.description);
 }
 
+class ImageChangedNewCollectionEvent extends NewCollectionEvent {
+  final File image;
+
+  const ImageChangedNewCollectionEvent(this.image);
+}
+
 class SubmitNewCollectionEvent extends NewCollectionEvent {}

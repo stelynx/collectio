@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/collections/collections_bloc.dart';
 import 'package:collectio/app/bloc/collections/new_collection_bloc.dart';
@@ -10,14 +12,19 @@ import 'package:collectio/model/value_object/subtitle.dart';
 import 'package:collectio/model/value_object/title.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/error/data_failure.dart';
+import 'package:collectio/util/function/image_name_generator.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../mocks.dart';
+
 void main() {
   configureInjection(Environment.test);
+
+  final File mockedFile = MockedFile();
 
   CollectionsFacade mockedCollectionsFacade;
   ProfileBloc mockedProfileBloc;
@@ -73,6 +80,19 @@ void main() {
         bloc.add(DescriptionChangedNewCollectionEvent('t')),
     expect: [
       GeneralNewCollectionState(description: model.Description('t')),
+    ],
+  );
+
+  blocTest(
+    'should change image on ImageChanged',
+    build: () async => NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc),
+    act: (NewCollectionBloc bloc) async =>
+        bloc.add(ImageChangedNewCollectionEvent(mockedFile)),
+    expect: [
+      GeneralNewCollectionState(thumbnail: mockedFile),
     ],
   );
 
@@ -255,6 +275,7 @@ void main() {
     blocTest(
       'should call CollectionsFacade if collection does not exist',
       build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
             email: 'email',
@@ -276,6 +297,7 @@ void main() {
         ..add(TitleChangedNewCollectionEvent('title'))
         ..add(SubtitleChangedNewCollectionEvent('subtitle'))
         ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
         ..add(SubmitNewCollectionEvent()),
       verify: (_) async =>
           verify(mockedCollectionsFacade.addCollection(Collection(
@@ -284,13 +306,14 @@ void main() {
         subtitle: 'subtitle',
         description: 'description',
         owner: 'username',
-        thumbnail: '',
+        thumbnail: null, // not in props
       ))).called(1),
     );
 
     blocTest(
-      'should refresh collections list on success',
+      'should upload image on successful item adding',
       build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
             email: 'email',
@@ -314,6 +337,49 @@ void main() {
         ..add(TitleChangedNewCollectionEvent('title'))
         ..add(SubtitleChangedNewCollectionEvent('subtitle'))
         ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
+        ..add(SubmitNewCollectionEvent()),
+      verify: (_) async => verify(
+        mockedCollectionsFacade.uploadCollectionThumbnail(
+          image: mockedFile,
+          destinationName:
+              getCollectionThumbnailName('username', 'title', 'jpg'),
+        ),
+      ).called(1),
+    );
+
+    blocTest(
+      'should refresh collections list on successfully added item and uploaded image',
+      build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
+        when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
+          UserProfile(
+            email: 'email',
+            userUid: 'userUid',
+            username: 'username',
+            firstName: 'firstName',
+            lastName: 'lastName',
+          ),
+        ));
+        when(mockedCollectionsFacade.uploadCollectionThumbnail(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsFacade.addCollection(any))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsBloc.state)
+            .thenReturn(LoadedCollectionsState(collections: []));
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async => bloc
+        ..add(TitleChangedNewCollectionEvent('title'))
+        ..add(SubtitleChangedNewCollectionEvent('subtitle'))
+        ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
         ..add(SubmitNewCollectionEvent()),
       verify: (_) async => verify(mockedCollectionsBloc
               .add(GetCollectionsEvent(username: 'username')))
@@ -323,6 +389,7 @@ void main() {
     blocTest(
       'should have state.dataFailure as Right on success',
       build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
             email: 'email',
@@ -332,6 +399,10 @@ void main() {
             lastName: 'lastName',
           ),
         ));
+        when(mockedCollectionsFacade.uploadCollectionThumbnail(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => Right(null));
         when(mockedCollectionsFacade.addCollection(any))
             .thenAnswer((_) async => Right(null));
         when(mockedCollectionsBloc.state)
@@ -346,6 +417,7 @@ void main() {
         ..add(TitleChangedNewCollectionEvent('title'))
         ..add(SubtitleChangedNewCollectionEvent('subtitle'))
         ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
         ..add(SubmitNewCollectionEvent()),
       expect: [
         GeneralNewCollectionState(title: Title('title')),
@@ -359,11 +431,18 @@ void main() {
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
+            thumbnail: mockedFile),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: mockedFile,
             isSubmitting: true),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
+            thumbnail: mockedFile,
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure: Right(null)),
@@ -373,6 +452,7 @@ void main() {
     blocTest(
       'should have message about collection exists in DataFailure if collection exists',
       build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
             email: 'email',
@@ -382,8 +462,6 @@ void main() {
             lastName: 'lastName',
           ),
         ));
-        when(mockedCollectionsFacade.addCollection(any))
-            .thenAnswer((_) async => Right(null));
         when(mockedCollectionsBloc.state).thenReturn(LoadedCollectionsState(
           collections: [
             Collection(
@@ -406,6 +484,7 @@ void main() {
         ..add(TitleChangedNewCollectionEvent('title'))
         ..add(SubtitleChangedNewCollectionEvent('subtitle'))
         ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
         ..add(SubmitNewCollectionEvent()),
       expect: [
         GeneralNewCollectionState(title: Title('title')),
@@ -419,11 +498,18 @@ void main() {
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
+            thumbnail: mockedFile),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: mockedFile,
             isSubmitting: true),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
+            thumbnail: mockedFile,
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure:
@@ -432,8 +518,9 @@ void main() {
     );
 
     blocTest(
-      'should have state.dataFailure as Left on failure',
+      'should have state.dataFailure as Left on failed item save',
       build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
             email: 'email',
@@ -457,6 +544,7 @@ void main() {
         ..add(TitleChangedNewCollectionEvent('title'))
         ..add(SubtitleChangedNewCollectionEvent('subtitle'))
         ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
         ..add(SubmitNewCollectionEvent()),
       expect: [
         GeneralNewCollectionState(title: Title('title')),
@@ -470,11 +558,81 @@ void main() {
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
+            thumbnail: mockedFile),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: mockedFile,
             isSubmitting: true),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
+            thumbnail: mockedFile,
+            isSubmitting: false,
+            showErrorMessages: true,
+            dataFailure: Left(DataFailure())),
+      ],
+    );
+
+    blocTest(
+      'should have state.dataFailure as Left on failed thumbnail upload',
+      build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
+        when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
+          UserProfile(
+            email: 'email',
+            userUid: 'userUid',
+            username: 'username',
+            firstName: 'firstName',
+            lastName: 'lastName',
+          ),
+        ));
+        when(mockedCollectionsFacade.uploadCollectionThumbnail(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => Left(DataFailure()));
+        when(mockedCollectionsFacade.addCollection(any))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsBloc.state)
+            .thenReturn(LoadedCollectionsState(collections: []));
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async => bloc
+        ..add(TitleChangedNewCollectionEvent('title'))
+        ..add(SubtitleChangedNewCollectionEvent('subtitle'))
+        ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
+        ..add(SubmitNewCollectionEvent()),
+      expect: [
+        GeneralNewCollectionState(title: Title('title')),
+        GeneralNewCollectionState(
+            title: Title('title'), subtitle: Subtitle('subtitle')),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description')),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: mockedFile),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: mockedFile,
+            isSubmitting: true),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: mockedFile,
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure: Left(DataFailure())),
