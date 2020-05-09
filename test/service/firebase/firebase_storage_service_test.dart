@@ -16,6 +16,8 @@ void main() {
   final String imageUrl = 'imageUrl';
 
   final File mockedFile = MockedFile();
+  final MockedStorageUploadTask mockedStorageUploadTask =
+      MockedStorageUploadTask();
   final FirebaseStorage storage = getIt<FirebaseStorage>();
 
   FirebaseStorageService storageService;
@@ -33,7 +35,8 @@ void main() {
         when(storage.ref()).thenReturn(mockedStorageReference);
         when(mockedStorageReference.child(any))
             .thenReturn(mockedStorageReference);
-        when(mockedStorageReference.putFile(any)).thenReturn(null);
+        when(mockedStorageReference.putFile(any))
+            .thenReturn(mockedStorageUploadTask);
 
         storageService.uploadCollectionThumbnail(
             image: mockedFile, destinationName: imageTitle);
@@ -52,7 +55,8 @@ void main() {
         when(storage.ref()).thenReturn(mockedStorageReference);
         when(mockedStorageReference.child(any))
             .thenReturn(mockedStorageReference);
-        when(mockedStorageReference.putFile(any)).thenReturn(null);
+        when(mockedStorageReference.putFile(any))
+            .thenReturn(mockedStorageUploadTask);
 
         storageService.uploadItemImage(
             image: mockedFile, destinationName: imageTitle);

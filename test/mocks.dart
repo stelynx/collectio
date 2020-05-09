@@ -43,3 +43,5 @@ class MockedDocumentReference extends Mock implements DocumentReference {}
 class MockedStorageReference extends Mock implements StorageReference {}
 
 class MockedFile extends Mock implements File {}
+
+class MockedStorageUploadTask extends Mock implements StorageUploadTask {}

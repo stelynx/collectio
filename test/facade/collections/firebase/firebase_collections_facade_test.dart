@@ -315,11 +315,11 @@ void main() {
           .called(1);
     });
 
-    test('should return Right(null) on success', () async {
+    test('should return Right(null) on successful upload', () async {
       when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
               image: anyNamed('image'),
               destinationName: anyNamed('destinationName')))
-          .thenAnswer((_) async => null);
+          .thenAnswer((_) async => true);
 
       final Either<DataFailure, void> result =
           await firebaseCollectionsFacade.uploadCollectionThumbnail(
@@ -328,7 +328,20 @@ void main() {
       expect(result, equals(Right(null)));
     });
 
-    test('should return Left(DataFailure) on any failure', () async {
+    test('should return Left(DataFailure) on failed upload', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => false);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Left(DataFailure())));
+    });
+
+    test('should return Left(DataFailure) on any exception', () async {
       when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
               image: anyNamed('image'),
               destinationName: anyNamed('destinationName')))
@@ -357,11 +370,11 @@ void main() {
           .called(1);
     });
 
-    test('should return Right(null) on success', () async {
+    test('should return Right(null) on successful upload', () async {
       when(firebaseCollectionsFacade.storageService.uploadItemImage(
               image: anyNamed('image'),
               destinationName: anyNamed('destinationName')))
-          .thenAnswer((_) async => null);
+          .thenAnswer((_) async => true);
 
       final Either<DataFailure, void> result =
           await firebaseCollectionsFacade.uploadCollectionItemImage(
@@ -370,7 +383,20 @@ void main() {
       expect(result, equals(Right(null)));
     });
 
-    test('should return Left(DataFailure) on any failure', () async {
+    test('should return Left(DataFailure) on failed upload', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => false);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionItemImage(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Left(DataFailure())));
+    });
+
+    test('should return Left(DataFailure) on any exception', () async {
       when(firebaseCollectionsFacade.storageService.uploadItemImage(
               image: anyNamed('image'),
               destinationName: anyNamed('destinationName')))
