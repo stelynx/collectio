@@ -16,7 +16,7 @@ class NewCollectionScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => getIt<NewCollectionBloc>(),
-        child: NewCollectionForm(),
+        child: const NewCollectionForm(),
       ),
     );
   }
