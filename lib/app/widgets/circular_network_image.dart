@@ -12,7 +12,7 @@ class CircularNetworkImage extends StatelessWidget {
     return CircleAvatar(
       radius: _radius,
       backgroundImage: _url != null ? NetworkImage(_url) : null,
-      backgroundColor: _url == null ? Colors.transparent : Colors.red,
+      backgroundColor: _url != null ? Colors.transparent : Colors.red,
     );
   }
 }

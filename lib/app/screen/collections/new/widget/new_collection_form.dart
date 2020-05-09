@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:collectio/platform/image_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,7 +10,22 @@ import '../../../../../util/error/failure.dart';
 import '../../../../bloc/collections/new_collection_bloc.dart';
 
 class NewCollectionForm extends StatelessWidget {
-  const NewCollectionForm();
+  final ImageSelector _imageSelector;
+
+  const NewCollectionForm({@required ImageSelector imageSelector})
+      : _imageSelector = imageSelector;
+
+  void _getImage(
+    BuildContext context,
+    Future<File> Function() imageGetter,
+  ) async {
+    final File image = await imageGetter();
+    final File croppedImage =
+        await _imageSelector.cropThumbnailImage(image.path);
+    context
+        .bloc<NewCollectionBloc>()
+        .add(ImageChangedNewCollectionEvent(croppedImage));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +40,53 @@ class NewCollectionForm extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(20),
             children: <Widget>[
+              // Image
+              AspectRatio(
+                aspectRatio: 1 / 1,
+                child: GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                    context: context,
+                    builder: (_) => Container(
+                      height: 120,
+                      child: ListView(
+                        children: <Widget>[
+                          ListTile(
+                            trailing: Icon(Icons.photo_camera),
+                            title: Text('Camera'),
+                            onTap: () => _getImage(
+                              context,
+                              _imageSelector.takeImageWithCamera,
+                            ),
+                          ),
+                          ListTile(
+                            trailing: Icon(Icons.photo_library),
+                            title: Text('Photo library'),
+                            onTap: () => _getImage(
+                              context,
+                              _imageSelector.getImageFromPhotos,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  child: state.thumbnail == null
+                      ? Container(
+                          decoration: BoxDecoration(border: Border.all()),
+                          child: Center(
+                            child: Icon(
+                              Icons.add_a_photo,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        )
+                      : Image.file(state.thumbnail),
+                ),
+              ),
+
+              SizedBox(height: 20),
+
               // Title
               TextField(
                 autocorrect: false,

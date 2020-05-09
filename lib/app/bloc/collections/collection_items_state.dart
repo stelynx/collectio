@@ -9,6 +9,8 @@ abstract class CollectionItemsState extends Equatable {
 
 class InitialCollectionItemsState extends CollectionItemsState {}
 
+class LoadingCollectionItemsState extends CollectionItemsState {}
+
 class LoadedCollectionItemsState extends CollectionItemsState {
   final List<CollectionItem> collectionItems;
 

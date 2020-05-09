@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:collectio/util/function/image_name_generator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -23,7 +25,7 @@ part 'new_collection_event.dart';
 part 'new_collection_state.dart';
 
 @prod
-@lazySingleton
+@injectable
 class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
   final CollectionsFacade _collectionsFacade;
   final CollectionsBloc _collectionsBloc;
@@ -62,6 +64,12 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         dataFailure: null,
         overrideDataFailure: true,
       );
+    } else if (event is ImageChangedNewCollectionEvent) {
+      yield state.copyWith(
+        thumbnail: event.image,
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is SubmitNewCollectionEvent) {
       yield state.copyWith(isSubmitting: true);
 
@@ -69,35 +77,49 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           _collectionsBloc.state is LoadedCollectionsState &&
           state.title.isValid() &&
           state.subtitle.isValid() &&
-          state.description.isValid()) {
-        CompleteProfileState completeProfileState =
+          state.description.isValid() &&
+          state.thumbnail != null) {
+        final CompleteProfileState completeProfileState =
             _profileBloc.state as CompleteProfileState;
-        LoadedCollectionsState loadedCollectionsState =
+        final LoadedCollectionsState loadedCollectionsState =
             _collectionsBloc.state as LoadedCollectionsState;
 
         if (ListableFinder.findById(
                 loadedCollectionsState.collections, state.id) ==
             null) {
+          final String fileExtension = state.thumbnail.path
+              .substring(state.thumbnail.path.lastIndexOf('.') + 1);
+          final String imageUrl = getCollectionThumbnailName(
+              completeProfileState.userProfile.username,
+              state.id,
+              fileExtension);
+
           final Collection newCollection = Collection(
             id: state.id,
             owner: completeProfileState.userProfile.username,
             title: state.title.get(),
             subtitle: state.subtitle.get(),
             description: state.description.get(),
-            thumbnail: state.thumbnail,
+            thumbnail: imageUrl,
           );
 
           final Either<DataFailure, void> result =
               await _collectionsFacade.addCollection(newCollection);
 
-          if (result.isRight())
-            _collectionsBloc.add(GetCollectionsEvent(
-                username: completeProfileState.userProfile.username));
+          Either<DataFailure, void> uploadResult;
+          if (result.isRight()) {
+            uploadResult = await _collectionsFacade.uploadCollectionThumbnail(
+                image: state.thumbnail, destinationName: imageUrl);
+
+            if (uploadResult.isRight())
+              _collectionsBloc.add(GetCollectionsEvent(
+                  username: completeProfileState.userProfile.username));
+          }
 
           yield state.copyWith(
             isSubmitting: false,
             showErrorMessages: true,
-            dataFailure: result,
+            dataFailure: result.isLeft() ? result : uploadResult,
           );
         } else {
           yield state.copyWith(

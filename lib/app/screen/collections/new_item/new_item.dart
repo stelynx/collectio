@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../platform/image_selector.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/new_item_bloc.dart';
 import 'widgets/new_item_form.dart';
@@ -28,7 +29,9 @@ class NewItemScreen extends StatelessWidget {
             owner: owner,
             collection: collectionName,
           )),
-        child: NewItemForm(),
+        child: NewItemForm(
+          imageSelector: getIt<ImageSelector>(),
+        ),
       ),
     );
   }

@@ -1,4 +1,6 @@
 class Constants {
+  static String firebaseStorageBucket = 'gs://stelynx-collectio.appspot.com';
+
   // FirebaseAuth errors
   static String emailAlreadyInUseError = 'ERROR_EMAIL_ALREADY_IN_USE';
   static String wrongPasswordError = 'ERROR_WRONG_PASSWORD';

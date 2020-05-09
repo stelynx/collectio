@@ -12,7 +12,6 @@ void main() {
     subtitle: 'subtitle',
     description: 'description',
     thumbnail: null,
-    numberOfItems: 10,
   );
 
   Widget makeTestableWidget() =>
@@ -29,7 +28,7 @@ void main() {
   );
 
   testWidgets(
-    'should have a 4x2 Table with title, subtitle, description, and item count',
+    'should have a 4x2 Table with title, subtitle, and description',
     (WidgetTester tester) async {
       await tester.pumpWidget(makeTestableWidget());
 
@@ -37,16 +36,14 @@ void main() {
       expect(tableFinder, findsOneWidget);
 
       final Finder cellFinder = find.byType(TableCell);
-      expect(cellFinder, findsNWidgets(8));
+      expect(cellFinder, findsNWidgets(6));
 
       final Finder titleFinder = find.text('title');
       final Finder subtitleFinder = find.text('subtitle');
       final Finder descriptionFinder = find.text('description');
-      final Finder itemCountFinder = find.text('10');
       expect(titleFinder, findsOneWidget);
       expect(subtitleFinder, findsOneWidget);
       expect(descriptionFinder, findsOneWidget);
-      expect(itemCountFinder, findsOneWidget);
     },
   );
 }

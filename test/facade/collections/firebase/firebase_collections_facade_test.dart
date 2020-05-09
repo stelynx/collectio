@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collectio/facade/collections/firebase/firebase_collections_facade.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/service/data_service.dart';
+import 'package:collectio/service/storage_service.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -16,12 +19,15 @@ void main() {
   configureInjection(Environment.test);
 
   final String username = 'username';
+  final File mockedFile = MockedFile();
 
   FirebaseCollectionsFacade firebaseCollectionsFacade;
 
   setUp(() {
-    firebaseCollectionsFacade =
-        FirebaseCollectionsFacade(dataService: getIt<DataService>());
+    firebaseCollectionsFacade = FirebaseCollectionsFacade(
+      dataService: getIt<DataService>(),
+      storageService: getIt<StorageService>(),
+    );
   });
 
   group(('getCollectionsForUser'), () {
@@ -34,6 +40,79 @@ void main() {
       verify(firebaseCollectionsFacade.dataService
               .getCollectionsForUser(username))
           .called(1);
+    });
+
+    test('should call FirebaseStorageService to get images for collections',
+        () async {
+      when(firebaseCollectionsFacade.dataService.getCollectionsForUser(any))
+          .thenAnswer(
+        (_) async => MockedQuerySnapshot(
+          List<DocumentSnapshot>()
+            ..add(
+              MockedDocumentSnapshot(
+                'id',
+                {
+                  'owner': 'owner',
+                  'title': 'title',
+                  'subtitle': 'subtitle',
+                  'thumbnail': 'thumbnail',
+                  'description': 'description',
+                },
+              ),
+            )
+            ..add(
+              MockedDocumentSnapshot(
+                'id',
+                {
+                  'owner': 'owner',
+                  'title': 'title',
+                  'subtitle': 'subtitle',
+                  'thumbnail': 'thumbnail',
+                  'description': 'description',
+                },
+              ),
+            ),
+        ),
+      );
+      when(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => 'thumbnail');
+
+      await firebaseCollectionsFacade.getCollectionsForUser(username);
+
+      verify(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: 'thumbnail'))
+          .called(2);
+    });
+
+    test('should set thumbnails to null on failure', () async {
+      when(firebaseCollectionsFacade.dataService.getCollectionsForUser(any))
+          .thenAnswer(
+        (_) async => MockedQuerySnapshot(
+          List<DocumentSnapshot>()
+            ..add(
+              MockedDocumentSnapshot(
+                'id',
+                {
+                  'owner': 'owner',
+                  'title': 'title',
+                  'subtitle': 'subtitle',
+                  'thumbnail': 'thumbnail',
+                  'description': 'description',
+                },
+              ),
+            ),
+        ),
+      );
+      when(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: anyNamed('imageName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, List<Collection>> result =
+          await firebaseCollectionsFacade.getCollectionsForUser(username);
+
+      expect(result.isRight(), isTrue);
+      expect(result.getOrElse(null)[0].thumbnail, isNull);
     });
 
     test('should return a list of collections on success', () async {
@@ -55,6 +134,9 @@ void main() {
             ),
         ),
       );
+      when(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => 'thumbnail');
 
       final Either<DataFailure, List<Collection>> result =
           await firebaseCollectionsFacade.getCollectionsForUser(username);
@@ -220,6 +302,9 @@ void main() {
               username: anyNamed('username'),
               collectionName: anyNamed('collectionName')))
           .thenAnswer((_) async => MockedQuerySnapshot([documentSnapshot]));
+      when(firebaseCollectionsFacade.storageService
+              .getItemImageUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => 'imageUrl');
 
       final Either<DataFailure, List<CollectionItem>> result =
           await firebaseCollectionsFacade.getItemsInCollection(
@@ -227,6 +312,37 @@ void main() {
 
       expect(result.isRight(), isTrue);
       expect(result.getOrElse(null)[0], equals(collectionItem));
+    });
+
+    test('should set image URLs to null on failure', () async {
+      final Map<String, dynamic> firestoreCollectionItem = <String, dynamic>{
+        'added': Timestamp.fromMillisecondsSinceEpoch(10000),
+        'title': 'title',
+        'subtitle': 'subtitle',
+        'description': 'description',
+        'image': 'imageUrl',
+        'raiting': 10,
+      };
+      final MockedDocumentSnapshot documentSnapshot =
+          MockedDocumentSnapshot('documentID', firestoreCollectionItem);
+      final MockedDocumentReference documentReference =
+          MockedDocumentReference();
+      when(documentSnapshot.reference).thenReturn(documentReference);
+      when(documentReference.documentID).thenReturn('documentId');
+      when(firebaseCollectionsFacade.dataService.getItemsInCollection(
+              username: anyNamed('username'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => MockedQuerySnapshot([documentSnapshot]));
+      when(firebaseCollectionsFacade.storageService
+              .getItemImageUrl(imageName: anyNamed('imageName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, List<CollectionItem>> result =
+          await firebaseCollectionsFacade.getItemsInCollection(
+              'owner', 'collectionId');
+
+      expect(result.isRight(), isTrue);
+      expect(result.getOrElse(null)[0].thumbnail, isNull);
     });
   });
 
@@ -283,6 +399,116 @@ void main() {
       final Either<DataFailure, void> result =
           await firebaseCollectionsFacade.addItemToCollection(
               owner: 'owner', collectionName: 'collectionName', item: item);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
+  group('uploadCollectionThumbnail', () {
+    test('should call FirebaseStorageService with same arguments', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.uploadCollectionThumbnail(
+          image: mockedFile, destinationName: 'destinationName');
+
+      verify(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName'))
+          .called(1);
+    });
+
+    test('should return Right(null) on successful upload', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => true);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on failed upload', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => false);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Left(DataFailure())));
+    });
+
+    test('should return Left(DataFailure) on any exception', () async {
+      when(firebaseCollectionsFacade.storageService.uploadCollectionThumbnail(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionThumbnail(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
+  group('uploadCollectionItemImage', () {
+    test('should call FirebaseStorageService with same arguments', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.uploadCollectionItemImage(
+          image: mockedFile, destinationName: 'destinationName');
+
+      verify(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: mockedFile, destinationName: 'destinationName'))
+          .called(1);
+    });
+
+    test('should return Right(null) on successful upload', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => true);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionItemImage(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on failed upload', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => false);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionItemImage(
+              image: mockedFile, destinationName: 'destinationName');
+
+      expect(result, equals(Left(DataFailure())));
+    });
+
+    test('should return Left(DataFailure) on any exception', () async {
+      when(firebaseCollectionsFacade.storageService.uploadItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.uploadCollectionItemImage(
+              image: mockedFile, destinationName: 'destinationName');
 
       expect(result, equals(Left(DataFailure())));
     });

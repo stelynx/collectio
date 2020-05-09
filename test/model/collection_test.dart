@@ -17,7 +17,6 @@ void main() {
       'title': 'title',
       'subtitle': 'subtitle',
       'thumbnail': 'thumbnail',
-      'numberOfItems': 0,
     };
 
     final Map<String, dynamic> result = collection.toJson();
@@ -33,7 +32,6 @@ void main() {
       title: 'title',
       subtitle: 'subtitle',
       thumbnail: 'thumbnail',
-      numberOfItems: 3,
     );
     final Map<String, dynamic> collectionJson = <String, dynamic>{
       'owner': 'owner',
@@ -41,7 +39,6 @@ void main() {
       'title': 'title',
       'subtitle': 'subtitle',
       'thumbnail': 'thumbnail',
-      'numberOfItems': 3
     };
 
     final Collection result = Collection.fromJson(collectionJson);

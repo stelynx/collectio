@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/collections/collection_items_bloc.dart';
 import 'package:collectio/app/bloc/collections/new_item_bloc.dart';
@@ -13,8 +15,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../mocks.dart';
+
 void main() {
   configureInjection(Environment.test);
+
+  File mockedFile = MockedFile();
 
   CollectionsFacade mockedCollectionsFacade;
   CollectionItemsBloc mockedCollectionItemsBloc;
@@ -88,6 +94,18 @@ void main() {
   );
 
   blocTest(
+    'should set local image on image changed event',
+    build: () async => NewItemBloc(
+        collectionItemsBloc: mockedCollectionItemsBloc,
+        collectionsFacade: mockedCollectionsFacade),
+    act: (NewItemBloc bloc) async =>
+        bloc.add(ImageChangedNewItemEvent(mockedFile)),
+    expect: [
+      GeneralNewItemState(localImage: mockedFile),
+    ],
+  );
+
+  blocTest(
     'should start showing error messages on submit if owner is null',
     build: () async => NewItemBloc(
         collectionItemsBloc: mockedCollectionItemsBloc,
@@ -98,6 +116,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: null, collectionName: 'collectionName'),
@@ -134,6 +153,16 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: null,
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        raiting: 5,
+        localImage: mockedFile,
         showErrorMessages: true,
       ),
     ],
@@ -150,6 +179,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: 'owner', collectionName: null),
@@ -186,6 +216,16 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: null,
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        raiting: 5,
+        localImage: mockedFile,
         showErrorMessages: true,
       ),
     ],
@@ -202,6 +242,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: 'owner', collectionName: 'collectionName'),
@@ -229,6 +270,15 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        raiting: 5,
+        localImage: mockedFile,
         showErrorMessages: true,
       ),
     ],
@@ -245,6 +295,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: 'owner', collectionName: 'collectionName'),
@@ -272,6 +323,15 @@ void main() {
         title: Title('title'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        description: model.Description('description'),
+        raiting: 5,
+        localImage: mockedFile,
         showErrorMessages: true,
       ),
     ],
@@ -288,6 +348,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: 'owner', collectionName: 'collectionName'),
@@ -315,13 +376,22 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         raiting: 5,
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        raiting: 5,
+        localImage: mockedFile,
         showErrorMessages: true,
       ),
     ],
   );
 
   blocTest(
-    'should start showing error messages on submit if bad description',
+    'should start showing error messages on submit if bad raiting',
     build: () async => NewItemBloc(
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
@@ -331,6 +401,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: 'owner', collectionName: 'collectionName'),
@@ -358,6 +429,68 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        localImage: mockedFile,
+        showErrorMessages: true,
+      ),
+    ],
+  );
+
+  blocTest(
+    'should start showing error messages on submit if no image',
+    build: () async => NewItemBloc(
+        collectionItemsBloc: mockedCollectionItemsBloc,
+        collectionsFacade: mockedCollectionsFacade),
+    act: (NewItemBloc bloc) async => bloc
+      ..add(
+          InitializeNewItemEvent(owner: 'owner', collection: 'collectionName'))
+      ..add(TitleChangedNewItemEvent('title'))
+      ..add(SubtitleChangedNewItemEvent('subtitle'))
+      ..add(DescriptionChangedNewItemEvent('description'))
+      ..add(RaitingChangedNewItemEvent(6))
+      ..add(SubmitNewItemEvent()),
+    expect: [
+      GeneralNewItemState(owner: 'owner', collectionName: 'collectionName'),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        raiting: 6,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        raiting: 6,
         showErrorMessages: true,
       ),
     ],
@@ -365,9 +498,16 @@ void main() {
 
   blocTest(
     'should call CollectionsFacade if all fields are valid',
-    build: () async => NewItemBloc(
-        collectionItemsBloc: mockedCollectionItemsBloc,
-        collectionsFacade: mockedCollectionsFacade),
+    build: () async {
+      when(mockedFile.path).thenReturn('image.jpg');
+      when(mockedCollectionsFacade.uploadCollectionItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => Right(null));
+      return NewItemBloc(
+          collectionItemsBloc: mockedCollectionItemsBloc,
+          collectionsFacade: mockedCollectionsFacade);
+    },
     act: (NewItemBloc bloc) async => bloc
       ..add(
           InitializeNewItemEvent(owner: 'owner', collection: 'collectionName'))
@@ -375,6 +515,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     verify: (_) async => verify(mockedCollectionsFacade.addItemToCollection(
         owner: 'owner',
@@ -384,18 +525,23 @@ void main() {
           title: 'title',
           subtitle: 'subtitle',
           description: 'description',
-          imageUrl: '',
+          imageUrl: null, // imageUrl is not in the props
           raiting: 5,
         ))).called(1),
   );
 
   blocTest(
-    'should add GetCollectionItemsEvent to CollectionItemsBloc if adding item successful',
+    'should add GetCollectionItemsEvent to CollectionItemsBloc if adding item and image successful',
     build: () async {
+      when(mockedFile.path).thenReturn('path.jpg');
       when(mockedCollectionsFacade.addItemToCollection(
               owner: anyNamed('owner'),
               collectionName: anyNamed('collectionName'),
               item: anyNamed('item')))
+          .thenAnswer((_) async => Right(null));
+      when(mockedCollectionsFacade.uploadCollectionItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
           .thenAnswer((_) async => Right(null));
       return NewItemBloc(
           collectionItemsBloc: mockedCollectionItemsBloc,
@@ -403,21 +549,27 @@ void main() {
     },
     act: (NewItemBloc bloc) async => bloc
       ..add(
-          InitializeNewItemEvent(owner: 'owner', collection: 'collectionName'))
+          InitializeNewItemEvent(owner: 'owner1', collection: 'collectionName'))
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     verify: (_) async => verify(mockedCollectionItemsBloc.add(
       GetCollectionItemsEvent(
-          collectionOwner: 'owner', collectionName: 'collectionName'),
+          collectionOwner: 'owner1', collectionName: 'collectionName'),
     )).called(1),
   );
 
   blocTest(
     'should yield two states on submit if all fields are valid and adding successful',
     build: () async {
+      when(mockedFile.path).thenReturn('path.jpg');
+      when(mockedCollectionsFacade.uploadCollectionItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => Right(null));
       when(mockedCollectionsFacade.addItemToCollection(
               owner: anyNamed('owner'),
               collectionName: anyNamed('collectionName'),
@@ -434,6 +586,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: 'owner', collectionName: 'collectionName'),
@@ -470,6 +623,16 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        raiting: 5,
+        localImage: mockedFile,
         isSubmitting: true,
       ),
       GeneralNewItemState(
@@ -479,6 +642,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
         isSubmitting: false,
         showErrorMessages: true,
         dataFailure: Right(null),
@@ -489,6 +653,11 @@ void main() {
   blocTest(
     'should yield two states on submit if all fields are valid and adding unsuccessful',
     build: () async {
+      when(mockedFile.path).thenReturn('path.jpg');
+      when(mockedCollectionsFacade.uploadCollectionItemImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => Right(null));
       when(mockedCollectionsFacade.addItemToCollection(
               owner: anyNamed('owner'),
               collectionName: anyNamed('collectionName'),
@@ -505,6 +674,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
+      ..add(ImageChangedNewItemEvent(mockedFile))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(owner: 'owner', collectionName: 'collectionName'),
@@ -541,6 +711,16 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
+      ),
+      GeneralNewItemState(
+        owner: 'owner',
+        collectionName: 'collectionName',
+        title: Title('title'),
+        subtitle: Subtitle('subtitle'),
+        description: model.Description('description'),
+        raiting: 5,
+        localImage: mockedFile,
         isSubmitting: true,
       ),
       GeneralNewItemState(
@@ -550,6 +730,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
+        localImage: mockedFile,
         isSubmitting: false,
         showErrorMessages: true,
         dataFailure: Left(DataFailure()),
