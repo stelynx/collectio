@@ -42,6 +42,79 @@ void main() {
           .called(1);
     });
 
+    test('should call FirebaseStorageService to get images for collections',
+        () async {
+      when(firebaseCollectionsFacade.dataService.getCollectionsForUser(any))
+          .thenAnswer(
+        (_) async => MockedQuerySnapshot(
+          List<DocumentSnapshot>()
+            ..add(
+              MockedDocumentSnapshot(
+                'id',
+                {
+                  'owner': 'owner',
+                  'title': 'title',
+                  'subtitle': 'subtitle',
+                  'thumbnail': 'thumbnail',
+                  'description': 'description',
+                },
+              ),
+            )
+            ..add(
+              MockedDocumentSnapshot(
+                'id',
+                {
+                  'owner': 'owner',
+                  'title': 'title',
+                  'subtitle': 'subtitle',
+                  'thumbnail': 'thumbnail',
+                  'description': 'description',
+                },
+              ),
+            ),
+        ),
+      );
+      when(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => 'thumbnail');
+
+      await firebaseCollectionsFacade.getCollectionsForUser(username);
+
+      verify(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: 'thumbnail'))
+          .called(2);
+    });
+
+    test('should set thumbnails to null on failure', () async {
+      when(firebaseCollectionsFacade.dataService.getCollectionsForUser(any))
+          .thenAnswer(
+        (_) async => MockedQuerySnapshot(
+          List<DocumentSnapshot>()
+            ..add(
+              MockedDocumentSnapshot(
+                'id',
+                {
+                  'owner': 'owner',
+                  'title': 'title',
+                  'subtitle': 'subtitle',
+                  'thumbnail': 'thumbnail',
+                  'description': 'description',
+                },
+              ),
+            ),
+        ),
+      );
+      when(firebaseCollectionsFacade.storageService
+              .getCollectionThumbnailUrl(imageName: anyNamed('imageName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, List<Collection>> result =
+          await firebaseCollectionsFacade.getCollectionsForUser(username);
+
+      expect(result.isRight(), isTrue);
+      expect(result.getOrElse(null)[0].thumbnail, isNull);
+    });
+
     test('should return a list of collections on success', () async {
       when(firebaseCollectionsFacade.dataService.getCollectionsForUser(any))
           .thenAnswer(
@@ -239,6 +312,46 @@ void main() {
 
       expect(result.isRight(), isTrue);
       expect(result.getOrElse(null)[0], equals(collectionItem));
+    });
+
+    test('should set image URLs to null on failure', () async {
+      final Map<String, dynamic> firestoreCollectionItem = <String, dynamic>{
+        'added': Timestamp.fromMillisecondsSinceEpoch(10000),
+        'title': 'title',
+        'subtitle': 'subtitle',
+        'description': 'description',
+        'image': 'imageUrl',
+        'raiting': 10,
+      };
+      final CollectionItem collectionItem = CollectionItem(
+        id: 'documentId',
+        added: DateTime.fromMillisecondsSinceEpoch(10000),
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        imageUrl: 'imageUrl',
+        raiting: 10,
+      );
+      final MockedDocumentSnapshot documentSnapshot =
+          MockedDocumentSnapshot('documentID', firestoreCollectionItem);
+      final MockedDocumentReference documentReference =
+          MockedDocumentReference();
+      when(documentSnapshot.reference).thenReturn(documentReference);
+      when(documentReference.documentID).thenReturn('documentId');
+      when(firebaseCollectionsFacade.dataService.getItemsInCollection(
+              username: anyNamed('username'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => MockedQuerySnapshot([documentSnapshot]));
+      when(firebaseCollectionsFacade.storageService
+              .getItemImageUrl(imageName: anyNamed('imageName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, List<CollectionItem>> result =
+          await firebaseCollectionsFacade.getItemsInCollection(
+              'owner', 'collectionId');
+
+      expect(result.isRight(), isTrue);
+      expect(result.getOrElse(null)[0].thumbnail, isNull);
     });
   });
 
