@@ -87,8 +87,4 @@ class GeneralNewCollectionState extends NewCollectionState {
           isSubmitting: isSubmitting ?? false,
           dataFailure: dataFailure ?? null,
         );
-
-  @override
-  String toString() =>
-      'GeneralNewCollectionState(${title.get()}, ${subtitle.get()}, ${description.get()}, $thumbnail, $showErrorMessages, $isSubmitting, $dataFailure)';
 }
