@@ -323,15 +323,6 @@ void main() {
         'image': 'imageUrl',
         'raiting': 10,
       };
-      final CollectionItem collectionItem = CollectionItem(
-        id: 'documentId',
-        added: DateTime.fromMillisecondsSinceEpoch(10000),
-        title: 'title',
-        subtitle: 'subtitle',
-        description: 'description',
-        imageUrl: 'imageUrl',
-        raiting: 10,
-      );
       final MockedDocumentSnapshot documentSnapshot =
           MockedDocumentSnapshot('documentID', firestoreCollectionItem);
       final MockedDocumentReference documentReference =
