@@ -6,6 +6,8 @@ import '../../../../util/error/validation_failure.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/auth/sign_in_bloc.dart';
 import '../../../routes/routes.dart';
+import '../../../widgets/collectio_button.dart';
+import '../../../widgets/collectio_text_field.dart';
 
 class SignInForm extends StatelessWidget {
   const SignInForm({Key key}) : super(key: key);
@@ -32,71 +34,64 @@ class SignInForm extends StatelessWidget {
       builder: (context, state) {
         return Center(
           child: ListView(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(20),
             children: <Widget>[
               // Email field
-              TextField(
-                autocorrect: false,
+              CollectioTextField(
                 onChanged: (String value) => context
                     .bloc<SignInBloc>()
                     .add(EmailChangedSignInEvent(email: value)),
-                decoration: InputDecoration(
-                  errorText: state.showErrorMessages && !state.email.isValid()
-                      ? state.email.value.fold(
-                          (ValidationFailure failure) =>
-                              failure is EmailEmptyValidationFailure
-                                  ? 'Fill in email'
-                                  : 'Invalid email',
-                          (_) => null,
-                        )
-                      : null,
-                ),
+                labelText: 'Email',
+                errorText: state.showErrorMessages && !state.email.isValid()
+                    ? state.email.value.fold(
+                        (ValidationFailure failure) =>
+                            failure is EmailEmptyValidationFailure
+                                ? 'Fill in email'
+                                : 'Invalid email',
+                        (_) => null,
+                      )
+                    : null,
               ),
 
               const SizedBox(height: 10),
 
               // Password field
-              TextField(
-                autocorrect: false,
+              CollectioTextField(
                 obscureText: true,
                 onChanged: (String value) => context
                     .bloc<SignInBloc>()
                     .add(PasswordChangedSignInEvent(password: value)),
-                decoration: InputDecoration(
-                  errorText:
-                      state.showErrorMessages && !state.password.isValid()
-                          ? 'Invalid password'
-                          : null,
-                ),
+                labelText: 'Password',
+                errorText: state.showErrorMessages && !state.password.isValid()
+                    ? 'Invalid password'
+                    : null,
               ),
 
               const SizedBox(height: 10),
 
               if (state.isRegistering) ...[
                 // Username field
-                TextField(
-                  autocorrect: false,
+                CollectioTextField(
                   onChanged: (String value) => context
                       .bloc<SignInBloc>()
                       .add(UsernameChangedSignInEvent(username: value)),
-                  decoration: InputDecoration(
-                    errorText: state.showErrorMessages &&
-                            !state.username.isValid()
-                        ? state.username.value.fold(
-                            (ValidationFailure failure) => failure
-                                    is UsernameTooShortValidationFailure
-                                ? 'Username too short'
-                                : 'Invalid username. Use only alphanumeric values!',
-                            (_) => null)
-                        : null,
-                  ),
+                  labelText: 'Username',
+                  errorText: state.showErrorMessages &&
+                          !state.username.isValid()
+                      ? state.username.value.fold(
+                          (ValidationFailure failure) => failure
+                                  is UsernameTooShortValidationFailure
+                              ? 'Username too short'
+                              : 'Invalid username. Use only alphanumeric values!',
+                          (_) => null)
+                      : null,
                 ),
 
                 SizedBox(height: 10),
               ],
 
               // Sign in with email and password button
-              RaisedButton(
+              CollectioButton(
                 onPressed: () => context
                     .bloc<SignInBloc>()
                     .add(SignInWithEmailAndPasswordSignInEvent()),
@@ -106,7 +101,7 @@ class SignInForm extends StatelessWidget {
               const SizedBox(height: 10),
 
               // Sign in with email and password button
-              RaisedButton(
+              CollectioButton(
                 onPressed: () {
                   if (state.isRegistering && state.username.isValid()) {
                     context
@@ -124,7 +119,7 @@ class SignInForm extends StatelessWidget {
               // Linear progress indicator if submitting the form
               if (state.isSubmitting) ...[
                 const SizedBox(height: 10),
-                const LinearProgressIndicator(),
+                const CircularProgressIndicator(),
               ],
             ],
           ),
