@@ -9,7 +9,6 @@ import 'package:collectio/model/value_object/description.dart' as model;
 import 'package:collectio/model/value_object/subtitle.dart';
 import 'package:collectio/model/value_object/title.dart';
 import 'package:collectio/util/error/data_failure.dart';
-import 'package:collectio/util/function/image_name_generator.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
