@@ -84,17 +84,19 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           state.localImage != null) {
         yield state.copyWith(isSubmitting: true);
 
+        final DateTime now = DateTime.now();
+
         final String fileExtension = state.localImage.path
             .substring(state.localImage.path.lastIndexOf('.') + 1);
         final String imageUrl = getItemImageName(
           state.owner,
           state.collectionName,
-          state.title.get(),
+          now.millisecondsSinceEpoch.toString(),
           fileExtension,
         );
 
         final CollectionItem collectionItem = CollectionItem(
-          added: DateTime.now(),
+          added: now,
           title: state.title.get(),
           subtitle: state.subtitle.get(),
           description: state.description.get(),

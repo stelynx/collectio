@@ -48,7 +48,6 @@ class CollectionItem extends Equatable implements Listable {
         title,
         subtitle,
         description,
-        imageUrl,
         raiting,
       ];
 }

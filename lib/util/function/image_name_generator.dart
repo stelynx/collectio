@@ -1,12 +1,10 @@
-import 'package:collectio/util/function/id_generator.dart';
-
 String getItemImageName(
   String owner,
   String collectionName,
-  String itemTitle,
+  String uniqueIdentificator,
   String fileExtension,
 ) =>
-    '${owner}_${collectionName}_${getId(itemTitle)}.$fileExtension';
+    '${owner}_${collectionName}_$uniqueIdentificator.$fileExtension';
 
 String getCollectionThumbnailName(
   String owner,

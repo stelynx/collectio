@@ -526,43 +526,9 @@ void main() {
           title: 'title',
           subtitle: 'subtitle',
           description: 'description',
-          imageUrl: getItemImageName('owner', 'collectionName', 'title', 'jpg'),
+          imageUrl: null, // imageUrl is not in the props
           raiting: 5,
         ))).called(1),
-  );
-
-  blocTest(
-    'should call CollectionsFacade to upload image if saving item was successful',
-    build: () async {
-      when(mockedFile.path).thenReturn('image.jpg');
-      when(mockedCollectionsFacade.addItemToCollection(
-              owner: anyNamed('owner'),
-              collectionName: anyNamed('collectionName'),
-              item: anyNamed('item')))
-          .thenAnswer((_) async => Right(null));
-      when(mockedCollectionsFacade.uploadCollectionItemImage(
-              image: anyNamed('image'),
-              destinationName: anyNamed('destinationName')))
-          .thenAnswer((_) async => Right(null));
-      return NewItemBloc(
-          collectionItemsBloc: mockedCollectionItemsBloc,
-          collectionsFacade: mockedCollectionsFacade);
-    },
-    act: (NewItemBloc bloc) async => bloc
-      ..add(
-          InitializeNewItemEvent(owner: 'owner', collection: 'collectionName'))
-      ..add(TitleChangedNewItemEvent('title'))
-      ..add(SubtitleChangedNewItemEvent('subtitle'))
-      ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
-      ..add(SubmitNewItemEvent()),
-    verify: (_) async => verify(
-            mockedCollectionsFacade.uploadCollectionItemImage(
-                image: mockedFile,
-                destinationName: getItemImageName(
-                    'owner', 'collectionName', 'title', 'jpg')))
-        .called(1),
   );
 
   blocTest(
