@@ -15,19 +15,7 @@ import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_text_field.dart';
 
 class NewItemForm extends StatelessWidget {
-  final ImageSelector _imageSelector;
-
-  const NewItemForm({@required ImageSelector imageSelector})
-      : _imageSelector = imageSelector;
-
-  void _getImage(
-    BuildContext context,
-    Future<File> Function() imageGetter,
-  ) async {
-    final File image = await imageGetter();
-    final File croppedImage = await _imageSelector.cropItemImage(image.path);
-    context.bloc<NewItemBloc>().add(ImageChangedNewItemEvent(croppedImage));
-  }
+  const NewItemForm();
 
   @override
   Widget build(BuildContext context) {
