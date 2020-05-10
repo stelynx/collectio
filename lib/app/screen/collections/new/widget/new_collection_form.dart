@@ -1,31 +1,20 @@
 import 'dart:io';
 
-import 'package:collectio/platform/image_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/constants.dart';
 import '../../../../../util/error/data_failure.dart';
 import '../../../../../util/error/failure.dart';
+import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_collection_bloc.dart';
+import '../../../../widgets/collectio_button.dart';
+import '../../../../widgets/collectio_image_picker.dart';
+import '../../../../widgets/collectio_text_field.dart';
 
 class NewCollectionForm extends StatelessWidget {
-  final ImageSelector _imageSelector;
-
-  const NewCollectionForm({@required ImageSelector imageSelector})
-      : _imageSelector = imageSelector;
-
-  void _getImage(
-    BuildContext context,
-    Future<File> Function() imageGetter,
-  ) async {
-    final File image = await imageGetter();
-    final File croppedImage =
-        await _imageSelector.cropThumbnailImage(image.path);
-    context
-        .bloc<NewCollectionBloc>()
-        .add(ImageChangedNewCollectionEvent(croppedImage));
-  }
+  const NewCollectionForm();
 
   @override
   Widget build(BuildContext context) {
@@ -41,66 +30,29 @@ class NewCollectionForm extends StatelessWidget {
             padding: EdgeInsets.all(20),
             children: <Widget>[
               // Image
-              AspectRatio(
+              CollectioImagePicker(
+                imageSelector: getIt<ImageSelector>(),
+                parentContext: context,
                 aspectRatio: 1 / 1,
-                child: GestureDetector(
-                  onTap: () => showModalBottomSheet(
-                    context: context,
-                    builder: (_) => Container(
-                      height: 120,
-                      child: ListView(
-                        children: <Widget>[
-                          ListTile(
-                            trailing: Icon(Icons.photo_camera),
-                            title: Text('Camera'),
-                            onTap: () => _getImage(
-                              context,
-                              _imageSelector.takeImageWithCamera,
-                            ),
-                          ),
-                          ListTile(
-                            trailing: Icon(Icons.photo_library),
-                            title: Text('Photo library'),
-                            onTap: () => _getImage(
-                              context,
-                              _imageSelector.getImageFromPhotos,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  child: state.thumbnail == null
-                      ? Container(
-                          decoration: BoxDecoration(border: Border.all()),
-                          child: Center(
-                            child: Icon(
-                              Icons.add_a_photo,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        )
-                      : Image.file(state.thumbnail),
-                ),
+                thumbnail: state.thumbnail,
+                croppedImageHandler: (File croppedImage) => context
+                    .bloc<NewCollectionBloc>()
+                    .add(ImageChangedNewCollectionEvent(croppedImage)),
               ),
 
               SizedBox(height: 20),
 
               // Title
-              TextField(
-                autocorrect: false,
-                autofocus: true,
-                decoration: InputDecoration(
-                    labelText: 'Title',
-                    errorText: state.showErrorMessages && !state.title.isValid()
-                        ? state.title.value.fold(
-                            (ValidationFailure failure) =>
-                                failure is TitleEmptyValidationFailure
-                                    ? Constants.emptyValidationFailure
-                                    : Constants.titleValidationFailure,
-                            (_) => null)
-                        : null),
+              CollectioTextField(
+                labelText: 'Title',
+                errorText: state.showErrorMessages && !state.title.isValid()
+                    ? state.title.value.fold(
+                        (ValidationFailure failure) =>
+                            failure is TitleEmptyValidationFailure
+                                ? Constants.emptyValidationFailure
+                                : Constants.titleValidationFailure,
+                        (_) => null)
+                    : null,
                 onChanged: (String value) => context
                     .bloc<NewCollectionBloc>()
                     .add(TitleChangedNewCollectionEvent(value)),
@@ -109,19 +61,16 @@ class NewCollectionForm extends StatelessWidget {
               SizedBox(height: 10),
 
               // Subtitle
-              TextField(
-                autocorrect: false,
-                decoration: InputDecoration(
-                    labelText: 'Subtitle',
-                    errorText:
-                        state.showErrorMessages && !state.subtitle.isValid()
-                            ? state.subtitle.value.fold(
-                                (ValidationFailure failure) =>
-                                    failure is SubtitleEmptyValidationFailure
-                                        ? Constants.emptyValidationFailure
-                                        : Constants.subtitleValidationFailure,
-                                (_) => null)
-                            : null),
+              CollectioTextField(
+                labelText: 'Subtitle',
+                errorText: state.showErrorMessages && !state.subtitle.isValid()
+                    ? state.subtitle.value.fold(
+                        (ValidationFailure failure) =>
+                            failure is SubtitleEmptyValidationFailure
+                                ? Constants.emptyValidationFailure
+                                : Constants.subtitleValidationFailure,
+                        (_) => null)
+                    : null,
                 onChanged: (String value) => context
                     .bloc<NewCollectionBloc>()
                     .add(SubtitleChangedNewCollectionEvent(value)),
@@ -130,20 +79,18 @@ class NewCollectionForm extends StatelessWidget {
               SizedBox(height: 10),
 
               // Description
-              TextField(
-                autocorrect: false,
+              CollectioTextField(
                 maxLines: null,
-                decoration: InputDecoration(
-                    labelText: 'Description',
-                    errorText: state.showErrorMessages &&
-                            !state.description.isValid()
+                labelText: 'Description',
+                errorText:
+                    state.showErrorMessages && !state.description.isValid()
                         ? state.description.value.fold(
                             (ValidationFailure failure) =>
                                 failure is DescriptionEmptyValidationFailure
                                     ? Constants.emptyValidationFailure
                                     : Constants.descriptionValidationFailure,
                             (_) => null)
-                        : null),
+                        : null,
                 onChanged: (String value) => context
                     .bloc<NewCollectionBloc>()
                     .add(DescriptionChangedNewCollectionEvent(value)),
@@ -164,7 +111,7 @@ class NewCollectionForm extends StatelessWidget {
                 Center(child: CircularProgressIndicator()),
               ] else ...[
                 // Submit
-                RaisedButton(
+                CollectioButton(
                   onPressed: () => context
                       .bloc<NewCollectionBloc>()
                       .add(SubmitNewCollectionEvent()),
@@ -172,7 +119,7 @@ class NewCollectionForm extends StatelessWidget {
                 ),
 
                 // Cancel
-                RaisedButton(
+                CollectioButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text('Cancel'),
                 ),
