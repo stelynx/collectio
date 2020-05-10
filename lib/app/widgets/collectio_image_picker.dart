@@ -46,12 +46,18 @@ class CollectioImagePicker extends StatelessWidget {
                 ListTile(
                   trailing: Icon(Icons.photo_camera),
                   title: Text('Camera'),
-                  onTap: () => _getImage(_imageSelector.takeImageWithCamera),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _getImage(_imageSelector.takeImageWithCamera);
+                  },
                 ),
                 ListTile(
                   trailing: Icon(Icons.photo_library),
                   title: Text('Photo library'),
-                  onTap: () => _getImage(_imageSelector.getImageFromPhotos),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _getImage(_imageSelector.getImageFromPhotos);
+                  },
                 ),
               ],
             ),
