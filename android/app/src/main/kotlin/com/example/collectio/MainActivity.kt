@@ -1,4 +1,4 @@
-package com.example.collectio
+package com.stelynx.collectio
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

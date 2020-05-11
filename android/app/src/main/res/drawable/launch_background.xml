@@ -3,7 +3,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <bitmap
-            android:gravity="center"
-            android:src="@mipmap/launch_image" />
+            android:gravity="fill"
+            android:src="@mipmap/launch_image"
+            android:adjustViewBounds="true" />
     </item>
 </layer-list>
