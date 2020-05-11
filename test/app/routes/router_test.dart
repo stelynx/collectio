@@ -2,12 +2,14 @@ import 'package:collectio/app/routes/router.dart';
 import 'package:collectio/app/routes/routes.dart';
 import 'package:collectio/app/screen/auth/sign_in.dart';
 import 'package:collectio/app/screen/collections/all/collections.dart';
+import 'package:collectio/app/screen/collections/item_details/item_details.dart';
 import 'package:collectio/app/screen/collections/new/new_collection_screen.dart';
 import 'package:collectio/app/screen/collections/new_item/new_item.dart';
 import 'package:collectio/app/screen/collections/one/collection.dart';
 import 'package:collectio/app/screen/initial.dart';
 import 'package:collectio/app/screen/shared/error.dart';
 import 'package:collectio/model/collection.dart';
+import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -72,6 +74,28 @@ void main() {
         final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
 
         expect(result.builder(null), isA<CollectionScreen>());
+      },
+    );
+
+    test(
+      'should map Routes.item to ItemDetailsScreen with given item for display',
+      () {
+        final String path = Routes.item;
+        final CollectionItem item = CollectionItem(
+          id: 'title',
+          title: 'title',
+          subtitle: 'subtitle',
+          description: 'description',
+          imageUrl: '',
+          added: null,
+          raiting: 10,
+        );
+        final RouteSettings routeSettings =
+            RouteSettings(name: path, arguments: item);
+
+        final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+
+        expect(result.builder(null), isA<ItemDetailsScreen>());
       },
     );
 
