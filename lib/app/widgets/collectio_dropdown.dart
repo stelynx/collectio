@@ -11,7 +11,7 @@ class CollectioDropdown<T> extends StatelessWidget {
     @required this.value,
     @required this.items,
     @required this.hint,
-    @required this.onChanged,
+    this.onChanged,
     this.icon,
   });
 
@@ -21,7 +21,9 @@ class CollectioDropdown<T> extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
         decoration: BoxDecoration(
-          border: Border.all(),
+          border: onChanged == null
+              ? Border.all(color: Colors.black54)
+              : Border.all(),
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         child: DropdownButton(
@@ -39,6 +41,7 @@ class CollectioDropdown<T> extends StatelessWidget {
               .toList(),
           onChanged: onChanged,
           hint: Text(hint),
+          disabledHint: Text(value.toString()),
         ),
       ),
     );

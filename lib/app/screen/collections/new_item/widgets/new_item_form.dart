@@ -104,6 +104,7 @@ class NewItemForm extends StatelessWidget {
                 value: state.raiting,
                 items: List<int>.generate(10, (int i) => i + 1),
                 hint: 'Raiting',
+                icon: Icon(Icons.star),
                 onChanged: (int value) => context
                     .bloc<NewItemBloc>()
                     .add(RaitingChangedNewItemEvent(value)),

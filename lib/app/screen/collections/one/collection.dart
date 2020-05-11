@@ -51,7 +51,8 @@ class CollectionScreen extends StatelessWidget {
                 return Expanded(
                   child: CollectioList(
                     items: state.collectionItems,
-                    onTap: (CollectionItem item) => print(item.title),
+                    onTap: (CollectionItem item) => Navigator.of(context)
+                        .pushNamed(Routes.item, arguments: item),
                   ),
                 );
 
