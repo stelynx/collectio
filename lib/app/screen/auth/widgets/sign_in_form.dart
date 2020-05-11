@@ -34,6 +34,7 @@ class SignInForm extends StatelessWidget {
       builder: (context, state) {
         return Center(
           child: ListView(
+            shrinkWrap: true,
             padding: const EdgeInsets.all(20),
             children: <Widget>[
               // Email field
