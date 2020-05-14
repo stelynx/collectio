@@ -25,6 +25,14 @@ void main() {
     collectionsBloc = getIt<CollectionsBloc>();
   });
 
+  testWidgets('should have logout button', (WidgetTester tester) async {
+    await tester.pumpWidget(makeTestableWidget());
+
+    final Finder logoutFinder = find.byIcon(Icons.exit_to_app);
+
+    expect(logoutFinder, findsOneWidget);
+  });
+
   testWidgets(
     'should show CircularProgressIndicator on Initial and Loading',
     (WidgetTester tester) async {
