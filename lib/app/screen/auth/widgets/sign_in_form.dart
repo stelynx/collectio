@@ -8,6 +8,7 @@ import '../../../bloc/auth/sign_in_bloc.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets/collectio_button.dart';
 import '../../../widgets/collectio_text_field.dart';
+import '../../../widgets/failure_text.dart';
 
 class SignInForm extends StatelessWidget {
   const SignInForm({Key key}) : super(key: key);
@@ -16,19 +17,11 @@ class SignInForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SignInBloc, SignInState>(
       listener: (context, state) {
-        if (state.authFailure != null) {
-          state.authFailure.fold(
-            (AuthFailure failure) {
-              print(failure);
-            },
-            (_) {
-              if (!state.isRegistering) {
-                context.bloc<AuthBloc>().add(CheckStatusAuthEvent());
-                Navigator.of(context)
-                    .pushReplacementNamed(Routes.myCollections);
-              }
-            },
-          );
+        if (state.authFailure != null &&
+            state.authFailure.isRight() &&
+            !state.isRegistering) {
+          context.bloc<AuthBloc>().add(CheckStatusAuthEvent());
+          Navigator.of(context).pushReplacementNamed(Routes.myCollections);
         }
       },
       builder: (context, state) {
@@ -88,7 +81,15 @@ class SignInForm extends StatelessWidget {
                       : null,
                 ),
 
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
+              ],
+
+              if (state.authFailure != null && state.authFailure.isLeft()) ...[
+                const SizedBox(height: 10),
+                state.authFailure.fold(
+                    (AuthFailure failure) => FailureText(failure.message),
+                    null),
+                const SizedBox(height: 20),
               ],
 
               // Sign in with email and password button
@@ -120,7 +121,7 @@ class SignInForm extends StatelessWidget {
               // Linear progress indicator if submitting the form
               if (state.isSubmitting) ...[
                 const SizedBox(height: 10),
-                const CircularProgressIndicator(),
+                const Center(child: const CircularProgressIndicator()),
               ],
             ],
           ),

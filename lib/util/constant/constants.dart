@@ -1,33 +1,42 @@
 class Constants {
-  static String firebaseStorageBucket = 'gs://stelynx-collectio.appspot.com';
+  static const String firebaseStorageBucket =
+      'gs://stelynx-collectio.appspot.com';
 
   // FirebaseAuth errors
-  static String emailAlreadyInUseError = 'ERROR_EMAIL_ALREADY_IN_USE';
-  static String wrongPasswordError = 'ERROR_WRONG_PASSWORD';
-  static String userNotFoundError = 'ERROR_USER_NOT_FOUND';
-  static String emailMalformedError = 'ERROR_INVALID_CREDENTIAL';
+  static const String emailAlreadyInUseError = 'ERROR_EMAIL_ALREADY_IN_USE';
+  static const String wrongPasswordError = 'ERROR_WRONG_PASSWORD';
+  static const String userNotFoundError = 'ERROR_USER_NOT_FOUND';
+  static const String emailMalformedError = 'ERROR_INVALID_CREDENTIAL';
 
   // Messages for ErrorScreen
-  static String unknownRouteMessage = 'Unknown route';
-  static String unknownStateMessage = 'Your app is in unknown state!';
+  static const String unknownRouteMessage = 'Unknown route';
+  static const String unknownStateMessage = 'Your app is in unknown state!';
 
   // Firestore
-  static String userCollection = 'stelynx_user';
-  static String userUidField = 'userUid';
-  static String usernameField = 'username';
+  static const String userCollection = 'stelynx_user';
+  static const String userUidField = 'userUid';
+  static const String usernameField = 'username';
+
+  // AuthFailure messages
+  static const String invalidCombination = 'Invalid username and password';
+  static const String cannotSignout = 'Cannot sign out right now';
+  static const String emailInUse = 'Email already in use';
+  static const String usernameInUse = 'Username already in use';
+  static const String serverFailure = 'Server error, please try again';
 
   // DataFailure messages
-  static String notExactlyOneObjectFound = 'Zero or too many objects found';
-  static String noItems = 'There were no items matching this criteria';
-  static String collectionTitleExists =
+  static const String notExactlyOneObjectFound =
+      'Zero or too many objects found';
+  static const String noItems = 'There were no items matching this criteria';
+  static const String collectionTitleExists =
       'A title provided maps to the existing collection';
 
-  static String collectionItemsFailure =
+  static const String collectionItemsFailure =
       'An error occured while fetching items, please refresh';
   // ValidationFailure messages
-  static String emptyValidationFailure = 'Cannot be empty';
-  static String titleValidationFailure =
+  static const String emptyValidationFailure = 'Cannot be empty';
+  static const String titleValidationFailure =
       'Title can contain only alphanumeric values and spaces';
-  static String subtitleValidationFailure = 'Invalid subtitle';
-  static String descriptionValidationFailure = 'Invalid description';
+  static const String subtitleValidationFailure = 'Invalid subtitle';
+  static const String descriptionValidationFailure = 'Invalid description';
 }
