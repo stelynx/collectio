@@ -284,6 +284,8 @@ void main() {
         'raiting': 10,
       };
       final CollectionItem collectionItem = CollectionItem(
+        owner: 'owner',
+        collectionId: 'collectionId',
         id: 'documentId',
         added: DateTime.fromMillisecondsSinceEpoch(10000),
         title: 'title',

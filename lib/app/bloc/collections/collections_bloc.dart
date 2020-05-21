@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
+import '../../../util/constant/constants.dart';
 import '../../../util/error/data_failure.dart';
 import '../profile/profile_bloc.dart';
 
@@ -58,6 +59,27 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
         (List<Collection> collections) =>
             LoadedCollectionsState(collections: collections),
       );
+    } else if (event is DeleteCollectionCollectionsEvent) {
+      if (state is LoadedCollectionsState) {
+        final Either<DataFailure, void> result =
+            await _collectionsFacade.deleteCollection(event.collection);
+
+        if (result.isRight()) {
+          final List<Collection> collections =
+              (state as LoadedCollectionsState).collections;
+          collections.remove(event.collection);
+
+          yield LoadedCollectionsState(
+            collections: collections,
+            toastMessage: Constants.collectionDeleted,
+          );
+        } else {
+          yield LoadedCollectionsState(
+            collections: (state as LoadedCollectionsState).collections,
+            toastMessage: Constants.collectionDeletionFailed,
+          );
+        }
+      }
     }
   }
 }

@@ -74,6 +74,23 @@ class FirebaseDataService extends DataService {
           .collection(Constants.userCollection)
           .document(id)
           .setData(userProfile);
+
+  @override
+  Future<void> deleteCollection({
+    @required String owner,
+    @required String collectionName,
+  }) =>
+      _firestore.document('${owner}_collection/$collectionName').delete();
+
+  @override
+  Future<void> deleteItemInCollection({
+    @required String owner,
+    @required String collectionName,
+    @required String itemId,
+  }) =>
+      _firestore
+          .document('${owner}_collection/$collectionName/items/$itemId')
+          .delete();
 }
 
 @test

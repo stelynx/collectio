@@ -14,3 +14,12 @@ class GetCollectionItemsEvent extends CollectionItemsEvent {
   @override
   List<Object> get props => [collectionOwner, collectionName];
 }
+
+class DeleteItemCollectionItemsEvent extends CollectionItemsEvent {
+  final CollectionItem item;
+
+  const DeleteItemCollectionItemsEvent(this.item);
+
+  @override
+  List<Object> get props => [item];
+}

@@ -24,12 +24,15 @@ class CollectioImagePicker extends StatelessWidget {
   void _getImage(Future<File> Function() imageGetter) async {
     final File image = await imageGetter();
 
+    if (image == null) return;
+
     File croppedImage;
     if (aspectRatio == 1 / 1)
       croppedImage = await _imageSelector.cropThumbnailImage(image.path);
     else if (aspectRatio == 16 / 9)
       croppedImage = await _imageSelector.cropItemImage(image.path);
-    croppedImageHandler(croppedImage);
+
+    if (croppedImage != null) croppedImageHandler(croppedImage);
   }
 
   @override

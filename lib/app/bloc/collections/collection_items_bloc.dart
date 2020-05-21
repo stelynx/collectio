@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection_item.dart';
+import '../../../util/constant/constants.dart';
 import '../../../util/error/data_failure.dart';
 
 part 'collection_items_event.dart';
@@ -41,6 +42,27 @@ class CollectionItemsBloc
         yield LoadedCollectionItemsState(items.getOrElse(null));
       } else {
         yield ErrorCollectionItemsState();
+      }
+    } else if (event is DeleteItemCollectionItemsEvent) {
+      if (state is LoadedCollectionItemsState) {
+        final Either<DataFailure, void> result = await _collectionsFacade
+            .deleteItemInCollection(collectionItem: event.item);
+
+        if (result.isRight()) {
+          final List<CollectionItem> items =
+              (state as LoadedCollectionItemsState).collectionItems;
+          items.remove(event.item);
+
+          yield LoadedCollectionItemsState(
+            items,
+            toastMessage: Constants.collectionItemDeleted,
+          );
+        } else {
+          yield LoadedCollectionItemsState(
+            (state as LoadedCollectionItemsState).collectionItems,
+            toastMessage: Constants.collectionItemDeletionFailed,
+          );
+        }
       }
     }
   }

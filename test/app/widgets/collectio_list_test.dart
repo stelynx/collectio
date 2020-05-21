@@ -12,12 +12,16 @@ void main() {
   configureInjection(Environment.test);
 
   Widget makeTestableWidget(
-      List<Listable> items, void Function(Listable) onTap) {
+    List<Listable> items,
+    void Function(Listable) onTap,
+    void Function(Listable) onDismiss,
+  ) {
     return MaterialApp(
       home: Scaffold(
         body: CollectioList(
           items: items,
           onTap: onTap,
+          onDismiss: onDismiss,
         ),
       ),
     );
@@ -29,7 +33,7 @@ void main() {
       final Finder iconFinder = find.byType(Icon);
       final Finder textFinder = find.text(Constants.noItems);
 
-      await tester.pumpWidget(makeTestableWidget([], (_) {}));
+      await tester.pumpWidget(makeTestableWidget([], (_) {}, (_) {}));
 
       expect(iconFinder, findsOneWidget);
       expect(textFinder, findsOneWidget);
@@ -79,7 +83,8 @@ void main() {
         final Finder subtitleFinder = find.text('subtitle');
         final Finder iconFinder = find.byIcon(Icons.chevron_right);
 
-        await tester.pumpWidget(makeTestableWidget(collections, (_) {}));
+        await tester
+            .pumpWidget(makeTestableWidget(collections, (_) {}, (_) {}));
 
         expect(lvFinder, findsOneWidget);
         expect(ltFinder, findsNWidgets(collections.length));

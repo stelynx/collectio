@@ -74,6 +74,36 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
   }
 
   @override
+  Future<Either<DataFailure, void>> deleteCollection(
+      Collection collection) async {
+    try {
+      await _dataService.deleteCollection(
+        owner: collection.owner,
+        collectionName: collection.id,
+      );
+      return Right(null);
+    } catch (_) {
+      return Left(DataFailure());
+    }
+  }
+
+  @override
+  Future<Either<DataFailure, void>> deleteItemInCollection({
+    @required CollectionItem collectionItem,
+  }) async {
+    try {
+      await _dataService.deleteItemInCollection(
+        owner: collectionItem.owner,
+        collectionName: collectionItem.collectionId,
+        itemId: collectionItem.id,
+      );
+      return Right(null);
+    } catch (_) {
+      return Left(DataFailure());
+    }
+  }
+
+  @override
   Future<Either<DataFailure, List<CollectionItem>>> getItemsInCollection(
     String owner,
     String collectionId,
@@ -95,7 +125,10 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
           json['image'] = null;
         }
 
-        collectionItems.add(CollectionItem.fromJson(json));
+        final CollectionItem item =
+            CollectionItem.fromJson(json, parent: collectionId, owner: owner);
+
+        collectionItems.add(item);
       }
 
       return Right(collectionItems);

@@ -41,6 +41,8 @@ class CollectionsScreen extends StatelessWidget {
               items: state.collections,
               onTap: (Collection collection) => Navigator.of(context)
                   .pushNamed(Routes.collection, arguments: collection),
+              onDismiss: (Collection collection) => getIt<CollectionsBloc>()
+                  .add(DeleteCollectionCollectionsEvent(collection)),
               fullScreen: true,
             );
           }

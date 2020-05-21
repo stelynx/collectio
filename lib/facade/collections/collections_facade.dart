@@ -13,6 +13,8 @@ abstract class CollectionsFacade {
 
   Future<Either<DataFailure, void>> addCollection(Collection collection);
 
+  Future<Either<DataFailure, void>> deleteCollection(Collection collection);
+
   Future<Either<DataFailure, List<CollectionItem>>> getItemsInCollection(
       String owner, String collectionId);
 
@@ -20,6 +22,10 @@ abstract class CollectionsFacade {
     @required String owner,
     @required String collectionName,
     @required CollectionItem item,
+  });
+
+  Future<Either<DataFailure, void>> deleteItemInCollection({
+    @required CollectionItem collectionItem,
   });
 
   Future<Either<DataFailure, void>> uploadCollectionThumbnail({

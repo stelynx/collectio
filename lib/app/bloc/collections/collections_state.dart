@@ -14,8 +14,9 @@ class LoadingCollectionsState extends CollectionsState {}
 
 class LoadedCollectionsState extends CollectionsState {
   final List<Collection> collections;
+  final String toastMessage;
 
-  const LoadedCollectionsState({@required this.collections});
+  const LoadedCollectionsState({@required this.collections, this.toastMessage});
 
   @override
   List<Object> get props => [collections];
