@@ -246,6 +246,111 @@ void main() {
     });
   });
 
+  group('deleteCollection', () {
+    final Collection collection = Collection(
+      id: 'title',
+      owner: 'owner',
+      title: 'title',
+      subtitle: 'subtitle',
+      description: 'description',
+      thumbnail: 'thumbnail',
+    );
+
+    test('should call DataService.deleteCollection', () async {
+      when(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.deleteCollection(collection);
+
+      verify(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: collection.owner, collectionName: collection.id))
+          .called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      when(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.deleteCollection(collection);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any failure', () async {
+      when(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.deleteCollection(collection);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
+  group('deleteItemInCollection', () {
+    final CollectionItem item = CollectionItem(
+      id: 'id',
+      owner: 'owner',
+      collectionId: 'collectionId',
+      added: null,
+      title: 'title',
+      subtitle: 'subtitle',
+      description: 'description',
+      imageUrl: 'imageUrl',
+      raiting: 10,
+    );
+
+    test('should call DataService.deleteItemInCollection', () async {
+      when(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName'),
+              itemId: 'id'))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.deleteItemInCollection(
+          collectionItem: item);
+
+      verify(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+        owner: item.owner,
+        collectionName: item.collectionId,
+        itemId: item.id,
+      )).called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      when(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName'),
+              itemId: 'id'))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result = await firebaseCollectionsFacade
+          .deleteItemInCollection(collectionItem: item);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any failure', () async {
+      when(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName'),
+              itemId: 'id'))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result = await firebaseCollectionsFacade
+          .deleteItemInCollection(collectionItem: item);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
   group('getItemsInCollection', () {
     test('should call FirebaseDataService.getItemsInCollection', () async {
       when(firebaseCollectionsFacade.dataService.getItemsInCollection(
