@@ -17,18 +17,17 @@ void main() {
   configureInjection(Environment.test);
 
   final String username = 'username';
-  final List<Collection> collections = [
-    Collection.fromJson(
-      {
-        'id': 'id',
-        'owner': 'owner',
-        'title': 'title',
-        'subtitle': 'subtitle',
-        'thumbnail': 'thumbnail',
-        'description': 'description',
-      },
-    ),
-  ];
+  final Collection collection = Collection.fromJson(
+    {
+      'id': 'id',
+      'owner': 'owner',
+      'title': 'title',
+      'subtitle': 'subtitle',
+      'thumbnail': 'thumbnail',
+      'description': 'description',
+    },
+  );
+  final List<Collection> collections = [collection];
 
   final MockedFirebaseCollectionsFacade mockedFirebaseCollectionsFacade =
       getIt<CollectionsFacade>();
@@ -75,6 +74,74 @@ void main() {
     expect: [
       LoadingCollectionsState(),
       ErrorCollectionsState(),
+    ],
+  );
+
+  blocTest(
+    'should call CollectionsFacade.deleteCollection on DeleteCollection event',
+    build: () async {
+      when(mockedProfileBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<ProfileState>());
+      when(mockedFirebaseCollectionsFacade.getCollectionsForUser(username))
+          .thenAnswer((_) async => Right(collections));
+      when(mockedFirebaseCollectionsFacade.deleteCollection(any))
+          .thenAnswer((_) async => Right(null));
+      return CollectionsBloc(
+        collectionsFacade: mockedFirebaseCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+      );
+    },
+    act: (CollectionsBloc bloc) async => bloc
+      ..add(GetCollectionsEvent(username: username))
+      ..add(DeleteCollectionCollectionsEvent(collections[0])),
+    verify: (_) async =>
+        verify(mockedFirebaseCollectionsFacade.deleteCollection(collection))
+            .called(1),
+  );
+
+  blocTest(
+    'should yield Loaded state without deleted collection on DeleteCollection event',
+    build: () async {
+      when(mockedProfileBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<ProfileState>());
+      when(mockedFirebaseCollectionsFacade.getCollectionsForUser(username))
+          .thenAnswer((_) async => Right([collection]));
+      when(mockedFirebaseCollectionsFacade.deleteCollection(any))
+          .thenAnswer((_) async => Right(null));
+      return CollectionsBloc(
+        collectionsFacade: mockedFirebaseCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+      );
+    },
+    act: (CollectionsBloc bloc) async => bloc
+      ..add(GetCollectionsEvent(username: username))
+      ..add(DeleteCollectionCollectionsEvent(collection)),
+    expect: [
+      LoadingCollectionsState(),
+      LoadedCollectionsState(collections: []),
+    ],
+  );
+
+  blocTest(
+    'should yield Loaded state with deleted collection on failed deletion',
+    build: () async {
+      when(mockedProfileBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<ProfileState>());
+      when(mockedFirebaseCollectionsFacade.getCollectionsForUser(username))
+          .thenAnswer((_) async => Right([collection]));
+      when(mockedFirebaseCollectionsFacade.deleteCollection(any))
+          .thenAnswer((_) async => Left(DataFailure()));
+      return CollectionsBloc(
+        collectionsFacade: mockedFirebaseCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+      );
+    },
+    act: (CollectionsBloc bloc) async => bloc
+      ..add(GetCollectionsEvent(username: username))
+      ..add(DeleteCollectionCollectionsEvent(collection)),
+    expect: [
+      LoadingCollectionsState(),
+      LoadedCollectionsState(collections: [collection]),
     ],
   );
 }

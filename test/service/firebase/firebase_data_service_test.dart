@@ -176,4 +176,36 @@ void main() {
       },
     );
   });
+
+  group('deleteCollection', () {
+    test('should call delete on correct collection', () async {
+      when(firebaseDataService.firestore.document(any))
+          .thenReturn(mockedDocumentReference);
+      when(mockedDocumentReference.delete()).thenAnswer((_) async => null);
+
+      await firebaseDataService.deleteCollection(
+          owner: 'owner', collectionName: 'collectionName');
+
+      verify(firebaseDataService.firestore
+              .document('owner_collection/collectionName'))
+          .called(1);
+      verify(mockedDocumentReference.delete()).called(1);
+    });
+  });
+
+  group('deleteItemInCollection', () {
+    test('should call delete on correct item', () async {
+      when(firebaseDataService.firestore.document(any))
+          .thenReturn(mockedDocumentReference);
+      when(mockedDocumentReference.delete()).thenAnswer((_) async => null);
+
+      await firebaseDataService.deleteItemInCollection(
+          owner: 'owner', collectionName: 'collectionName', itemId: 'itemId');
+
+      verify(firebaseDataService.firestore
+              .document('owner_collection/collectionName/items/itemId'))
+          .called(1);
+      verify(mockedDocumentReference.delete()).called(1);
+    });
+  });
 }

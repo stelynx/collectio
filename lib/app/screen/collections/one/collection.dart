@@ -53,6 +53,9 @@ class CollectionScreen extends StatelessWidget {
                     items: state.collectionItems,
                     onTap: (CollectionItem item) => Navigator.of(context)
                         .pushNamed(Routes.item, arguments: item),
+                    onDismiss: (CollectionItem item) =>
+                        getIt<CollectionItemsBloc>()
+                            .add(DeleteItemCollectionItemsEvent(item)),
                   ),
                 );
 

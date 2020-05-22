@@ -24,4 +24,13 @@ abstract class DataService {
 
   Future<void> addUserProfile(
       {@required String id, @required Map<String, dynamic> userProfile});
+
+  Future<void> deleteCollection(
+      {@required String owner, @required String collectionName});
+
+  Future<void> deleteItemInCollection({
+    @required String owner,
+    @required String collectionName,
+    @required String itemId,
+  });
 }

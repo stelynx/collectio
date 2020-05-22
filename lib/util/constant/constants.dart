@@ -39,4 +39,12 @@ class Constants {
       'Title can contain only alphanumeric values and spaces';
   static const String subtitleValidationFailure = 'Invalid subtitle';
   static const String descriptionValidationFailure = 'Invalid description';
+
+  // Deletion messages
+  static const String collectionDeleted = 'Collection successfully deleted!';
+  static const String collectionItemDeleted = 'Item successfully deleted!';
+  static const String collectionDeletionFailed =
+      'Collection could not be deleted!';
+  static const String collectionItemDeletionFailed =
+      'Item could not be deleted!';
 }

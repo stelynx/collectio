@@ -13,8 +13,9 @@ class LoadingCollectionItemsState extends CollectionItemsState {}
 
 class LoadedCollectionItemsState extends CollectionItemsState {
   final List<CollectionItem> collectionItems;
+  final String toastMessage;
 
-  const LoadedCollectionItemsState(this.collectionItems);
+  const LoadedCollectionItemsState(this.collectionItems, {this.toastMessage});
 
   @override
   List<Object> get props => [collectionItems];

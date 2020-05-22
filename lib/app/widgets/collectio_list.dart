@@ -7,11 +7,13 @@ import 'circular_network_image.dart';
 class CollectioList<T extends Listable> extends StatelessWidget {
   final List<T> items;
   final void Function(T) onTap;
+  final void Function(T) onDismiss;
   final bool fullScreen;
 
   const CollectioList({
     @required this.items,
     @required this.onTap,
+    @required this.onDismiss,
     this.fullScreen = false,
   });
 
@@ -39,13 +41,35 @@ class CollectioList<T extends Listable> extends StatelessWidget {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemCount: items.length,
-              itemBuilder: (BuildContext context, int index) => ListTile(
-                title: Text(items[index].title),
-                subtitle: Text(items[index].subtitle),
-                leading:
-                    CircularNetworkImage(items[index].thumbnail, radius: 25),
-                trailing: Icon(Icons.chevron_right),
-                onTap: () => onTap(items[index]),
+              itemBuilder: (BuildContext context, int index) => Dismissible(
+                key: Key('collectio_list_item_$index'),
+                direction: DismissDirection.endToStart,
+                onDismissed: (_) => onDismiss(items[index]),
+                dismissThresholds: <DismissDirection, double>{
+                  DismissDirection.endToStart: 0.25,
+                },
+                background: Container(
+                  decoration: BoxDecoration(color: Colors.red),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Icon(
+                        Icons.delete_forever,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+                child: ListTile(
+                  title: Text(items[index].title),
+                  subtitle: Text(items[index].subtitle),
+                  leading:
+                      CircularNetworkImage(items[index].thumbnail, radius: 25),
+                  trailing: Icon(Icons.chevron_right),
+                  onTap: () => onTap(items[index]),
+                ),
               ),
             ),
           );
