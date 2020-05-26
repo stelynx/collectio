@@ -7,9 +7,11 @@ import 'package:collectio/app/screen/collections/new/new_collection_screen.dart'
 import 'package:collectio/app/screen/collections/new_item/new_item.dart';
 import 'package:collectio/app/screen/collections/one/collection.dart';
 import 'package:collectio/app/screen/initial.dart';
+import 'package:collectio/app/screen/profile/view_profile/view_profile_screen.dart';
 import 'package:collectio/app/screen/shared/error.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
+import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -117,6 +119,26 @@ void main() {
       NewItemScreen newItemScreen = screen as NewItemScreen;
       expect(newItemScreen.owner, arguments['owner']);
       expect(newItemScreen.collectionName, arguments['collectionName']);
+    });
+
+    test('should map Routes.profile to ViewProfileScreen with correct argument',
+        () {
+      final String path = Routes.profile;
+      final UserProfile argument = UserProfile(
+        email: 'email@b.c',
+        userUid: 'userUid',
+        username: 'username',
+      );
+      final RouteSettings routeSettings =
+          RouteSettings(name: path, arguments: argument);
+
+      final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+      final Widget screen = result.builder(null);
+
+      expect(screen, isA<ViewProfileScreen>());
+
+      ViewProfileScreen viewProfileScreen = screen as ViewProfileScreen;
+      expect(viewProfileScreen.profile, argument);
     });
 
     test('should map Routes.error to ErrorScreen with appropriate message', () {
