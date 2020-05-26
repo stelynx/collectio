@@ -21,7 +21,7 @@ part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
 @prod
-@lazySingleton
+@injectable
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final AuthFacade _authFacade;
   final ProfileFacade _profileFacade;
@@ -164,7 +164,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 }
 
 @test
-@lazySingleton
+@injectable
 @RegisterAs(SignInBloc)
 class MockedSignInBloc extends MockBloc<SignInEvent, SignInState>
     implements SignInBloc {}

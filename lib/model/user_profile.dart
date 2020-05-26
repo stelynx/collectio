@@ -27,7 +27,7 @@ class UserProfile {
         firstName: json['firstName'],
         lastName: json['lastName'],
         country: enumFromString<Country>(json['country'], Country.values),
-        profileImg: json['profileImg'],
+        profileImg: json['profileImg'] != '' ? json['profileImg'] : null,
         userUid: json['userUid'],
         username: json['username'],
       );
