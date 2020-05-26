@@ -25,12 +25,12 @@ void main() {
     collectionsBloc = getIt<CollectionsBloc>();
   });
 
-  testWidgets('should have logout button', (WidgetTester tester) async {
+  testWidgets('should have a drawer', (WidgetTester tester) async {
     await tester.pumpWidget(makeTestableWidget());
 
-    final Finder logoutFinder = find.byIcon(Icons.exit_to_app);
+    final Finder drawerFinder = find.byIcon(Icons.menu);
 
-    expect(logoutFinder, findsOneWidget);
+    expect(drawerFinder, findsOneWidget);
   });
 
   testWidgets(
