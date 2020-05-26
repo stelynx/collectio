@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../model/collection.dart';
 import '../../../../util/constant/constants.dart';
 import '../../../../util/injection/injection.dart';
-import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/collections/collections_bloc.dart';
 import '../../../routes/routes.dart';
+import '../../../widgets/collectio_drawer.dart';
 import '../../../widgets/collectio_list.dart';
 import '../../shared/error.dart';
 
@@ -16,16 +16,9 @@ class CollectionsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('My collections'),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: () {
-                getIt<AuthBloc>().add(SignedOutAuthEvent());
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    Routes.signIn, (Route route) => false);
-              })
-        ],
+        automaticallyImplyLeading: false,
       ),
+      endDrawer: CollectioDrawer(),
       body: BlocBuilder<CollectionsBloc, CollectionsState>(
         bloc: getIt<CollectionsBloc>(),
         builder: (BuildContext context, CollectionsState state) {

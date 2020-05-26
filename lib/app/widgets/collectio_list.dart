@@ -13,7 +13,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
   const CollectioList({
     @required this.items,
     @required this.onTap,
-    @required this.onDismiss,
+    this.onDismiss,
     this.fullScreen = false,
   });
 
