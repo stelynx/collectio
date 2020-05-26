@@ -6,7 +6,7 @@ abstract class NewCollectionState extends Equatable {
   final Title title;
   final Subtitle subtitle;
   final Description description;
-  final File thumbnail;
+  final Photo thumbnail;
   final bool showErrorMessages;
   final bool isSubmitting;
   final Either<DataFailure, void> dataFailure;
@@ -25,7 +25,7 @@ abstract class NewCollectionState extends Equatable {
     Title title,
     Subtitle subtitle,
     Description description,
-    File thumbnail,
+    Photo thumbnail,
     bool showErrorMessages,
     bool isSubmitting,
     Either<DataFailure, void> dataFailure,
@@ -62,7 +62,7 @@ class InitialNewCollectionState extends NewCollectionState {
           title: Title(''),
           subtitle: Subtitle(''),
           description: Description(''),
-          thumbnail: null,
+          thumbnail: Photo(null),
           showErrorMessages: false,
           isSubmitting: false,
           dataFailure: null,
@@ -74,7 +74,7 @@ class GeneralNewCollectionState extends NewCollectionState {
     Title title,
     Subtitle subtitle,
     Description description,
-    File thumbnail,
+    Photo thumbnail,
     bool showErrorMessages,
     bool isSubmitting,
     Either<DataFailure, void> dataFailure,
@@ -82,7 +82,7 @@ class GeneralNewCollectionState extends NewCollectionState {
           title: title ?? Title(''),
           subtitle: subtitle ?? Subtitle(''),
           description: description ?? Description(''),
-          thumbnail: thumbnail ?? null,
+          thumbnail: thumbnail ?? Photo(null),
           showErrorMessages: showErrorMessages ?? false,
           isSubmitting: isSubmitting ?? false,
           dataFailure: dataFailure ?? null,

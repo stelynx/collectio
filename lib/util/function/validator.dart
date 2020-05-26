@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 
 import '../error/validation_failure.dart';
@@ -60,4 +62,7 @@ class Validator {
       return Left(DescriptionEmptyValidationFailure());
     return Right(trimmedDescription);
   }
+
+  static Either<ValidationFailure, File> isValidPhoto(File photo) =>
+      photo == null ? Left(NoPhotoValidationFailure()) : Right(photo);
 }

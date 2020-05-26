@@ -34,10 +34,12 @@ class NewCollectionForm extends StatelessWidget {
                 imageSelector: getIt<ImageSelector>(),
                 parentContext: context,
                 aspectRatio: 1 / 1,
-                thumbnail: state.thumbnail,
+                thumbnail: state.thumbnail.get(),
                 croppedImageHandler: (File croppedImage) => context
                     .bloc<NewCollectionBloc>()
                     .add(ImageChangedNewCollectionEvent(croppedImage)),
+                showError:
+                    state.showErrorMessages && !state.thumbnail.isValid(),
               ),
 
               SizedBox(height: 20),

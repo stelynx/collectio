@@ -8,6 +8,7 @@ import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/model/value_object/description.dart' as model;
+import 'package:collectio/model/value_object/photo.dart';
 import 'package:collectio/model/value_object/subtitle.dart';
 import 'package:collectio/model/value_object/title.dart';
 import 'package:collectio/util/constant/constants.dart';
@@ -92,7 +93,7 @@ void main() {
     act: (NewCollectionBloc bloc) async =>
         bloc.add(ImageChangedNewCollectionEvent(mockedFile)),
     expect: [
-      GeneralNewCollectionState(thumbnail: mockedFile),
+      GeneralNewCollectionState(thumbnail: Photo(mockedFile)),
     ],
   );
 
@@ -431,18 +432,18 @@ void main() {
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile),
+            thumbnail: Photo(mockedFile)),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: true),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure: Right(null)),
@@ -498,18 +499,18 @@ void main() {
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile),
+            thumbnail: Photo(mockedFile)),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: true),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure:
@@ -558,18 +559,18 @@ void main() {
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile),
+            thumbnail: Photo(mockedFile)),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: true),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure: Left(DataFailure())),
@@ -621,18 +622,18 @@ void main() {
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile),
+            thumbnail: Photo(mockedFile)),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: true),
         GeneralNewCollectionState(
             title: Title('title'),
             subtitle: Subtitle('subtitle'),
             description: model.Description('description'),
-            thumbnail: mockedFile,
+            thumbnail: Photo(mockedFile),
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure: Left(DataFailure())),

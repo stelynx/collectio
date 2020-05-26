@@ -11,6 +11,7 @@ import 'package:meta/meta.dart';
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection_item.dart';
 import '../../../model/value_object/description.dart';
+import '../../../model/value_object/photo.dart';
 import '../../../model/value_object/subtitle.dart';
 import '../../../model/value_object/title.dart';
 import '../../../util/error/data_failure.dart';
@@ -70,7 +71,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
       );
     } else if (event is ImageChangedNewItemEvent) {
       yield state.copyWith(
-        localImage: event.image,
+        localImage: Photo(event.image),
         dataFailure: null,
         overrideDataFailure: true,
       );
@@ -81,13 +82,15 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           state.subtitle.isValid() &&
           state.description.isValid() &&
           state.raiting != null &&
-          state.localImage != null) {
+          state.localImage.isValid()) {
         yield state.copyWith(isSubmitting: true);
 
         final DateTime now = DateTime.now();
 
-        final String fileExtension = state.localImage.path
-            .substring(state.localImage.path.lastIndexOf('.') + 1);
+        final String fileExtension = state.localImage
+            .get()
+            .path
+            .substring(state.localImage.get().path.lastIndexOf('.') + 1);
         final String imageUrl = getItemImageName(
           state.owner,
           state.collectionName,
@@ -113,7 +116,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         Either<DataFailure, void> uploadResult;
         if (result.isRight()) {
           uploadResult = await _collectionsFacade.uploadCollectionItemImage(
-              image: state.localImage, destinationName: imageUrl);
+              image: state.localImage.get(), destinationName: imageUrl);
 
           if (uploadResult.isRight()) {
             _collectionItemsBloc.add(GetCollectionItemsEvent(

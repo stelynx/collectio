@@ -35,10 +35,12 @@ class NewItemForm extends StatelessWidget {
                 imageSelector: getIt<ImageSelector>(),
                 parentContext: context,
                 aspectRatio: 16 / 9,
-                thumbnail: state.localImage,
+                thumbnail: state.localImage.get(),
                 croppedImageHandler: (File croppedImage) => context
                     .bloc<NewItemBloc>()
                     .add(ImageChangedNewItemEvent(croppedImage)),
+                showError:
+                    state.showErrorMessages && !state.localImage.isValid(),
               ),
 
               SizedBox(height: 20),
