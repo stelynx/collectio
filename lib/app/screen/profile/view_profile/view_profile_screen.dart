@@ -33,12 +33,12 @@ class ViewProfileScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     CircularNetworkImage(profile.profileImg, radius: 50),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Column(
                       children: <Widget>[
                         Text('${profile.firstName} ${profile.lastName}'),
                         Text('@${profile.username}'),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -58,10 +58,21 @@ class ViewProfileScreen extends StatelessWidget {
               builder: (BuildContext context, CollectionsState state) {
                 if (state is LoadedCollectionsState) {
                   return CollectioList(
-                      items: state.collections,
-                      onTap: (Collection collection) => Navigator.of(context)
-                          .pushNamed(Routes.collection, arguments: collection));
+                    items: state.collections,
+                    onTap: (Collection collection) => Navigator.of(context)
+                        .pushNamed(Routes.collection, arguments: collection),
+                  );
                 }
+
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      const SizedBox(height: 5),
+                      Text('Retrieving collections ...'),
+                    ],
+                  ),
+                );
               },
             ),
           ],
