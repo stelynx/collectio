@@ -11,6 +11,7 @@ class CollectioImagePicker extends StatelessWidget {
   final double aspectRatio;
   final File thumbnail;
   final void Function(File) croppedImageHandler;
+  final bool showError;
 
   const CollectioImagePicker({
     @required ImageSelector imageSelector,
@@ -18,6 +19,7 @@ class CollectioImagePicker extends StatelessWidget {
     @required this.aspectRatio,
     @required this.thumbnail,
     @required this.croppedImageHandler,
+    this.showError = false,
   })  : assert(aspectRatio == 1 / 1 || aspectRatio == 16 / 9),
         _imageSelector = imageSelector;
 
@@ -66,18 +68,29 @@ class CollectioImagePicker extends StatelessWidget {
             ),
           ),
         ),
-        child: thumbnail == null
-            ? Container(
-                decoration: BoxDecoration(border: Border.all()),
+        child: thumbnail != null
+            ? Image.file(thumbnail)
+            : Container(
+                decoration: showError
+                    ? BoxDecoration(border: Border.all(color: Colors.red))
+                    : BoxDecoration(border: Border.all()),
                 child: Center(
-                  child: Icon(
-                    Icons.add_a_photo,
-                    size: 50,
-                    color: Colors.grey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.add_a_photo,
+                        size: 50,
+                        color: showError ? Colors.red : Colors.grey,
+                      ),
+                      Text(
+                        'Please select a photo',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
                   ),
                 ),
-              )
-            : Image.file(thumbnail),
+              ),
       ),
     );
   }

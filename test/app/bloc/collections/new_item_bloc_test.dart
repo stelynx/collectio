@@ -6,6 +6,7 @@ import 'package:collectio/app/bloc/collections/new_item_bloc.dart';
 import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/model/value_object/description.dart' as model;
+import 'package:collectio/model/value_object/photo.dart';
 import 'package:collectio/model/value_object/subtitle.dart';
 import 'package:collectio/model/value_object/title.dart';
 import 'package:collectio/util/error/data_failure.dart';
@@ -101,7 +102,7 @@ void main() {
     act: (NewItemBloc bloc) async =>
         bloc.add(ImageChangedNewItemEvent(mockedFile)),
     expect: [
-      GeneralNewItemState(localImage: mockedFile),
+      GeneralNewItemState(localImage: Photo(mockedFile)),
     ],
   );
 
@@ -153,7 +154,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: null,
@@ -162,7 +163,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
     ],
@@ -216,7 +217,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: 'owner',
@@ -225,7 +226,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
     ],
@@ -270,7 +271,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: 'owner',
@@ -278,7 +279,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
     ],
@@ -323,7 +324,7 @@ void main() {
         title: Title('title'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: 'owner',
@@ -331,7 +332,7 @@ void main() {
         title: Title('title'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
     ],
@@ -376,7 +377,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: 'owner',
@@ -384,7 +385,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
     ],
@@ -429,7 +430,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: 'owner',
@@ -437,7 +438,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
     ],
@@ -623,7 +624,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: 'owner',
@@ -632,7 +633,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         isSubmitting: true,
       ),
       GeneralNewItemState(
@@ -642,7 +643,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         isSubmitting: false,
         showErrorMessages: true,
         dataFailure: Right(null),
@@ -711,7 +712,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         owner: 'owner',
@@ -720,7 +721,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         isSubmitting: true,
       ),
       GeneralNewItemState(
@@ -730,7 +731,7 @@ void main() {
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
         raiting: 5,
-        localImage: mockedFile,
+        localImage: Photo(mockedFile),
         isSubmitting: false,
         showErrorMessages: true,
         dataFailure: Left(DataFailure()),

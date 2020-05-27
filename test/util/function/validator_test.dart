@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:collectio/util/error/validation_failure.dart';
 import 'package:collectio/util/function/validator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../mocks.dart';
 
 void main() {
   group('isValidEmail', () {
@@ -203,5 +207,25 @@ void main() {
         expect(result, equals(Right(description)));
       },
     );
+  });
+
+  group('isValidPhoto', () {
+    test('should return Right(photo) when photo is ok', () {
+      final File file = MockedFile();
+
+      final Either<ValidationFailure, File> result =
+          Validator.isValidPhoto(file);
+
+      expect(result, equals(Right(file)));
+    });
+
+    test(
+        'should return Left(NoPhotoValidationFailure) when photo is not present',
+        () {
+      final Either<ValidationFailure, File> result =
+          Validator.isValidPhoto(null);
+
+      expect(result, equals(Left(NoPhotoValidationFailure())));
+    });
   });
 }

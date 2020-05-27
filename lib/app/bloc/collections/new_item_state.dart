@@ -9,7 +9,7 @@ abstract class NewItemState extends Equatable {
   final Description description;
   final int raiting;
   final String imageUrl;
-  final File localImage;
+  final Photo localImage;
   final bool isSubmitting;
   final bool showErrorMessages;
   final Either<DataFailure, void> dataFailure;
@@ -36,7 +36,7 @@ abstract class NewItemState extends Equatable {
     Description description,
     int raiting,
     String imageUrl,
-    File localImage,
+    Photo localImage,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -84,7 +84,7 @@ class InitialNewItemState extends NewItemState {
             description: Description(''),
             raiting: null,
             imageUrl: '',
-            localImage: null,
+            localImage: Photo(null),
             isSubmitting: false,
             showErrorMessages: false,
             dataFailure: null);
@@ -99,7 +99,7 @@ class GeneralNewItemState extends NewItemState {
     Description description,
     int raiting,
     String imageUrl,
-    File localImage,
+    Photo localImage,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -111,7 +111,7 @@ class GeneralNewItemState extends NewItemState {
           description: description ?? Description(''),
           raiting: raiting,
           imageUrl: imageUrl ?? '',
-          localImage: localImage ?? null,
+          localImage: localImage ?? Photo(null),
           isSubmitting: isSubmitting ?? false,
           showErrorMessages: showErrorMessages ?? false,
           dataFailure: dataFailure ?? null,
