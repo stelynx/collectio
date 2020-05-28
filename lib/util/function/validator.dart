@@ -35,6 +35,14 @@ class Validator {
         : Left(UsernameValidationFailure());
   }
 
+  static Either<ValidationFailure, String> isValidName(String name) {
+    final String trimmedName = name.trim();
+
+    return trimmedName != ''
+        ? Right(trimmedName)
+        : Left(EmptyNameValidationFailure());
+  }
+
   static Either<ValidationFailure, String> isValidTitle(String title) {
     final String trimmedTitle = title.trim();
     if (trimmedTitle == '') return Left(TitleEmptyValidationFailure());

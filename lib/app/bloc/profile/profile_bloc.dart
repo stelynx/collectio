@@ -51,7 +51,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     if (event is GetUserProfileEvent) {
       Either<DataFailure, UserProfile> profileOrFailure =
-          await _profileFacade.getUserProfileByUserUid(userUid: event.userUid);
+          await _profileFacade.getUserProfileByUserUid(
+              userUid: event.userUid ??
+                  (_authBloc.state as AuthenticatedAuthState).userUid);
 
       yield profileOrFailure.fold(
         (DataFailure failure) => ErrorProfileState(failure),

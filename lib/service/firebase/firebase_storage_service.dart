@@ -39,6 +39,17 @@ class FirebaseStorageService extends StorageService {
   }
 
   @override
+  Future<bool> uploadProfileImage(
+      {@required File image, @required String destinationName}) async {
+    final String storagePath = 'profileImg/$destinationName';
+    final StorageUploadTask storageUploadTask =
+        _storage.ref().child(storagePath).putFile(image);
+    await storageUploadTask.onComplete;
+
+    return storageUploadTask.isSuccessful;
+  }
+
+  @override
   Future<String> getCollectionThumbnailUrl({@required String imageName}) async {
     final String storagePath = 'collectionThumbnail/$imageName';
     return (await _storage.ref().child(storagePath).getDownloadURL()) as String;
@@ -48,6 +59,12 @@ class FirebaseStorageService extends StorageService {
   Future<String> getItemImageUrl({@required String imageName}) async {
     final String storagePath = 'collectionItemImg/$imageName';
     return (await _storage.ref().child(storagePath).getDownloadURL()) as String;
+  }
+
+  @override
+  Future<String> getProfileImageUrl({@required String imageName}) async {
+    final String storagePath = 'profileImg/$imageName';
+    return (await _storage.ref().child(storagePath).getDownloadURL());
   }
 }
 

@@ -11,16 +11,21 @@ class CollectioImagePicker extends StatelessWidget {
   final double aspectRatio;
   final File thumbnail;
   final void Function(File) croppedImageHandler;
+  final bool isImageLocal;
+  final String url;
   final bool showError;
 
   const CollectioImagePicker({
     @required ImageSelector imageSelector,
     @required this.parentContext,
     @required this.aspectRatio,
-    @required this.thumbnail,
     @required this.croppedImageHandler,
+    this.thumbnail,
+    this.isImageLocal = true,
+    this.url,
     this.showError = false,
   })  : assert(aspectRatio == 1 / 1 || aspectRatio == 16 / 9),
+        assert(isImageLocal || url != null),
         _imageSelector = imageSelector;
 
   void _getImage(Future<File> Function() imageGetter) async {
@@ -70,27 +75,31 @@ class CollectioImagePicker extends StatelessWidget {
         ),
         child: thumbnail != null
             ? Image.file(thumbnail)
-            : Container(
-                decoration: showError
-                    ? BoxDecoration(border: Border.all(color: Colors.red))
-                    : BoxDecoration(border: Border.all()),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.add_a_photo,
-                        size: 50,
-                        color: showError ? Colors.red : Colors.grey,
+            : (!isImageLocal
+                ? Image.network(url)
+                : Container(
+                    decoration: showError
+                        ? BoxDecoration(border: Border.all(color: Colors.red))
+                        : BoxDecoration(border: Border.all()),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.add_a_photo,
+                            size: 50,
+                            color: showError ? Colors.red : Colors.grey,
+                          ),
+                          if (showError) ...[
+                            Text(
+                              'Please select a photo',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ],
                       ),
-                      Text(
-                        'Please select a photo',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  )),
       ),
     );
   }

@@ -4,6 +4,7 @@ import '../util/constant/country.dart';
 import '../util/function/enum_helper.dart';
 
 class UserProfile {
+  String id;
   String email;
   String firstName;
   String lastName;
@@ -20,7 +21,7 @@ class UserProfile {
     this.profileImg,
     @required this.userUid,
     @required this.username,
-  });
+  }) : id = username;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         email: json['email'],

@@ -1,6 +1,7 @@
 import 'package:collectio/facade/profile/firebase/firebase_profile_facade.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/service/data_service.dart';
+import 'package:collectio/service/storage_service.dart';
 import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
@@ -24,8 +25,10 @@ void main() {
   FirebaseProfileFacade firebaseProfileFacade;
 
   setUp(() {
-    firebaseProfileFacade =
-        FirebaseProfileFacade(dataService: getIt<DataService>());
+    firebaseProfileFacade = FirebaseProfileFacade(
+      dataService: getIt<DataService>(),
+      storageService: getIt<StorageService>(),
+    );
   });
 
   group('addUserProfile', () {

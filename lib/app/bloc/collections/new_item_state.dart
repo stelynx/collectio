@@ -53,7 +53,7 @@ abstract class NewItemState extends Equatable {
         localImage: localImage ?? this.localImage,
         isSubmitting: isSubmitting ?? this.isSubmitting,
         showErrorMessages: showErrorMessages ?? this.showErrorMessages,
-        dataFailure: (dataFailure != null || overrideDataFailure)
+        dataFailure: (dataFailure != null || overrideDataFailure == true)
             ? dataFailure
             : this.dataFailure,
       );

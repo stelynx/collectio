@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -5,7 +7,9 @@ import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../model/user_profile.dart';
+import '../../../model/value_object/photo.dart';
 import '../../../service/data_service.dart';
+import '../../../service/storage_service.dart';
 import '../../../util/constant/constants.dart';
 import '../../../util/error/data_failure.dart';
 import '../profile_facade.dart';
@@ -15,14 +19,16 @@ import '../profile_facade.dart';
 @RegisterAs(ProfileFacade)
 class FirebaseProfileFacade extends ProfileFacade {
   final DataService dataService;
+  final StorageService storageService;
 
-  FirebaseProfileFacade({@required this.dataService});
+  FirebaseProfileFacade(
+      {@required this.dataService, @required this.storageService});
 
   @override
   Future<Either<DataFailure, void>> addUserProfile({
     @required UserProfile userProfile,
   }) async {
-    final String id = userProfile.username;
+    final String id = userProfile.id;
     final Map<String, dynamic> userProfileJson = userProfile.toJson();
 
     try {
@@ -47,7 +53,11 @@ class FirebaseProfileFacade extends ProfileFacade {
         return Left(DataFailure(message: Constants.notExactlyOneObjectFound));
       }
 
-      final UserProfile userProfile = UserProfile.fromJson(documents[0].data);
+      final Map<String, dynamic> profileJson = documents[0].data;
+      profileJson['image'] = await storageService.getProfileImageUrl(
+          imageName: profileJson['image']);
+
+      final UserProfile userProfile = UserProfile.fromJson(profileJson);
       return Right(userProfile);
     } catch (e) {
       return Left(DataFailure(message: e.toString()));
@@ -68,10 +78,46 @@ class FirebaseProfileFacade extends ProfileFacade {
         return Left(DataFailure(message: Constants.notExactlyOneObjectFound));
       }
 
-      final UserProfile userProfile = UserProfile.fromJson(documents[0].data);
+      final Map<String, dynamic> profileJson = documents[0].data;
+      profileJson['profileImg'] = await storageService.getProfileImageUrl(
+          imageName: profileJson['profileImg']);
+
+      final UserProfile userProfile = UserProfile.fromJson(profileJson);
       return Right(userProfile);
     } catch (e) {
       return Left(DataFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<DataFailure, void>> editUserProfile({
+    @required UserProfile userProfile,
+    @required Photo profileImage,
+  }) async {
+    try {
+      final File profileImageFile = profileImage.get();
+      final String fileExtension = profileImageFile.path
+          .substring(profileImageFile.path.lastIndexOf('.') + 1);
+
+      final String destinationName = '${userProfile.username}.$fileExtension';
+
+      final bool uploadSuccessful = await storageService.uploadProfileImage(
+        image: profileImage.get(),
+        destinationName: destinationName,
+      );
+
+      if (!uploadSuccessful) return Left(DataFailure());
+
+      userProfile.profileImg = destinationName;
+
+      await dataService.updateUserProfile(
+        id: userProfile.id,
+        userProfile: userProfile.toJson(),
+      );
+
+      return Right(null);
+    } catch (_) {
+      return Left(DataFailure());
     }
   }
 }

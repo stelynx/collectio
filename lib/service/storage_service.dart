@@ -9,7 +9,12 @@ abstract class StorageService {
   Future<bool> uploadItemImage(
       {@required File image, @required String destinationName});
 
+  Future<bool> uploadProfileImage(
+      {@required File image, @required String destinationName});
+
   Future<String> getCollectionThumbnailUrl({@required String imageName});
 
   Future<String> getItemImageUrl({@required String imageName});
+
+  Future<String> getProfileImageUrl({@required String imageName});
 }

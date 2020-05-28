@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 
 import '../../model/user_profile.dart';
+import '../../model/value_object/photo.dart';
 import '../../service/data_service.dart';
 import '../../util/error/data_failure.dart';
 
@@ -16,4 +17,7 @@ abstract class ProfileFacade {
 
   Future<Either<DataFailure, void>> addUserProfile(
       {@required UserProfile userProfile});
+
+  Future<Either<DataFailure, void>> editUserProfile(
+      {@required UserProfile userProfile, @required Photo profileImage});
 }
