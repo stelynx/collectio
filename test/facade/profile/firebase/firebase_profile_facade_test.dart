@@ -310,7 +310,7 @@ void main() {
     });
 
     test(
-      'should return Left(DataFailure) when image upload fails',
+      'should return Left(DataFailure) when image upload throws exception',
       () async {
         final UserProfile newUserProfile = userProfile;
         newUserProfile.username = 'username3';
@@ -319,6 +319,25 @@ void main() {
                 image: anyNamed('image'),
                 destinationName: anyNamed('destinationName')))
             .thenThrow(Exception());
+        when(image.path).thenReturn('${newUserProfile.id}.jpg');
+
+        final Either<DataFailure, void> result = await firebaseProfileFacade
+            .editUserProfile(userProfile: newUserProfile, profileImage: image);
+
+        expect(result, equals(Left(DataFailure())));
+      },
+    );
+
+    test(
+      'should return Left(DataFailure) when image upload fails',
+      () async {
+        final UserProfile newUserProfile = userProfile;
+        newUserProfile.username = 'username3';
+
+        when(firebaseProfileFacade.storageService.uploadProfileImage(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => false);
         when(image.path).thenReturn('${newUserProfile.id}.jpg');
 
         final Either<DataFailure, void> result = await firebaseProfileFacade
