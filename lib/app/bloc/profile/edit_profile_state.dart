@@ -9,7 +9,7 @@ abstract class EditProfileState extends Equatable {
   final bool isSubmitting;
   final Either<DataFailure, void> dataFailure;
 
-  const EditProfileState({
+  EditProfileState({
     this.firstName,
     this.lastName,
     this.country,
@@ -70,7 +70,7 @@ class InitialEditProfileState extends EditProfileState {
 }
 
 class GeneralEditProfileState extends EditProfileState {
-  const GeneralEditProfileState({
+  GeneralEditProfileState({
     Name firstName,
     Name lastName,
     Country country,
@@ -79,12 +79,25 @@ class GeneralEditProfileState extends EditProfileState {
     bool isSubmitting,
     Either<DataFailure, void> dataFailure,
   }) : super(
-          firstName: firstName,
-          lastName: lastName,
-          country: country,
-          profileImage: profileImage,
-          oldImageUrl: oldImageUrl,
-          isSubmitting: isSubmitting,
-          dataFailure: dataFailure,
+          firstName: firstName ?? Name(''),
+          lastName: lastName ?? Name(''),
+          country: country ?? null,
+          profileImage: profileImage ?? Photo(null),
+          oldImageUrl: oldImageUrl ?? null,
+          isSubmitting: isSubmitting ?? false,
+          dataFailure: dataFailure ?? null,
         );
+
+  @override
+  String toString() {
+    return [
+      firstName,
+      lastName,
+      country,
+      profileImage,
+      oldImageUrl,
+      isSubmitting,
+      dataFailure
+    ].join(', ');
+  }
 }

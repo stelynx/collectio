@@ -53,13 +53,29 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     EditProfileEvent event,
   ) async* {
     if (event is FirstNameChangedEditProfileEvent) {
-      yield state.copyWith(firstName: Name(event.firstName));
+      yield state.copyWith(
+        firstName: Name(event.firstName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is LastNameChangedEditProfileEvent) {
-      yield state.copyWith(lastName: Name(event.lastName));
+      yield state.copyWith(
+        lastName: Name(event.lastName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is CountryChangedEditProfileEvent) {
-      yield state.copyWith(country: event.country);
+      yield state.copyWith(
+        country: event.country,
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is ImageChangedEditProfileEvent) {
-      yield state.copyWith(profileImage: Photo(event.photo));
+      yield state.copyWith(
+        profileImage: Photo(event.photo),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is ResetEditProfileEvent) {
       yield initialState;
     } else if (event is SubmitEditProfileEvent) {
@@ -78,12 +94,10 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           profileImage: state.profileImage.get(),
         );
 
-        if (result.isRight()) {
-          yield state.copyWith(
-            dataFailure: result,
-            isSubmitting: false,
-          );
-        }
+        yield state.copyWith(
+          dataFailure: result,
+          isSubmitting: false,
+        );
       }
     }
   }

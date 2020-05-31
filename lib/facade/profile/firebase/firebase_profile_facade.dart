@@ -91,7 +91,7 @@ class FirebaseProfileFacade extends ProfileFacade {
   @override
   Future<Either<DataFailure, void>> editUserProfile({
     @required UserProfile userProfile,
-    File profileImage,
+    @required File profileImage,
   }) async {
     try {
       if (profileImage != null) {
