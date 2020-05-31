@@ -233,4 +233,121 @@ void main() {
       );
     });
   });
+
+  group('editUserProfile', () {
+    final MockedFile image = MockedFile();
+
+    test('should call StorageService.uploadProfileImage when given image',
+        () async {
+      when(firebaseProfileFacade.storageService.uploadProfileImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => true);
+      when(image.path).thenReturn('image.jpg');
+
+      await firebaseProfileFacade.editUserProfile(
+          userProfile: userProfile, profileImage: image);
+
+      verify(firebaseProfileFacade.storageService.uploadProfileImage(
+              image: image, destinationName: '${userProfile.username}.jpg'))
+          .called(1);
+    });
+
+    test('should not call StorageService.uploadProfileImage when no image',
+        () async {
+      await firebaseProfileFacade.editUserProfile(
+          userProfile: userProfile, profileImage: null);
+
+      verifyNever(firebaseProfileFacade.storageService.uploadProfileImage(
+          image: anyNamed('image'),
+          destinationName: anyNamed('destinationName')));
+    });
+
+    test(
+      'should call DataService.updateUserProfile with given profile and image',
+      () async {
+        final UserProfile newUserProfile = userProfile;
+        newUserProfile.username = 'username2';
+
+        when(firebaseProfileFacade.storageService.uploadProfileImage(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => true);
+        when(image.path).thenReturn('${newUserProfile.id}.jpg');
+        when(firebaseProfileFacade.dataService.updateUserProfile(
+                id: anyNamed('id'), userProfile: anyNamed('userProfile')))
+            .thenAnswer((_) async => null);
+
+        await firebaseProfileFacade.editUserProfile(
+            userProfile: newUserProfile, profileImage: image);
+
+        newUserProfile.profileImg = '${newUserProfile.id}.jpg';
+        print(newUserProfile.toJson());
+
+        verify(firebaseProfileFacade.dataService.updateUserProfile(
+                id: newUserProfile.id, userProfile: newUserProfile.toJson()))
+            .called(1);
+      },
+    );
+
+    test('should return Right(null) when everything is successful', () async {
+      final UserProfile newUserProfile = userProfile;
+      newUserProfile.username = 'username3';
+
+      when(firebaseProfileFacade.storageService.uploadProfileImage(
+              image: anyNamed('image'),
+              destinationName: anyNamed('destinationName')))
+          .thenAnswer((_) async => true);
+      when(image.path).thenReturn('${newUserProfile.id}.jpg');
+      when(firebaseProfileFacade.dataService.updateUserProfile(
+              id: anyNamed('id'), userProfile: anyNamed('userProfile')))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result = await firebaseProfileFacade
+          .editUserProfile(userProfile: newUserProfile, profileImage: image);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test(
+      'should return Left(DataFailure) when image upload fails',
+      () async {
+        final UserProfile newUserProfile = userProfile;
+        newUserProfile.username = 'username3';
+
+        when(firebaseProfileFacade.storageService.uploadProfileImage(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenThrow(Exception());
+        when(image.path).thenReturn('${newUserProfile.id}.jpg');
+
+        final Either<DataFailure, void> result = await firebaseProfileFacade
+            .editUserProfile(userProfile: newUserProfile, profileImage: image);
+
+        expect(result, equals(Left(DataFailure())));
+      },
+    );
+
+    test(
+      'should return Left(DataFailure) when updating profile fails',
+      () async {
+        final UserProfile newUserProfile = userProfile;
+        newUserProfile.username = 'username4';
+
+        when(firebaseProfileFacade.storageService.uploadProfileImage(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => true);
+        when(image.path).thenReturn('${newUserProfile.id}.jpg');
+        when(firebaseProfileFacade.dataService.updateUserProfile(
+                id: anyNamed('id'), userProfile: anyNamed('userProfile')))
+            .thenThrow(Exception());
+
+        final Either<DataFailure, void> result = await firebaseProfileFacade
+            .editUserProfile(userProfile: newUserProfile, profileImage: image);
+
+        expect(result, equals(Left(DataFailure())));
+      },
+    );
+  });
 }

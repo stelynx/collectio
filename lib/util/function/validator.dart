@@ -40,7 +40,7 @@ class Validator {
 
     return trimmedName != ''
         ? Right(trimmedName)
-        : Left(EmptyNameValidationFailure());
+        : Left(NameEmptyValidationFailure());
   }
 
   static Either<ValidationFailure, String> isValidTitle(String title) {

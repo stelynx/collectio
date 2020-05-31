@@ -107,6 +107,32 @@ void main() {
     });
   });
 
+  group('isValidName', () {
+    test(
+      'should return Left(NameEmptyValidationFailure) when name is empty',
+      () {
+        final String name = ' ';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidName(name);
+
+        expect(result, equals(Left(NameEmptyValidationFailure())));
+      },
+    );
+
+    test(
+      'should return Right(name) when name is ok',
+      () {
+        final String name = 'First name';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidName(name);
+
+        expect(result, equals(Right(name)));
+      },
+    );
+  });
+
   group('isValidTitle', () {
     test(
       'should return Left(TitleEmptyValidationFailure) when title is empty',

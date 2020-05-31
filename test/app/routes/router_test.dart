@@ -7,6 +7,7 @@ import 'package:collectio/app/screen/collections/new/new_collection_screen.dart'
 import 'package:collectio/app/screen/collections/new_item/new_item.dart';
 import 'package:collectio/app/screen/collections/one/collection.dart';
 import 'package:collectio/app/screen/initial.dart';
+import 'package:collectio/app/screen/profile/edit_profile/edit_profile_screen.dart';
 import 'package:collectio/app/screen/profile/view_profile/view_profile_screen.dart';
 import 'package:collectio/app/screen/shared/error.dart';
 import 'package:collectio/model/collection.dart';
@@ -139,6 +140,16 @@ void main() {
 
       ViewProfileScreen viewProfileScreen = screen as ViewProfileScreen;
       expect(viewProfileScreen.profile, argument);
+    });
+
+    test('should map Routes.editProfile to EditProfileScreen', () {
+      final String path = Routes.editProfile;
+      final RouteSettings routeSettings = RouteSettings(name: path);
+
+      final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+      final Widget screen = result.builder(null);
+
+      expect(screen, isA<EditProfileScreen>());
     });
 
     test('should map Routes.error to ErrorScreen with appropriate message', () {

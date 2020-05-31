@@ -14,7 +14,7 @@ class UsernameTooShortValidationFailure extends ValidationFailure {}
 
 class UsernameValidationFailure extends ValidationFailure {}
 
-class EmptyNameValidationFailure extends ValidationFailure {}
+class NameEmptyValidationFailure extends ValidationFailure {}
 
 class TitleEmptyValidationFailure extends ValidationFailure {}
 

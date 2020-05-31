@@ -7,7 +7,6 @@ import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../model/user_profile.dart';
-import '../../../model/value_object/photo.dart';
 import '../../../service/data_service.dart';
 import '../../../service/storage_service.dart';
 import '../../../util/constant/constants.dart';
@@ -92,23 +91,26 @@ class FirebaseProfileFacade extends ProfileFacade {
   @override
   Future<Either<DataFailure, void>> editUserProfile({
     @required UserProfile userProfile,
-    @required Photo profileImage,
+    File profileImage,
   }) async {
     try {
-      final File profileImageFile = profileImage.get();
-      final String fileExtension = profileImageFile.path
-          .substring(profileImageFile.path.lastIndexOf('.') + 1);
+      if (profileImage != null) {
+        final String fileExtension =
+            profileImage.path.substring(profileImage.path.lastIndexOf('.') + 1);
 
-      final String destinationName = '${userProfile.username}.$fileExtension';
+        final String destinationName = '${userProfile.username}.$fileExtension';
 
-      final bool uploadSuccessful = await storageService.uploadProfileImage(
-        image: profileImage.get(),
-        destinationName: destinationName,
-      );
+        final bool uploadSuccessful = await storageService.uploadProfileImage(
+          image: profileImage,
+          destinationName: destinationName,
+        );
 
-      if (!uploadSuccessful) return Left(DataFailure());
+        if (!uploadSuccessful) return Left(DataFailure());
 
-      userProfile.profileImg = destinationName;
+        userProfile.profileImg = destinationName;
+      } else {
+        userProfile.profileImg = '';
+      }
 
       await dataService.updateUserProfile(
         id: userProfile.id,

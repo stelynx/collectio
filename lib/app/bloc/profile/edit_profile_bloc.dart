@@ -75,7 +75,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         final Either<DataFailure, void> result =
             await _profileFacade.editUserProfile(
           userProfile: userProfile,
-          profileImage: state.profileImage,
+          profileImage: state.profileImage.get(),
         );
 
         if (result.isRight()) {
