@@ -8,6 +8,7 @@ import '../screen/collections/new/new_collection_screen.dart';
 import '../screen/collections/new_item/new_item.dart';
 import '../screen/collections/one/collection.dart';
 import '../screen/initial.dart';
+import '../screen/profile/edit_profile/edit_profile_screen.dart';
 import '../screen/profile/view_profile/view_profile_screen.dart';
 import '../screen/shared/error.dart';
 import 'routes.dart';
@@ -28,14 +29,17 @@ abstract class Router {
         return MaterialPageRoute(builder: (_) => CollectionsScreen());
       case Routes.newCollection:
         return MaterialPageRoute(
-            builder: (_) => NewCollectionScreen(), fullscreenDialog: true);
+          builder: (_) => NewCollectionScreen(),
+          fullscreenDialog: true,
+        );
       case Routes.collection:
         return MaterialPageRoute(
             builder: (_) => CollectionScreen(routeArguments));
       case Routes.item:
         return MaterialPageRoute(
-            builder: (_) => ItemDetailsScreen(routeArguments),
-            fullscreenDialog: true);
+          builder: (_) => ItemDetailsScreen(routeArguments),
+          fullscreenDialog: true,
+        );
       case Routes.newItem:
         final Map<String, dynamic> routeArgumentsMap =
             routeArguments as Map<String, dynamic>;
@@ -48,8 +52,14 @@ abstract class Router {
         );
       case Routes.profile:
         return MaterialPageRoute(
-            builder: (_) => ViewProfileScreen(routeArguments),
-            fullscreenDialog: true);
+          builder: (_) => ViewProfileScreen(routeArguments),
+          fullscreenDialog: true,
+        );
+      case Routes.editProfile:
+        return MaterialPageRoute(
+          builder: (_) => EditProfileScreen(),
+          fullscreenDialog: true,
+        );
       case Routes.error:
         return MaterialPageRoute(
             builder: (_) => ErrorScreen(message: routeArguments));

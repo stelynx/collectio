@@ -76,6 +76,16 @@ class FirebaseDataService extends DataService {
           .setData(userProfile);
 
   @override
+  Future<void> updateUserProfile({
+    @required String id,
+    @required Map<String, dynamic> userProfile,
+  }) =>
+      _firestore
+          .collection(Constants.userCollection)
+          .document(id)
+          .setData(userProfile);
+
+  @override
   Future<void> deleteCollection({
     @required String owner,
     @required String collectionName,

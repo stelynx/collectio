@@ -6,6 +6,7 @@ import '../bloc/auth/auth_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
 import '../routes/routes.dart';
 import 'circular_network_image.dart';
+import 'collectio_link.dart';
 
 class CollectioDrawer extends StatelessWidget {
   const CollectioDrawer();
@@ -22,13 +23,27 @@ class CollectioDrawer extends StatelessWidget {
                 if (state is CompleteProfileState)
                   return ListTile(
                     title: Text('Hi, ${state.userProfile.username}'),
+                    subtitle: Row(
+                      children: <Widget>[
+                        CollectioLink(
+                          text: 'View profile',
+                          onTap: () => Navigator.of(context).pushNamed(
+                            Routes.profile,
+                            arguments: state.userProfile,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        CollectioLink(
+                          text: 'Edit profile',
+                          onTap: () => Navigator.of(context).pushNamed(
+                            Routes.editProfile,
+                          ),
+                        ),
+                      ],
+                    ),
                     leading: CircularNetworkImage(
                       state.userProfile.profileImg,
                       radius: 20,
-                    ),
-                    onTap: () => Navigator.of(context).pushNamed(
-                      Routes.profile,
-                      arguments: state.userProfile,
                     ),
                   );
 

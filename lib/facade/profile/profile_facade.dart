@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 
@@ -16,4 +18,7 @@ abstract class ProfileFacade {
 
   Future<Either<DataFailure, void>> addUserProfile(
       {@required UserProfile userProfile});
+
+  Future<Either<DataFailure, void>> editUserProfile(
+      {@required UserProfile userProfile, @required File profileImage});
 }

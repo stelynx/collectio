@@ -12,6 +12,8 @@ class UserProfile {
   String userUid;
   String username;
 
+  String get id => username;
+
   UserProfile({
     @required this.email,
     this.firstName,

@@ -177,6 +177,28 @@ void main() {
     );
   });
 
+  group('updateUserProfile', () {
+    test('should call setData on correct document', () async {
+      final Map<String, dynamic> userProfileJson = UserProfile(
+        email: 'email',
+        userUid: userUid,
+        username: username,
+      ).toJson();
+
+      when(firebaseDataService.firestore.collection(any))
+          .thenReturn(mockedCollectionReference);
+      when(mockedCollectionReference.document(any))
+          .thenReturn(mockedDocumentReference);
+      when(mockedDocumentReference.setData(any)).thenAnswer((_) async => null);
+
+      await firebaseDataService.updateUserProfile(
+          id: userUid, userProfile: userProfileJson);
+
+      verify(mockedCollectionReference.document(userUid)).called(1);
+      verify(mockedDocumentReference.setData(userProfileJson)).called(1);
+    });
+  });
+
   group('deleteCollection', () {
     test('should call delete on correct collection', () async {
       when(firebaseDataService.firestore.document(any))

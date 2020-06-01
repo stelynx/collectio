@@ -38,7 +38,7 @@ abstract class NewCollectionState extends Equatable {
         thumbnail: thumbnail ?? this.thumbnail,
         showErrorMessages: showErrorMessages ?? this.showErrorMessages,
         isSubmitting: isSubmitting ?? this.isSubmitting,
-        dataFailure: (dataFailure != null || overrideDataFailure)
+        dataFailure: (dataFailure != null || overrideDataFailure == true)
             ? dataFailure
             : this.dataFailure,
       );
