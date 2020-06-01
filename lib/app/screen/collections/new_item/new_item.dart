@@ -25,7 +25,7 @@ class NewItemScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) =>
             getIt<NewItemBloc>()..add(InitializeNewItemEvent(collection)),
-        child: const NewItemForm(),
+        child: NewItemForm(collection: collection),
       ),
     );
   }

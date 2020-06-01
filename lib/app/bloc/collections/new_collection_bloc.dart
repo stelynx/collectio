@@ -72,6 +72,24 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         dataFailure: null,
         overrideDataFailure: true,
       );
+    } else if (event is ItemTitleNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemTitleName: Name(event.itemTitleName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ItemSubtitleNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemSubtitleName: Name(event.itemSubtitleName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ItemDescriptionNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemDescriptionName: Name(event.itemDescriptionName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is SubmitNewCollectionEvent) {
       yield state.copyWith(isSubmitting: true);
 

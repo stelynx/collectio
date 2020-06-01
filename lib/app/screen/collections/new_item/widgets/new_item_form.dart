@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../model/collection.dart';
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/constants.dart';
 import '../../../../../util/error/data_failure.dart';
@@ -15,7 +16,9 @@ import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_text_field.dart';
 
 class NewItemForm extends StatelessWidget {
-  const NewItemForm();
+  final Collection collection;
+
+  const NewItemForm({@required this.collection});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class NewItemForm extends StatelessWidget {
 
               // Title
               CollectioTextField(
-                labelText: 'Title',
+                labelText: collection.itemTitleName,
                 errorText: state.showErrorMessages && !state.title.isValid()
                     ? state.title.value.fold(
                         (ValidationFailure failure) =>
@@ -65,7 +68,7 @@ class NewItemForm extends StatelessWidget {
 
               // Subtitle
               CollectioTextField(
-                labelText: 'Subtitle',
+                labelText: collection.itemSubtitleName,
                 errorText: state.showErrorMessages && !state.subtitle.isValid()
                     ? state.subtitle.value.fold(
                         (ValidationFailure failure) =>
@@ -84,7 +87,7 @@ class NewItemForm extends StatelessWidget {
               // Description
               CollectioTextField(
                 maxLines: null,
-                labelText: 'Description',
+                labelText: collection.itemDescriptionName,
                 errorText:
                     state.showErrorMessages && !state.description.isValid()
                         ? state.description.value.fold(
