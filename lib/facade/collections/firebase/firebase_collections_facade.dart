@@ -93,8 +93,8 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
   }) async {
     try {
       await _dataService.deleteItemInCollection(
-        owner: collectionItem.owner,
-        collectionName: collectionItem.collectionId,
+        owner: collectionItem.parent.owner,
+        collectionName: collectionItem.parent.id,
         itemId: collectionItem.id,
       );
       return Right(null);
@@ -105,12 +105,11 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
 
   @override
   Future<Either<DataFailure, List<CollectionItem>>> getItemsInCollection(
-    String owner,
-    String collectionId,
+    Collection collection,
   ) async {
     try {
       final QuerySnapshot items = await _dataService.getItemsInCollection(
-          username: owner, collectionName: collectionId);
+          username: collection.owner, collectionName: collection.id);
 
       final List<CollectionItem> collectionItems = [];
       for (DocumentSnapshot document in items.documents) {
@@ -126,7 +125,7 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
         }
 
         final CollectionItem item =
-            CollectionItem.fromJson(json, parent: collectionId, owner: owner);
+            CollectionItem.fromJson(json, parent: collection);
 
         collectionItems.add(item);
       }

@@ -16,7 +16,7 @@ abstract class CollectionsFacade {
   Future<Either<DataFailure, void>> deleteCollection(Collection collection);
 
   Future<Either<DataFailure, List<CollectionItem>>> getItemsInCollection(
-      String owner, String collectionId);
+      Collection parent);
 
   Future<Either<DataFailure, void>> addItemToCollection({
     @required String owner,

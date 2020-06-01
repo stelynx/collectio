@@ -9,6 +9,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
+import '../../../model/collection.dart';
 import '../../../model/collection_item.dart';
 import '../../../model/value_object/description.dart';
 import '../../../model/value_object/photo.dart';
@@ -41,10 +42,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
     NewItemEvent event,
   ) async* {
     if (event is InitializeNewItemEvent) {
-      yield state.copyWith(
-        owner: event.owner,
-        collectionName: event.collection,
-      );
+      yield state.copyWith(collection: event.collection);
     } else if (event is TitleChangedNewItemEvent) {
       yield state.copyWith(
         title: Title(event.title),
@@ -76,8 +74,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         overrideDataFailure: true,
       );
     } else if (event is SubmitNewItemEvent) {
-      if (state.owner != null &&
-          state.collectionName != null &&
+      if (state.collection != null &&
           state.title.isValid() &&
           state.subtitle.isValid() &&
           state.description.isValid() &&
@@ -92,8 +89,8 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
             .path
             .substring(state.localImage.get().path.lastIndexOf('.') + 1);
         final String imageUrl = getItemImageName(
-          state.owner,
-          state.collectionName,
+          state.collection.owner,
+          state.collection.id,
           now.millisecondsSinceEpoch.toString(),
           fileExtension,
         );
@@ -109,8 +106,8 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
 
         final Either<DataFailure, void> result =
             await _collectionsFacade.addItemToCollection(
-                owner: state.owner,
-                collectionName: state.collectionName,
+                owner: state.collection.owner,
+                collectionName: state.collection.id,
                 item: collectionItem);
 
         Either<DataFailure, void> uploadResult;
@@ -120,8 +117,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
 
           if (uploadResult.isRight()) {
             _collectionItemsBloc.add(GetCollectionItemsEvent(
-              collectionOwner: state.owner,
-              collectionName: state.collectionName,
+              state.collection,
             ));
           }
         }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../model/collection.dart';
 import '../../util/constant/constants.dart';
 import '../screen/auth/sign_in.dart';
 import '../screen/collections/all/collections.dart';
@@ -41,13 +42,9 @@ abstract class Router {
           fullscreenDialog: true,
         );
       case Routes.newItem:
-        final Map<String, dynamic> routeArgumentsMap =
-            routeArguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder: (_) => NewItemScreen(
-            owner: routeArgumentsMap['owner'],
-            collectionName: routeArgumentsMap['collectionName'],
-          ),
+          builder: (_) =>
+              NewItemScreen(collection: routeArguments as Collection),
           fullscreenDialog: true,
         );
       case Routes.profile:

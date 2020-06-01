@@ -295,10 +295,17 @@ void main() {
   });
 
   group('deleteItemInCollection', () {
+    final Collection collection = Collection(
+      id: 'title',
+      owner: 'owner',
+      title: 'title',
+      subtitle: 'subtitle',
+      description: 'description',
+      thumbnail: 'thumbnail',
+    );
     final CollectionItem item = CollectionItem(
       id: 'id',
-      owner: 'owner',
-      collectionId: 'collectionId',
+      parent: collection,
       added: null,
       title: 'title',
       subtitle: 'subtitle',
@@ -318,8 +325,8 @@ void main() {
           collectionItem: item);
 
       verify(firebaseCollectionsFacade.dataService.deleteItemInCollection(
-        owner: item.owner,
-        collectionName: item.collectionId,
+        owner: item.parent.owner,
+        collectionName: item.parent.id,
         itemId: item.id,
       )).called(1);
     });
@@ -352,14 +359,22 @@ void main() {
   });
 
   group('getItemsInCollection', () {
+    final Collection collection = Collection(
+      id: 'collectionId',
+      owner: 'owner',
+      title: 'collectionId',
+      subtitle: 'subtitle',
+      description: 'description',
+      thumbnail: 'thumbnail',
+    );
+
     test('should call FirebaseDataService.getItemsInCollection', () async {
       when(firebaseCollectionsFacade.dataService.getItemsInCollection(
               username: anyNamed('username'),
               collectionName: anyNamed('collectionName')))
           .thenAnswer((_) async => null);
 
-      await firebaseCollectionsFacade.getItemsInCollection(
-          'owner', 'collectionId');
+      await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       verify(firebaseCollectionsFacade.dataService.getItemsInCollection(
               username: 'owner', collectionName: 'collectionId'))
@@ -373,8 +388,7 @@ void main() {
           .thenThrow(Exception());
 
       final Either<DataFailure, List<CollectionItem>> result =
-          await firebaseCollectionsFacade.getItemsInCollection(
-              'owner', 'collectionId');
+          await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       expect(result, equals(Left(DataFailure())));
     });
@@ -389,8 +403,7 @@ void main() {
         'raiting': 10,
       };
       final CollectionItem collectionItem = CollectionItem(
-        owner: 'owner',
-        collectionId: 'collectionId',
+        parent: collection,
         id: 'documentId',
         added: DateTime.fromMillisecondsSinceEpoch(10000),
         title: 'title',
@@ -414,8 +427,7 @@ void main() {
           .thenAnswer((_) async => 'imageUrl');
 
       final Either<DataFailure, List<CollectionItem>> result =
-          await firebaseCollectionsFacade.getItemsInCollection(
-              'owner', 'collectionId');
+          await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       expect(result.isRight(), isTrue);
       expect(result.getOrElse(null)[0], equals(collectionItem));
@@ -445,8 +457,7 @@ void main() {
           .thenThrow(Exception());
 
       final Either<DataFailure, List<CollectionItem>> result =
-          await firebaseCollectionsFacade.getItemsInCollection(
-              'owner', 'collectionId');
+          await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       expect(result.isRight(), isTrue);
       expect(result.getOrElse(null)[0].thumbnail, isNull);

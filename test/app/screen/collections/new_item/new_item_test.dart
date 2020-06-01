@@ -1,5 +1,6 @@
 import 'package:collectio/app/screen/collections/new_item/new_item.dart';
 import 'package:collectio/app/screen/collections/new_item/widgets/new_item_form.dart';
+import 'package:collectio/model/collection.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,8 +9,20 @@ import 'package:injectable/injectable.dart' show Environment;
 void main() {
   configureInjection(Environment.prod);
 
+  final Collection collection = Collection(
+    id: 'title',
+    owner: 'owner',
+    title: 'title',
+    subtitle: 'subtitle',
+    description: 'description',
+    thumbnail: 'thumbnail',
+  );
+
   Widget makeTestableWidget() => MaterialApp(
-      home: NewItemScreen(owner: 'owner', collectionName: 'collectionName'));
+        home: NewItemScreen(
+          collection: collection,
+        ),
+      );
 
   testWidgets(
     'should have a Scaffold with AppBar and NewItemForm in body',

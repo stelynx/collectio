@@ -11,6 +11,7 @@ import 'package:meta/meta.dart';
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
 import '../../../model/value_object/description.dart';
+import '../../../model/value_object/name.dart';
 import '../../../model/value_object/photo.dart';
 import '../../../model/value_object/subtitle.dart';
 import '../../../model/value_object/title.dart';
@@ -104,6 +105,9 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
             subtitle: state.subtitle.get(),
             description: state.description.get(),
             thumbnail: imageUrl,
+            itemTitleName: state.itemTitleName.get(),
+            itemSubtitleName: state.itemSubtitleName.get(),
+            itemDescriptionName: state.itemDescriptionName.get(),
           );
 
           final Either<DataFailure, void> result =

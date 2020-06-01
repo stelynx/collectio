@@ -43,9 +43,7 @@ class CollectionScreen extends StatelessWidget {
           ),
           BlocBuilder<CollectionItemsBloc, CollectionItemsState>(
             bloc: getIt<CollectionItemsBloc>()
-              ..add(GetCollectionItemsEvent(
-                  collectionOwner: _collection.owner,
-                  collectionName: _collection.id)),
+              ..add(GetCollectionItemsEvent(_collection)),
             builder: (BuildContext context, CollectionItemsState state) {
               if (state is LoadedCollectionItemsState)
                 return Expanded(
@@ -93,10 +91,7 @@ class CollectionScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed(
           Routes.newItem,
-          arguments: {
-            'owner': _collection.owner,
-            'collectionName': _collection.id,
-          },
+          arguments: _collection,
         ),
         child: Icon(Icons.add),
         backgroundColor: Colors.green,
