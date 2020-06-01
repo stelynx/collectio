@@ -87,17 +87,4 @@ class GeneralEditProfileState extends EditProfileState {
           isSubmitting: isSubmitting ?? false,
           dataFailure: dataFailure ?? null,
         );
-
-  @override
-  String toString() {
-    return [
-      firstName,
-      lastName,
-      country,
-      profileImage,
-      oldImageUrl,
-      isSubmitting,
-      dataFailure
-    ].join(', ');
-  }
 }
