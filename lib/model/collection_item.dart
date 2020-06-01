@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import 'collection.dart';
 import 'interface/listable.dart';
 
 class CollectionItem extends Equatable implements Listable {
-  final String owner;
-  final String collectionId;
+  final Collection parent;
   final String id;
   final DateTime added;
   final String title;
@@ -17,8 +17,7 @@ class CollectionItem extends Equatable implements Listable {
   String get thumbnail => imageUrl;
 
   CollectionItem({
-    this.owner,
-    this.collectionId,
+    this.parent,
     this.id,
     @required this.added,
     @required this.title,
@@ -29,10 +28,9 @@ class CollectionItem extends Equatable implements Listable {
   });
 
   factory CollectionItem.fromJson(Map<String, dynamic> json,
-          {String parent, String owner}) =>
+          {Collection parent}) =>
       CollectionItem(
-          owner: owner,
-          collectionId: parent,
+          parent: parent,
           id: json['id'],
           added: DateTime.fromMillisecondsSinceEpoch(json['added']),
           title: json['title'],
@@ -52,8 +50,7 @@ class CollectionItem extends Equatable implements Listable {
 
   @override
   List<Object> get props => [
-        owner,
-        collectionId,
+        parent,
         id,
         title,
         subtitle,

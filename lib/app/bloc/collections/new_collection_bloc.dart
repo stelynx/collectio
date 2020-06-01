@@ -11,6 +11,7 @@ import 'package:meta/meta.dart';
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
 import '../../../model/value_object/description.dart';
+import '../../../model/value_object/name.dart';
 import '../../../model/value_object/photo.dart';
 import '../../../model/value_object/subtitle.dart';
 import '../../../model/value_object/title.dart';
@@ -71,6 +72,24 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         dataFailure: null,
         overrideDataFailure: true,
       );
+    } else if (event is ItemTitleNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemTitleName: Name(event.itemTitleName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ItemSubtitleNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemSubtitleName: Name(event.itemSubtitleName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ItemDescriptionNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemDescriptionName: Name(event.itemDescriptionName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is SubmitNewCollectionEvent) {
       yield state.copyWith(isSubmitting: true);
 
@@ -104,6 +123,9 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
             subtitle: state.subtitle.get(),
             description: state.description.get(),
             thumbnail: imageUrl,
+            itemTitleName: state.itemTitleName.get(),
+            itemSubtitleName: state.itemSubtitleName.get(),
+            itemDescriptionName: state.itemDescriptionName.get(),
           );
 
           final Either<DataFailure, void> result =

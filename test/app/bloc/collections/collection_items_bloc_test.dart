@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/collections/collection_items_bloc.dart';
 import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/facade/collections/firebase/firebase_collections_facade.dart';
+import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
@@ -12,10 +13,18 @@ import 'package:mockito/mockito.dart';
 void main() {
   configureInjection(Environment.test);
 
+  final Collection collection = Collection(
+    id: 'title',
+    owner: 'owner',
+    title: 'title',
+    subtitle: 'subtitle',
+    description: 'description',
+    thumbnail: 'thumbnail',
+  );
+
   final List<CollectionItem> collectionItems = [
     CollectionItem(
-      owner: 'owner',
-      collectionId: 'collectionName',
+      parent: collection,
       id: 'id',
       added: DateTime.fromMillisecondsSinceEpoch(10000),
       title: 'title',
@@ -32,13 +41,13 @@ void main() {
   blocTest(
     'should yield Loading and Loaded on successful GetCollectionItemsEvent',
     build: () async {
-      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any, any))
+      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any))
           .thenAnswer((_) async => Right(collectionItems));
       return CollectionItemsBloc(
           collectionsFacade: mockedFirebaseCollectionsFacade);
     },
-    act: (CollectionItemsBloc bloc) async => bloc.add(GetCollectionItemsEvent(
-        collectionOwner: 'owner', collectionName: 'name')),
+    act: (CollectionItemsBloc bloc) async =>
+        bloc.add(GetCollectionItemsEvent(collection)),
     expect: [
       LoadingCollectionItemsState(),
       LoadedCollectionItemsState(collectionItems)
@@ -48,20 +57,20 @@ void main() {
   blocTest(
     'should yield Error on unsuccessful GetCollectionItemsEvent',
     build: () async {
-      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any, any))
+      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any))
           .thenAnswer((_) async => Left(DataFailure()));
       return CollectionItemsBloc(
           collectionsFacade: mockedFirebaseCollectionsFacade);
     },
-    act: (CollectionItemsBloc bloc) async => bloc.add(GetCollectionItemsEvent(
-        collectionOwner: 'owner', collectionName: 'name')),
+    act: (CollectionItemsBloc bloc) async =>
+        bloc.add(GetCollectionItemsEvent(collection)),
     expect: [LoadingCollectionItemsState(), ErrorCollectionItemsState()],
   );
 
   blocTest(
     'should call CollectionsFacade.deleteCollection on DeleteCollection event',
     build: () async {
-      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any, any))
+      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any))
           .thenAnswer((_) async => Right([collectionItems[0]]));
       when(mockedFirebaseCollectionsFacade.deleteItemInCollection(
               collectionItem: anyNamed('collectionItem')))
@@ -70,8 +79,7 @@ void main() {
           collectionsFacade: mockedFirebaseCollectionsFacade);
     },
     act: (CollectionItemsBloc bloc) async => bloc
-      ..add(GetCollectionItemsEvent(
-          collectionName: 'collectionName', collectionOwner: 'owner'))
+      ..add(GetCollectionItemsEvent(collection))
       ..add(DeleteItemCollectionItemsEvent(collectionItems[0])),
     verify: (_) async => verify(mockedFirebaseCollectionsFacade
             .deleteItemInCollection(collectionItem: collectionItems[0]))
@@ -81,7 +89,7 @@ void main() {
   blocTest(
     'should yield Loaded state without deleted collection on DeleteCollection event',
     build: () async {
-      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any, any))
+      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any))
           .thenAnswer((_) async => Right([collectionItems[0]]));
       when(mockedFirebaseCollectionsFacade.deleteItemInCollection(
               collectionItem: anyNamed('collectionItem')))
@@ -90,8 +98,7 @@ void main() {
           collectionsFacade: mockedFirebaseCollectionsFacade);
     },
     act: (CollectionItemsBloc bloc) async => bloc
-      ..add(GetCollectionItemsEvent(
-          collectionName: 'collectionName', collectionOwner: 'owner'))
+      ..add(GetCollectionItemsEvent(collection))
       ..add(DeleteItemCollectionItemsEvent(collectionItems[0])),
     expect: [
       LoadingCollectionItemsState(),
@@ -102,7 +109,7 @@ void main() {
   blocTest(
     'should yield Loaded state with deleted collection on failed deletion',
     build: () async {
-      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any, any))
+      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any))
           .thenAnswer((_) async => Right([collectionItems[0]]));
       when(mockedFirebaseCollectionsFacade.deleteItemInCollection(
               collectionItem: anyNamed('collectionItem')))
@@ -111,8 +118,7 @@ void main() {
           collectionsFacade: mockedFirebaseCollectionsFacade);
     },
     act: (CollectionItemsBloc bloc) async => bloc
-      ..add(GetCollectionItemsEvent(
-          collectionName: 'collectionName', collectionOwner: 'owner'))
+      ..add(GetCollectionItemsEvent(collection))
       ..add(DeleteItemCollectionItemsEvent(collectionItems[0])),
     expect: [
       LoadingCollectionItemsState(),

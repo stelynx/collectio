@@ -5,11 +5,9 @@ abstract class NewItemEvent {
 }
 
 class InitializeNewItemEvent extends NewItemEvent {
-  final String owner;
-  final String collection;
+  final Collection collection;
 
-  const InitializeNewItemEvent(
-      {@required this.owner, @required this.collection});
+  const InitializeNewItemEvent(this.collection);
 }
 
 class TitleChangedNewItemEvent extends NewItemEvent {

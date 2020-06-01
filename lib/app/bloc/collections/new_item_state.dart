@@ -1,8 +1,7 @@
 part of 'new_item_bloc.dart';
 
 abstract class NewItemState extends Equatable {
-  final String owner;
-  final String collectionName;
+  final Collection collection;
 
   final Title title;
   final Subtitle subtitle;
@@ -15,8 +14,7 @@ abstract class NewItemState extends Equatable {
   final Either<DataFailure, void> dataFailure;
 
   NewItemState({
-    @required this.owner,
-    @required this.collectionName,
+    @required this.collection,
     @required this.title,
     @required this.subtitle,
     @required this.description,
@@ -29,8 +27,7 @@ abstract class NewItemState extends Equatable {
   });
 
   NewItemState copyWith({
-    String owner,
-    String collectionName,
+    Collection collection,
     Title title,
     Subtitle subtitle,
     Description description,
@@ -43,8 +40,7 @@ abstract class NewItemState extends Equatable {
     bool overrideDataFailure = false,
   }) =>
       GeneralNewItemState(
-        owner: owner ?? this.owner,
-        collectionName: collectionName ?? this.collectionName,
+        collection: collection ?? this.collection,
         title: title ?? this.title,
         subtitle: subtitle ?? this.subtitle,
         description: description ?? this.description,
@@ -60,8 +56,7 @@ abstract class NewItemState extends Equatable {
 
   @override
   List<Object> get props => [
-        owner,
-        collectionName,
+        collection,
         title,
         subtitle,
         description,
@@ -72,13 +67,17 @@ abstract class NewItemState extends Equatable {
         showErrorMessages,
         dataFailure
       ];
+
+  @override
+  String toString() {
+    return '[$collection,$title,$subtitle,$description,$raiting,$imageUrl,$localImage,$isSubmitting,$showErrorMessages,$dataFailure]';
+  }
 }
 
 class InitialNewItemState extends NewItemState {
   InitialNewItemState()
       : super(
-            owner: null,
-            collectionName: null,
+            collection: null,
             title: Title(''),
             subtitle: Subtitle(''),
             description: Description(''),
@@ -92,8 +91,7 @@ class InitialNewItemState extends NewItemState {
 
 class GeneralNewItemState extends NewItemState {
   GeneralNewItemState({
-    String owner,
-    String collectionName,
+    Collection collection,
     Title title,
     Subtitle subtitle,
     Description description,
@@ -104,8 +102,7 @@ class GeneralNewItemState extends NewItemState {
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
   }) : super(
-          owner: owner,
-          collectionName: collectionName,
+          collection: collection,
           title: title ?? Title(''),
           subtitle: subtitle ?? Subtitle(''),
           description: description ?? Description(''),

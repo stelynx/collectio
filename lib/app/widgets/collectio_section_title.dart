@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class CollectioSectionTitle extends StatelessWidget {
   final String text;
+  final bool parentHasPadding;
 
-  const CollectioSectionTitle(this.text);
+  const CollectioSectionTitle(this.text, {this.parentHasPadding = false});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(parentHasPadding ? 0 : 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

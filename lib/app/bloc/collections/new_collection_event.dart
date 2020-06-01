@@ -29,4 +29,22 @@ class ImageChangedNewCollectionEvent extends NewCollectionEvent {
   const ImageChangedNewCollectionEvent(this.image);
 }
 
+class ItemTitleNameChangedNewCollectionEvent extends NewCollectionEvent {
+  final String itemTitleName;
+
+  const ItemTitleNameChangedNewCollectionEvent(this.itemTitleName);
+}
+
+class ItemSubtitleNameChangedNewCollectionEvent extends NewCollectionEvent {
+  final String itemSubtitleName;
+
+  const ItemSubtitleNameChangedNewCollectionEvent(this.itemSubtitleName);
+}
+
+class ItemDescriptionNameChangedNewCollectionEvent extends NewCollectionEvent {
+  final String itemDescriptionName;
+
+  const ItemDescriptionNameChangedNewCollectionEvent(this.itemDescriptionName);
+}
+
 class SubmitNewCollectionEvent extends NewCollectionEvent {}

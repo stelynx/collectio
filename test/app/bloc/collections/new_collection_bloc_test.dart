@@ -8,6 +8,7 @@ import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/model/value_object/description.dart' as model;
+import 'package:collectio/model/value_object/name.dart';
 import 'package:collectio/model/value_object/photo.dart';
 import 'package:collectio/model/value_object/subtitle.dart';
 import 'package:collectio/model/value_object/title.dart';
@@ -94,6 +95,45 @@ void main() {
         bloc.add(ImageChangedNewCollectionEvent(mockedFile)),
     expect: [
       GeneralNewCollectionState(thumbnail: Photo(mockedFile)),
+    ],
+  );
+
+  blocTest(
+    'should change image on ItemTitleNameChanged',
+    build: () async => NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc),
+    act: (NewCollectionBloc bloc) async =>
+        bloc.add(ItemTitleNameChangedNewCollectionEvent('Title123')),
+    expect: [
+      GeneralNewCollectionState(itemTitleName: Name('Title123')),
+    ],
+  );
+
+  blocTest(
+    'should change image on ItemSubtitleNameChanged',
+    build: () async => NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc),
+    act: (NewCollectionBloc bloc) async =>
+        bloc.add(ItemSubtitleNameChangedNewCollectionEvent('Subtitle123')),
+    expect: [
+      GeneralNewCollectionState(itemSubtitleName: Name('Subtitle123')),
+    ],
+  );
+
+  blocTest(
+    'should change image on ItemDescriptionNameChanged',
+    build: () async => NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc),
+    act: (NewCollectionBloc bloc) async => bloc
+        .add(ItemDescriptionNameChangedNewCollectionEvent('Description123')),
+    expect: [
+      GeneralNewCollectionState(itemDescriptionName: Name('Description123')),
     ],
   );
 

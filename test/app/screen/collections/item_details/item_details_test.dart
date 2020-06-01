@@ -1,11 +1,24 @@
 import 'package:collectio/app/screen/collections/item_details/item_details.dart';
+import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
 void main() {
+  final Collection parent = Collection(
+    id: 'title',
+    owner: 'owner',
+    title: 'title',
+    subtitle: 'subtitle',
+    description: 'description',
+    thumbnail: null,
+    itemTitleName: 'itemTitleName',
+    itemSubtitleName: 'itemSubtitleName',
+    itemDescriptionName: 'itemDescriptionName',
+  );
   final CollectionItem item = CollectionItem(
+    parent: parent,
     added: null,
     title: 'title',
     subtitle: 'subtitle',

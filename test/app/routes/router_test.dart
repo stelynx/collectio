@@ -105,10 +105,14 @@ void main() {
     test('should map Routes.newItem to NewItemScreen with correct arguments',
         () {
       final String path = Routes.newItem;
-      final Map<String, dynamic> arguments = <String, dynamic>{
-        'owner': 'owner',
-        'collectionName': 'collectionName',
-      };
+      final Collection arguments = Collection(
+        id: 'title',
+        owner: 'owner',
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        thumbnail: 'thumbnail',
+      );
       final RouteSettings routeSettings =
           RouteSettings(name: path, arguments: arguments);
 
@@ -118,8 +122,7 @@ void main() {
       expect(screen, isA<NewItemScreen>());
 
       NewItemScreen newItemScreen = screen as NewItemScreen;
-      expect(newItemScreen.owner, arguments['owner']);
-      expect(newItemScreen.collectionName, arguments['collectionName']);
+      expect(newItemScreen.collection, arguments);
     });
 
     test('should map Routes.profile to ViewProfileScreen with correct argument',

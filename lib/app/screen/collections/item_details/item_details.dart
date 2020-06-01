@@ -32,7 +32,7 @@ class ItemDetailsScreen extends StatelessWidget {
 
                   // Title
                   CollectioTextField(
-                    labelText: 'Title',
+                    labelText: item.parent.itemTitleName,
                     enabled: false,
                     maxLines: null,
                     initialValue: item.title,
@@ -42,7 +42,7 @@ class ItemDetailsScreen extends StatelessWidget {
 
                   // Subtitle
                   CollectioTextField(
-                    labelText: 'Subtitle',
+                    labelText: item.parent.itemSubtitleName,
                     maxLines: null,
                     enabled: false,
                     initialValue: item.subtitle,
@@ -53,7 +53,7 @@ class ItemDetailsScreen extends StatelessWidget {
                   // Description
                   CollectioTextField(
                     maxLines: null,
-                    labelText: 'Description',
+                    labelText: item.parent.itemDescriptionName,
                     enabled: false,
                     initialValue: item.description,
                   ),

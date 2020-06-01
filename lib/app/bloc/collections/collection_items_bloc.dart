@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
+import '../../../model/collection.dart';
 import '../../../model/collection_item.dart';
 import '../../../util/constant/constants.dart';
 import '../../../util/error/data_failure.dart';
@@ -35,8 +36,7 @@ class CollectionItemsBloc
       yield LoadingCollectionItemsState();
 
       final Either<DataFailure, List<CollectionItem>> items =
-          await _collectionsFacade.getItemsInCollection(
-              event.collectionOwner, event.collectionName);
+          await _collectionsFacade.getItemsInCollection(event.collection);
 
       if (items.isRight()) {
         yield LoadedCollectionItemsState(items.getOrElse(null));
