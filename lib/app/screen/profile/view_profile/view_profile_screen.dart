@@ -7,6 +7,7 @@ import '../../../../util/function/enum_helper.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collections_bloc.dart';
 import '../../../routes/routes.dart';
+import '../../../theme/style.dart';
 import '../../../widgets/circular_network_image.dart';
 import '../../../widgets/collectio_drawer.dart';
 import '../../../widgets/collectio_list.dart';
@@ -29,21 +30,23 @@ class ViewProfileScreen extends StatelessWidget {
           children: <Widget>[
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: CollectioStyle.screenPadding,
                 child: Column(
                   children: <Widget>[
                     CircularNetworkImage(profile.profileImg, radius: 50),
-                    const SizedBox(height: 10),
+                    CollectioStyle.itemSplitter,
                     Column(
                       children: <Widget>[
                         Text('${profile.firstName} ${profile.lastName}'),
                         Text('@${profile.username}'),
-                        const SizedBox(height: 10),
+                        CollectioStyle.itemSplitter,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Icon(Icons.location_on),
-                            Text(enumToString(profile.country)),
+                            Text(profile.country != null
+                                ? enumToString(profile.country)
+                                : 'Unknown'),
                           ],
                         ),
                       ],

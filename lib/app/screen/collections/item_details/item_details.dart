@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../model/collection_item.dart';
+import '../../../theme/style.dart';
 import '../../../widgets/collectio_dropdown.dart';
 import '../../../widgets/collectio_text_field.dart';
 
@@ -19,7 +20,7 @@ class ItemDetailsScreen extends StatelessWidget {
         body: SafeArea(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: CollectioStyle.screenPadding,
               child: Column(
                 children: <Widget>[
                   //Image
@@ -28,7 +29,8 @@ class ItemDetailsScreen extends StatelessWidget {
                     child: Image.network(item.imageUrl),
                   ),
 
-                  SizedBox(height: 20),
+                  CollectioStyle.itemSplitter,
+                  CollectioStyle.itemSplitter,
 
                   // Title
                   CollectioTextField(
@@ -38,7 +40,7 @@ class ItemDetailsScreen extends StatelessWidget {
                     initialValue: item.title,
                   ),
 
-                  SizedBox(height: 10),
+                  CollectioStyle.itemSplitter,
 
                   // Subtitle
                   CollectioTextField(
@@ -48,7 +50,7 @@ class ItemDetailsScreen extends StatelessWidget {
                     initialValue: item.subtitle,
                   ),
 
-                  SizedBox(height: 10),
+                  CollectioStyle.itemSplitter,
 
                   // Description
                   CollectioTextField(
@@ -58,7 +60,7 @@ class ItemDetailsScreen extends StatelessWidget {
                     initialValue: item.description,
                   ),
 
-                  SizedBox(height: 10),
+                  CollectioStyle.itemSplitter,
 
                   // Raiting
                   CollectioDropdown<int>(

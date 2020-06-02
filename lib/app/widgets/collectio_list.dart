@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/interface/listable.dart';
 import '../../util/constant/constants.dart';
+import '../theme/style.dart';
 import 'circular_network_image.dart';
 
 class CollectioList<T extends Listable> extends StatelessWidget {
@@ -28,9 +29,9 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                 Icon(
                   Icons.warning,
                   color: Colors.amber,
-                  size: 80,
+                  size: CollectioStyle.bigIconSize,
                 ),
-                SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
                 Text(Constants.noItems),
               ],
             ),

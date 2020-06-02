@@ -9,6 +9,7 @@ import '../../../../../util/error/data_failure.dart';
 import '../../../../../util/error/failure.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_collection_bloc.dart';
+import '../../../../theme/style.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_section_title.dart';
@@ -28,7 +29,7 @@ class NewCollectionForm extends StatelessWidget {
       builder: (BuildContext context, NewCollectionState state) {
         return Center(
           child: ListView(
-            padding: EdgeInsets.all(20),
+            padding: CollectioStyle.screenPadding,
             children: <Widget>[
               // Image
               CollectioImagePicker(
@@ -43,7 +44,8 @@ class NewCollectionForm extends StatelessWidget {
                     state.showErrorMessages && !state.thumbnail.isValid(),
               ),
 
-              SizedBox(height: 20),
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
 
               // Title
               CollectioTextField(
@@ -61,7 +63,7 @@ class NewCollectionForm extends StatelessWidget {
                     .add(TitleChangedNewCollectionEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               // Subtitle
               CollectioTextField(
@@ -79,7 +81,7 @@ class NewCollectionForm extends StatelessWidget {
                     .add(SubtitleChangedNewCollectionEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               // Description
               CollectioTextField(
@@ -121,7 +123,7 @@ class NewCollectionForm extends StatelessWidget {
                     .add(ItemTitleNameChangedNewCollectionEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               CollectioTextField(
                 labelText: 'Subtitle name',
@@ -140,7 +142,7 @@ class NewCollectionForm extends StatelessWidget {
                     .add(ItemSubtitleNameChangedNewCollectionEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               CollectioTextField(
                 labelText: 'Description name',
@@ -159,7 +161,7 @@ class NewCollectionForm extends StatelessWidget {
                     .add(ItemDescriptionNameChangedNewCollectionEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               if (state.dataFailure != null && state.dataFailure.isLeft()) ...[
                 state.dataFailure.fold(

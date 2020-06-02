@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/style.dart';
+
 class ErrorScreen extends StatelessWidget {
   final String _errorMessage;
 
@@ -12,16 +14,16 @@ class ErrorScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: CollectioStyle.screenPadding,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(
                 Icons.error,
-                size: 80,
+                size: CollectioStyle.bigIconSize,
                 color: Theme.of(context).errorColor,
               ),
-              const SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
               Text(_errorMessage),
             ],
           ),

@@ -7,6 +7,7 @@ import '../../../../util/constant/constants.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collection_items_bloc.dart';
 import '../../../routes/routes.dart';
+import '../../../theme/style.dart';
 import '../../../widgets/collectio_list.dart';
 import 'widgets/collection_details_view.dart';
 
@@ -35,11 +36,9 @@ class CollectionScreen extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          CollectionDetailsView(_collection),
-          Divider(
-            color: Theme.of(context).primaryColor,
-            indent: 20,
-            endIndent: 20,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: CollectionDetailsView(_collection),
           ),
           BlocBuilder<CollectionItemsBloc, CollectionItemsState>(
             bloc: getIt<CollectionItemsBloc>()
@@ -66,10 +65,10 @@ class CollectionScreen extends StatelessWidget {
                         SizedBox(height: 30),
                         Icon(
                           Icons.error,
-                          size: 80,
+                          size: CollectioStyle.bigIconSize,
                           color: Theme.of(context).errorColor,
                         ),
-                        SizedBox(height: 10),
+                        CollectioStyle.itemSplitter,
                         Text(
                           Constants.collectionItemsFailure,
                           textAlign: TextAlign.center,

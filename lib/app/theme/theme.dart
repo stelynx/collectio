@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'dark.dart' as Dark;
 import 'light.dart' as Light;
+import 'style.dart';
 
 class CollectioTheme {
   static ThemeData get light => _theme(
@@ -40,7 +41,7 @@ class CollectioTheme {
       headline1: base.textTheme.headline1.copyWith(
         color: textColor,
       ),
-      caption: TextStyle(
+      headline2: TextStyle(
         color: primaryColor,
         fontWeight: FontWeight.w400,
       ),
@@ -68,7 +69,7 @@ class CollectioTheme {
 
     final FloatingActionButtonThemeData floatingActionButtonThemeData =
         base.floatingActionButtonTheme.copyWith(
-      elevation: 5,
+      elevation: CollectioStyle.elevation,
       foregroundColor: addColor,
       backgroundColor: backgroundDarkerColor,
     );

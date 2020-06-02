@@ -31,7 +31,7 @@ class CollectioApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Stelynx Collectio',
         debugShowCheckedModeBanner: false,
-        theme: CollectioTheme.dark,
+        theme: CollectioTheme.light,
         initialRoute: Routes.initial,
         onGenerateRoute: Router.onGenerateRoute,
       ),
