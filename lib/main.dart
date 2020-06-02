@@ -6,14 +6,15 @@ import 'package:injectable/injectable.dart';
 import 'app/bloc/auth/auth_bloc.dart';
 import 'app/routes/router.dart';
 import 'app/routes/routes.dart';
+import 'app/theme/theme.dart';
 import 'util/injection/injection.dart';
 
 void main() {
   configureInjection(Environment.prod);
-  runApp(MyApp());
+  runApp(CollectioApp());
 }
 
-class MyApp extends StatelessWidget {
+class CollectioApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Stelynx Collectio',
         debugShowCheckedModeBanner: false,
+        theme: CollectioTheme.dark,
         initialRoute: Routes.initial,
         onGenerateRoute: Router.onGenerateRoute,
       ),

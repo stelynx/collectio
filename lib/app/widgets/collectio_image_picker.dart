@@ -79,7 +79,9 @@ class CollectioImagePicker extends StatelessWidget {
                 ? Image.network(url)
                 : Container(
                     decoration: showError
-                        ? BoxDecoration(border: Border.all(color: Colors.red))
+                        ? BoxDecoration(
+                            border:
+                                Border.all(color: Theme.of(context).errorColor))
                         : BoxDecoration(border: Border.all()),
                     child: Center(
                       child: Column(
@@ -88,12 +90,15 @@ class CollectioImagePicker extends StatelessWidget {
                           Icon(
                             Icons.add_a_photo,
                             size: 50,
-                            color: showError ? Colors.red : Colors.grey,
+                            color: showError
+                                ? Theme.of(context).errorColor
+                                : Theme.of(context).iconTheme.color,
                           ),
                           if (showError) ...[
                             Text(
                               'Please select a photo',
-                              style: TextStyle(color: Colors.red),
+                              style: TextStyle(
+                                  color: Theme.of(context).errorColor),
                             ),
                           ],
                         ],

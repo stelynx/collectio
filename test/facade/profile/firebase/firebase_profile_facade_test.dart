@@ -282,7 +282,6 @@ void main() {
             userProfile: newUserProfile, profileImage: image);
 
         newUserProfile.profileImg = '${newUserProfile.id}.jpg';
-        print(newUserProfile.toJson());
 
         verify(firebaseProfileFacade.dataService.updateUserProfile(
                 id: newUserProfile.id, userProfile: newUserProfile.toJson()))

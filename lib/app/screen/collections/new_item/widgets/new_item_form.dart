@@ -121,7 +121,7 @@ class NewItemForm extends StatelessWidget {
                 state.dataFailure.fold(
                     (DataFailure failure) => Text(
                           failure.message,
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(color: Theme.of(context).errorColor),
                         ),
                     null),
               ],

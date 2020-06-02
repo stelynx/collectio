@@ -14,9 +14,7 @@ class CollectioLink extends StatelessWidget {
     return InkWell(
       child: Text(
         text,
-        style: TextStyle(
-          color: Theme.of(context).primaryColor,
-        ),
+        style: Theme.of(context).textTheme.caption,
       ),
       onTap: onTap,
     );

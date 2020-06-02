@@ -37,7 +37,7 @@ class CollectionScreen extends StatelessWidget {
         children: <Widget>[
           CollectionDetailsView(_collection),
           Divider(
-            color: ThemeData.light().accentColor,
+            color: Theme.of(context).primaryColor,
             indent: 20,
             endIndent: 20,
           ),
@@ -67,7 +67,7 @@ class CollectionScreen extends StatelessWidget {
                         Icon(
                           Icons.error,
                           size: 80,
-                          color: Colors.red,
+                          color: Theme.of(context).errorColor,
                         ),
                         SizedBox(height: 10),
                         Text(
@@ -94,7 +94,6 @@ class CollectionScreen extends StatelessWidget {
           arguments: _collection,
         ),
         child: Icon(Icons.add),
-        backgroundColor: Colors.green,
       ),
     );
   }

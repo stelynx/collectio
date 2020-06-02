@@ -16,10 +16,10 @@ class ErrorScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Icon(
+              Icon(
                 Icons.error,
                 size: 80,
-                color: Colors.red,
+                color: Theme.of(context).errorColor,
               ),
               const SizedBox(height: 10),
               Text(_errorMessage),

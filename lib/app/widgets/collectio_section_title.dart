@@ -16,12 +16,9 @@ class CollectioSectionTitle extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             text,
-            style: TextStyle(
-              fontSize: 10,
-              color: Theme.of(context).primaryColor,
-            ),
+            style: Theme.of(context).textTheme.caption,
           ),
-          Divider(color: Theme.of(context).primaryColor),
+          Divider(color: Theme.of(context).textTheme.caption.color),
         ],
       ),
     );

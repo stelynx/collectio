@@ -38,12 +38,12 @@ class CollectioTextField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(),
         disabledBorder:
             OutlineInputBorder(borderSide: BorderSide(color: Colors.black54)),
-        focusedBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
-        errorBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-        focusedErrorBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+        errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).errorColor)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).errorColor)),
         errorText: errorText,
       ),
       onChanged: onChanged,
