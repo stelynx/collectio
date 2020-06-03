@@ -19,7 +19,7 @@ dependencies:
   flutter_bloc: ^4.0.0
   get_it: ^4.0.1
   image_cropper: ^1.2.1
-  image_picker: ^0.6.5+3
+  image_picker: 0.6.5+3
   injectable: ^0.3.0
 
 dev_dependencies:
