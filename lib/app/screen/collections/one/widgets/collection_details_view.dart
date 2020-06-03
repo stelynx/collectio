@@ -14,7 +14,7 @@ class CollectionDetailsView extends StatelessWidget {
     return Card(
       elevation: CollectioStyle.elevation,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
+        padding: CollectioStyle.screenPadding,
         child: Row(
           children: <Widget>[
             CircularNetworkImage(_collection.thumbnail),

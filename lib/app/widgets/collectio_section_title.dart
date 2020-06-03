@@ -22,6 +22,7 @@ class CollectioSectionTitle extends StatelessWidget {
             style: Theme.of(context).textTheme.headline2,
           ),
           Divider(color: Theme.of(context).textTheme.headline2.color),
+          CollectioStyle.itemSplitter,
         ],
       ),
     );

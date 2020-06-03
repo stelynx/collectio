@@ -44,6 +44,7 @@ class CollectioTheme {
       headline2: TextStyle(
         color: primaryColor,
         fontWeight: FontWeight.w400,
+        fontSize: 14,
       ),
     );
 

@@ -62,7 +62,9 @@ class CollectionScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: 30),
+                        CollectioStyle.itemSplitter,
+                        CollectioStyle.itemSplitter,
+                        CollectioStyle.itemSplitter,
                         Icon(
                           Icons.error,
                           size: CollectioStyle.bigIconSize,
