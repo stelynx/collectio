@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../../util/constant/collectio_theme.dart';
 import 'dark.dart' as Dark;
 import 'light.dart' as Light;
 import 'style.dart';
 
-class CollectioTheme {
-  static ThemeData get light => _theme(
+class CollectioThemeManager {
+  static ThemeData getTheme(CollectioTheme themeType) {
+    switch (themeType) {
+      case CollectioTheme.LIGHT:
+        return _light;
+      case CollectioTheme.DARK:
+        return _dark;
+    }
+
+    throw Exception('Unknown theme');
+  }
+
+  static ThemeData get _light => _theme(
         base: ThemeData.light(),
         primaryBrightness: Light.primaryBrightness,
         primaryColor: Light.primaryColor,
@@ -16,7 +28,7 @@ class CollectioTheme {
         addColor: Light.addColor,
       );
 
-  static ThemeData get dark => _theme(
+  static ThemeData get _dark => _theme(
         base: ThemeData.dark(),
         primaryBrightness: Dark.primaryBrightness,
         primaryColor: Dark.primaryColor,
