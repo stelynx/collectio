@@ -53,8 +53,12 @@ class FirebaseProfileFacade extends ProfileFacade {
       }
 
       final Map<String, dynamic> profileJson = documents[0].data;
-      profileJson['image'] = await storageService.getProfileImageUrl(
-          imageName: profileJson['image']);
+      try {
+        profileJson['profileImg'] = await storageService.getProfileImageUrl(
+            imageName: profileJson['profileImg']);
+      } catch (_) {
+        profileJson['profileImg'] = null;
+      }
 
       final UserProfile userProfile = UserProfile.fromJson(profileJson);
       return Right(userProfile);

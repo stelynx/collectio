@@ -15,12 +15,8 @@ import '../../../mocks.dart';
 void main() {
   configureInjection(Environment.test);
 
-  final UserProfile userProfile = UserProfile(
-    email: 'email',
-    userUid: 'userUid',
-    username: 'username',
-  );
-  final Map<String, dynamic> userProfileJson = userProfile.toJson();
+  UserProfile userProfile;
+  Map<String, dynamic> userProfileJson;
 
   FirebaseProfileFacade firebaseProfileFacade;
 
@@ -29,6 +25,13 @@ void main() {
       dataService: getIt<DataService>(),
       storageService: getIt<StorageService>(),
     );
+    userProfile = UserProfile(
+      email: 'email',
+      userUid: 'userUid',
+      username: 'username',
+      profileImg: 'profileImage',
+    );
+    userProfileJson = userProfile.toJson();
   });
 
   group('addUserProfile', () {
@@ -153,6 +156,43 @@ void main() {
         equals(Left(DataFailure(message: Exception().toString()))),
       );
     });
+
+    test('should get user\'s profile image url', () async {
+      when(firebaseProfileFacade.dataService
+              .getUserProfileByUsername(username: anyNamed('username')))
+          .thenAnswer((_) async => MockedQuerySnapshot(
+              [MockedDocumentSnapshot(username, userProfileJson)]));
+      when(firebaseProfileFacade.storageService
+              .getProfileImageUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseProfileFacade.getUserProfileByUsername(username: username);
+
+      verify(firebaseProfileFacade.storageService
+          .getProfileImageUrl(imageName: userProfile.profileImg));
+    });
+
+    test(
+      'should set user\'s profile image url to null if exception occured while getting url',
+      () async {
+        when(firebaseProfileFacade.dataService
+                .getUserProfileByUsername(username: anyNamed('username')))
+            .thenAnswer((_) async => MockedQuerySnapshot(
+                [MockedDocumentSnapshot(username, userProfileJson)]));
+        when(firebaseProfileFacade.storageService
+                .getProfileImageUrl(imageName: anyNamed('imageName')))
+            .thenThrow(Exception());
+
+        final Either<DataFailure, UserProfile> result =
+            await firebaseProfileFacade.getUserProfileByUsername(
+                username: username);
+
+        expect(result.isRight(), isTrue);
+
+        final UserProfile userProfile = result.getOrElse(() => null);
+        expect(userProfile.profileImg, isNull);
+      },
+    );
   });
 
   group('getUserProfileByUserUid', () {
@@ -232,6 +272,43 @@ void main() {
         equals(Left(DataFailure(message: Exception().toString()))),
       );
     });
+
+    test('should get user\'s profile image url', () async {
+      when(firebaseProfileFacade.dataService
+              .getUserProfileByUserUid(userUid: anyNamed('userUid')))
+          .thenAnswer((_) async => MockedQuerySnapshot(
+              [MockedDocumentSnapshot(userUid, userProfileJson)]));
+      when(firebaseProfileFacade.storageService
+              .getProfileImageUrl(imageName: anyNamed('imageName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseProfileFacade.getUserProfileByUserUid(userUid: userUid);
+
+      verify(firebaseProfileFacade.storageService
+          .getProfileImageUrl(imageName: userProfile.profileImg));
+    });
+
+    test(
+      'should set user\'s profile image url to null if exception occured while getting url',
+      () async {
+        when(firebaseProfileFacade.dataService
+                .getUserProfileByUserUid(userUid: anyNamed('userUid')))
+            .thenAnswer((_) async => MockedQuerySnapshot(
+                [MockedDocumentSnapshot(userUid, userProfileJson)]));
+        when(firebaseProfileFacade.storageService
+                .getProfileImageUrl(imageName: anyNamed('imageName')))
+            .thenThrow(Exception());
+
+        final Either<DataFailure, UserProfile> result =
+            await firebaseProfileFacade.getUserProfileByUserUid(
+                userUid: userUid);
+
+        expect(result.isRight(), isTrue);
+
+        final UserProfile userProfile = result.getOrElse(() => null);
+        expect(userProfile.profileImg, isNull);
+      },
+    );
   });
 
   group('editUserProfile', () {
