@@ -24,9 +24,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       if (state is AuthenticatedAuthState) {
         // TODO get settings of user and his theme
         this.add(ChangeThemeEvent(CollectioTheme.LIGHT));
-      } else if (state is UnauthenticatedAuthState) {
+      } else {
         // TODO get system theme
-        this.add(ChangeThemeEvent(CollectioTheme.LIGHT));
+        this.add(ChangeThemeEvent(CollectioTheme.DARK));
       }
     });
   }
@@ -45,7 +45,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     }
 
     // TODO otherwise get system theme
-    return InitialThemeState(themeType: CollectioTheme.LIGHT);
+    return InitialThemeState(themeType: CollectioTheme.DARK);
   }
 
   @override

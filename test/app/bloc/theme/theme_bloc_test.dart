@@ -33,4 +33,23 @@ void main() {
       GeneralThemeState(themeType: CollectioTheme.LIGHT),
     ],
   );
+
+  test(
+    'should set initial theme to user\'s preferences when logged in',
+    () async {
+      when(authBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<AuthState>());
+      when(authBloc.state)
+          .thenReturn(AuthenticatedAuthState(userUid: 'userUid'));
+
+      final ThemeBloc themeBloc = ThemeBloc(authBloc: authBloc);
+
+      expect(
+        themeBloc.state,
+        equals(InitialThemeState(themeType: CollectioTheme.LIGHT)),
+      );
+
+      themeBloc.close();
+    },
+  );
 }
