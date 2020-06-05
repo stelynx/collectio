@@ -50,7 +50,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     yield LoadingProfileState();
 
     if (event is GetUserProfileEvent) {
-      Either<DataFailure, UserProfile> profileOrFailure =
+      final Either<DataFailure, UserProfile> profileOrFailure =
           await _profileFacade.getUserProfileByUserUid(
               userUid: event.userUid ??
                   (_authBloc.state as AuthenticatedAuthState).userUid);

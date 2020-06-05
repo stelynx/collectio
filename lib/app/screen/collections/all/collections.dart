@@ -50,7 +50,6 @@ class CollectionsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed(Routes.newCollection),
         child: Icon(Icons.add),
-        backgroundColor: Colors.green,
       ),
     );
   }

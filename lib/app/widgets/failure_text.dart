@@ -12,7 +12,7 @@ class FailureText extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.red,
+          color: Theme.of(context).errorColor,
           fontSize: 15,
         ),
       ),

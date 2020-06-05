@@ -10,6 +10,7 @@ import '../../../../../util/error/data_failure.dart';
 import '../../../../../util/error/validation_failure.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_item_bloc.dart';
+import '../../../../theme/style.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_dropdown.dart';
 import '../../../../widgets/collectio_image_picker.dart';
@@ -31,7 +32,7 @@ class NewItemForm extends StatelessWidget {
       builder: (BuildContext context, NewItemState state) {
         return Center(
           child: ListView(
-            padding: EdgeInsets.all(20),
+            padding: CollectioStyle.screenPadding,
             children: <Widget>[
               //Image
               CollectioImagePicker(
@@ -46,7 +47,8 @@ class NewItemForm extends StatelessWidget {
                     state.showErrorMessages && !state.localImage.isValid(),
               ),
 
-              SizedBox(height: 20),
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
 
               // Title
               CollectioTextField(
@@ -64,7 +66,7 @@ class NewItemForm extends StatelessWidget {
                     .add(TitleChangedNewItemEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               // Subtitle
               CollectioTextField(
@@ -82,7 +84,7 @@ class NewItemForm extends StatelessWidget {
                     .add(SubtitleChangedNewItemEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               // Description
               CollectioTextField(
@@ -102,7 +104,7 @@ class NewItemForm extends StatelessWidget {
                     .add(DescriptionChangedNewItemEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               // Raiting
               CollectioDropdown<int>(
@@ -115,13 +117,13 @@ class NewItemForm extends StatelessWidget {
                     .add(RaitingChangedNewItemEvent(value)),
               ),
 
-              SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               if (state.dataFailure != null && state.dataFailure.isLeft()) ...[
                 state.dataFailure.fold(
                     (DataFailure failure) => Text(
                           failure.message,
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(color: Theme.of(context).errorColor),
                         ),
                     null),
               ],

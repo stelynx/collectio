@@ -10,6 +10,7 @@ import '../../../../../util/function/enum_helper.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/profile/edit_profile_bloc.dart';
 import '../../../../bloc/profile/profile_bloc.dart';
+import '../../../../theme/style.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_dropdown.dart';
 import '../../../../widgets/collectio_image_picker.dart';
@@ -30,7 +31,7 @@ class EditProfileForm extends StatelessWidget {
       builder: (BuildContext context, EditProfileState state) {
         return Center(
           child: ListView(
-            padding: const EdgeInsets.all(20),
+            padding: CollectioStyle.screenPadding,
             children: <Widget>[
               CollectioImagePicker(
                 imageSelector: getIt<ImageSelector>(),
@@ -46,7 +47,8 @@ class EditProfileForm extends StatelessWidget {
                     ? state.oldImageUrl
                     : null,
               ),
-              SizedBox(height: 20),
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
               CollectioTextField(
                 labelText: 'First name',
                 initialValue: state is InitialEditProfileState
@@ -56,7 +58,8 @@ class EditProfileForm extends StatelessWidget {
                     .bloc<EditProfileBloc>()
                     .add(FirstNameChangedEditProfileEvent(value)),
               ),
-              SizedBox(height: 20),
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
               CollectioTextField(
                 labelText: 'Last name',
                 initialValue: state is InitialEditProfileState
@@ -66,9 +69,11 @@ class EditProfileForm extends StatelessWidget {
                     .bloc<EditProfileBloc>()
                     .add(LastNameChangedEditProfileEvent(value)),
               ),
-              SizedBox(height: 20),
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
               CollectioDropdown<String>(
-                value: describeEnum(state.country),
+                value:
+                    state.country != null ? describeEnum(state.country) : null,
                 items: Country.values
                     .map((Country country) => describeEnum(country))
                     .toList(),
@@ -79,7 +84,8 @@ class EditProfileForm extends StatelessWidget {
                         enumFromString(country, Country.values))),
                 icon: Icon(Icons.flag),
               ),
-              SizedBox(height: 20),
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
               if (state.isSubmitting) ...[
                 Center(child: CircularProgressIndicator()),
               ] else ...[
@@ -89,7 +95,7 @@ class EditProfileForm extends StatelessWidget {
                       .add(SubmitEditProfileEvent()),
                   child: Text('Save'),
                 ),
-                SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
                 CollectioButton(
                   onPressed: () => context
                       .bloc<EditProfileBloc>()

@@ -6,6 +6,7 @@ import '../../../../util/error/validation_failure.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/auth/sign_in_bloc.dart';
 import '../../../routes/routes.dart';
+import '../../../theme/style.dart';
 import '../../../widgets/collectio_button.dart';
 import '../../../widgets/collectio_text_field.dart';
 import '../../../widgets/failure_text.dart';
@@ -28,7 +29,7 @@ class SignInForm extends StatelessWidget {
         return Center(
           child: ListView(
             shrinkWrap: true,
-            padding: const EdgeInsets.all(20),
+            padding: CollectioStyle.screenPadding,
             children: <Widget>[
               // Email field
               CollectioTextField(
@@ -47,7 +48,7 @@ class SignInForm extends StatelessWidget {
                     : null,
               ),
 
-              const SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               // Password field
               CollectioTextField(
@@ -61,7 +62,7 @@ class SignInForm extends StatelessWidget {
                     : null,
               ),
 
-              const SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               if (state.isRegistering) ...[
                 // Username field
@@ -81,15 +82,16 @@ class SignInForm extends StatelessWidget {
                       : null,
                 ),
 
-                const SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
               ],
 
               if (state.authFailure != null && state.authFailure.isLeft()) ...[
-                const SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
                 state.authFailure.fold(
                     (AuthFailure failure) => FailureText(failure.message),
                     null),
-                const SizedBox(height: 20),
+                CollectioStyle.itemSplitter,
+                CollectioStyle.itemSplitter,
               ],
 
               // Sign in with email and password button
@@ -100,7 +102,7 @@ class SignInForm extends StatelessWidget {
                 child: const Text('Sign in'),
               ),
 
-              const SizedBox(height: 10),
+              CollectioStyle.itemSplitter,
 
               // Sign in with email and password button
               CollectioButton(
@@ -120,7 +122,7 @@ class SignInForm extends StatelessWidget {
 
               // Linear progress indicator if submitting the form
               if (state.isSubmitting) ...[
-                const SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
                 const Center(child: const CircularProgressIndicator()),
               ],
             ],

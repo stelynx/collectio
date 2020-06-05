@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/style.dart';
+
 class CollectioSectionTitle extends StatelessWidget {
   final String text;
   final bool parentHasPadding;
@@ -13,15 +15,14 @@ class CollectioSectionTitle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 20),
+          CollectioStyle.itemSplitter,
+          CollectioStyle.itemSplitter,
           Text(
             text,
-            style: TextStyle(
-              fontSize: 10,
-              color: Theme.of(context).primaryColor,
-            ),
+            style: Theme.of(context).textTheme.headline2,
           ),
-          Divider(color: Theme.of(context).primaryColor),
+          Divider(color: Theme.of(context).textTheme.headline2.color),
+          CollectioStyle.itemSplitter,
         ],
       ),
     );

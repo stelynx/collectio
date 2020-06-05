@@ -4,16 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app/bloc/auth/auth_bloc.dart';
+import 'app/bloc/theme/theme_bloc.dart';
 import 'app/routes/router.dart';
 import 'app/routes/routes.dart';
 import 'util/injection/injection.dart';
 
 void main() {
   configureInjection(Environment.prod);
-  runApp(MyApp());
+  runApp(CollectioApp());
 }
 
-class MyApp extends StatelessWidget {
+class CollectioApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -26,12 +27,18 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => getIt<AuthBloc>()..add(CheckStatusAuthEvent()),
         ),
+        BlocProvider(
+          create: (_) => getIt<ThemeBloc>(),
+        ),
       ],
-      child: MaterialApp(
-        title: 'Stelynx Collectio',
-        debugShowCheckedModeBanner: false,
-        initialRoute: Routes.initial,
-        onGenerateRoute: Router.onGenerateRoute,
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (BuildContext context, ThemeState themeState) => MaterialApp(
+          title: 'Stelynx Collectio',
+          debugShowCheckedModeBanner: false,
+          theme: themeState.theme,
+          initialRoute: Routes.initial,
+          onGenerateRoute: Router.onGenerateRoute,
+        ),
       ),
     );
   }

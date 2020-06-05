@@ -46,7 +46,7 @@ void main() {
   );
 
   testWidgets(
-    'should have CollectionDetailsView and Divider in body',
+    'should have CollectionDetailsView in body',
     (WidgetTester tester) async {
       await tester.pumpWidget(makeTestableWidget());
 
@@ -56,12 +56,6 @@ void main() {
         matching: find.byType(CollectionDetailsView),
       );
       expect(cdvFinder, findsOneWidget);
-
-      final Finder dividerFinder = find.descendant(
-        of: scaffoldFinder,
-        matching: find.byType(Divider),
-      );
-      expect(dividerFinder, findsOneWidget);
     },
   );
 

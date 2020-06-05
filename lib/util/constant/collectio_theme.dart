@@ -1,0 +1,4 @@
+enum CollectioTheme {
+  LIGHT,
+  DARK,
+}
