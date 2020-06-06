@@ -67,11 +67,6 @@ abstract class NewItemState extends Equatable {
         showErrorMessages,
         dataFailure
       ];
-
-  @override
-  String toString() {
-    return '[$collection,$title,$subtitle,$description,$raiting,$imageUrl,$localImage,$isSubmitting,$showErrorMessages,$dataFailure]';
-  }
 }
 
 class InitialNewItemState extends NewItemState {

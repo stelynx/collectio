@@ -30,6 +30,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     _authBlocStreamSubscription = _authBloc.listen((AuthState state) {
       if (state is AuthenticatedAuthState) {
         this.add(GetUserProfileEvent(userUid: state.userUid));
+      } else if (state is UnauthenticatedAuthState) {
+        this.add(ResetUserProfileEvent());
       }
     });
   }
@@ -67,6 +69,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         (DataFailure failure) => ErrorProfileState(failure),
         (_) => CompleteProfileState(event.userProfile),
       );
+    } else if (event is ResetUserProfileEvent) {
+      yield EmptyProfileState();
     }
   }
 }

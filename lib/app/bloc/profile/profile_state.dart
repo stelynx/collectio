@@ -20,6 +20,8 @@ class CompleteProfileState extends ProfileState {
   List<Object> get props => [userProfile];
 }
 
+class EmptyProfileState extends ProfileState {}
+
 class ErrorProfileState extends ProfileState {
   final DataFailure failure;
 

@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mockito/mockito.dart';
 
 import '../../../util/constant/collectio_theme.dart';
 import '../../theme/theme.dart';
-import '../auth/auth_bloc.dart';
+import '../settings/settings_bloc.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
@@ -16,14 +16,17 @@ part 'theme_state.dart';
 @prod
 @lazySingleton
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  final AuthBloc _authBloc;
-  StreamSubscription _authBlocStreamSubscription;
+  final SettingsBloc _settingsBloc;
+  StreamSubscription _settingsBlocStreamSubscription;
 
-  ThemeBloc({@required AuthBloc authBloc}) : _authBloc = authBloc {
-    _authBlocStreamSubscription = _authBloc.listen((AuthState state) {
-      if (state is AuthenticatedAuthState) {
-        // TODO get settings of user and his theme
-        this.add(ChangeThemeEvent(CollectioTheme.LIGHT));
+  ThemeBloc({
+    @required SettingsBloc settingsBloc,
+  }) : _settingsBloc = settingsBloc {
+    _settingsBlocStreamSubscription =
+        _settingsBloc.listen((SettingsState state) {
+      if (state is CompleteSettingsState) {
+        this.add(ChangeThemeEvent(
+            (_settingsBloc.state as CompleteSettingsState).settings.theme));
       } else {
         // TODO get system theme
         this.add(ChangeThemeEvent(CollectioTheme.DARK));
@@ -33,15 +36,16 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   @override
   Future<void> close() {
-    _authBlocStreamSubscription.cancel();
+    _settingsBlocStreamSubscription.cancel();
     return super.close();
   }
 
   @override
   ThemeState get initialState {
-    if (_authBloc.state is AuthenticatedAuthState) {
-      // TODO read from user's settings which theme to take
-      return InitialThemeState(themeType: CollectioTheme.LIGHT);
+    if (_settingsBloc.state is CompleteSettingsState) {
+      return InitialThemeState(
+          themeType:
+              (_settingsBloc.state as CompleteSettingsState).settings.theme);
     }
 
     // TODO otherwise get system theme
@@ -61,4 +65,5 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 @test
 @lazySingleton
 @RegisterAs(ThemeBloc)
-class MockedThemeBloc extends Mock implements ThemeBloc {}
+class MockedThemeBloc extends MockBloc<ThemeEvent, ThemeState>
+    implements ThemeBloc {}

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app/bloc/auth/auth_bloc.dart';
+import 'app/bloc/settings/settings_bloc.dart';
 import 'app/bloc/theme/theme_bloc.dart';
 import 'app/routes/router.dart';
 import 'app/routes/routes.dart';
@@ -28,10 +29,11 @@ class CollectioApp extends StatelessWidget {
           create: (_) => getIt<AuthBloc>()..add(CheckStatusAuthEvent()),
         ),
         BlocProvider(
-          create: (_) => getIt<ThemeBloc>(),
+          create: (_) => getIt<SettingsBloc>(),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
+        bloc: getIt<ThemeBloc>(),
         builder: (BuildContext context, ThemeState themeState) => MaterialApp(
           title: 'Stelynx Collectio',
           debugShowCheckedModeBanner: false,

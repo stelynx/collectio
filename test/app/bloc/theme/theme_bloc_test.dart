@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:collectio/app/bloc/auth/auth_bloc.dart';
+import 'package:collectio/app/bloc/settings/settings_bloc.dart';
 import 'package:collectio/app/bloc/theme/theme_bloc.dart';
+import 'package:collectio/model/settings.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,20 +13,21 @@ import '../../../mocks.dart';
 void main() {
   configureInjection(Environment.test);
 
-  final AuthBloc authBloc = getIt<AuthBloc>();
+  final Settings settings = Settings(theme: CollectioTheme.LIGHT);
+
+  final SettingsBloc settingsBloc = getIt<SettingsBloc>();
 
   tearDownAll(() {
-    authBloc.close();
+    settingsBloc.close();
   });
 
   blocTest(
     'should yield a state with selected theme',
     build: () async {
-      when(authBloc.listen(any))
-          .thenReturn(MockedStreamSubscription<AuthState>());
-      when(authBloc.state)
-          .thenReturn(AuthenticatedAuthState(userUid: 'userUid'));
-      return ThemeBloc(authBloc: authBloc);
+      when(settingsBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<SettingsState>());
+      when(settingsBloc.state).thenReturn(CompleteSettingsState(settings));
+      return ThemeBloc(settingsBloc: settingsBloc);
     },
     act: (ThemeBloc bloc) async =>
         bloc.add(ChangeThemeEvent(CollectioTheme.LIGHT)),
@@ -35,14 +37,13 @@ void main() {
   );
 
   test(
-    'should set initial theme to user\'s preferences when logged in',
+    'should set initial theme to user\'s preferences when available',
     () async {
-      when(authBloc.listen(any))
-          .thenReturn(MockedStreamSubscription<AuthState>());
-      when(authBloc.state)
-          .thenReturn(AuthenticatedAuthState(userUid: 'userUid'));
+      when(settingsBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<SettingsState>());
+      when(settingsBloc.state).thenReturn(CompleteSettingsState(settings));
 
-      final ThemeBloc themeBloc = ThemeBloc(authBloc: authBloc);
+      final ThemeBloc themeBloc = ThemeBloc(settingsBloc: settingsBloc);
 
       expect(
         themeBloc.state,

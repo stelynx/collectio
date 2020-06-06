@@ -16,6 +16,7 @@ class Constants {
   static const String userCollection = 'stelynx_user';
   static const String userUidField = 'userUid';
   static const String usernameField = 'username';
+  static const String settingsCollection = 'stelynx_settings';
 
   // AuthFailure messages
   static const String invalidCombination = 'Invalid username and password';
