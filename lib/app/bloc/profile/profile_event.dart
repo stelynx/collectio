@@ -15,3 +15,5 @@ class AddUserProfileEvent extends ProfileEvent {
 
   const AddUserProfileEvent(this.userProfile);
 }
+
+class ResetUserProfileEvent extends ProfileEvent {}

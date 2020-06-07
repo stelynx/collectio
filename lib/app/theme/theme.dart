@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 
+import '../../platform/system_information.dart';
 import '../../util/constant/collectio_theme.dart';
+import '../../util/injection/injection.dart';
 import 'dark.dart' as Dark;
 import 'light.dart' as Light;
 import 'style.dart';
 
 class CollectioThemeManager {
+  static final SystemInformation systemInformation = getIt<SystemInformation>();
+
   static ThemeData getTheme(CollectioTheme themeType) {
     switch (themeType) {
       case CollectioTheme.LIGHT:
         return _light;
       case CollectioTheme.DARK:
+        return _dark;
+      case CollectioTheme.SYSTEM:
+        final Brightness deviceBrightness = systemInformation.getBrightness();
+
+        if (deviceBrightness == Brightness.light) return _light;
         return _dark;
     }
 

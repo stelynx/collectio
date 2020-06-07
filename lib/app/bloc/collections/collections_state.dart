@@ -23,3 +23,5 @@ class LoadedCollectionsState extends CollectionsState {
 }
 
 class ErrorCollectionsState extends CollectionsState {}
+
+class EmptyCollectionsState extends CollectionsState {}

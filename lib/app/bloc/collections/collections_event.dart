@@ -3,6 +3,9 @@ part of 'collections_bloc.dart';
 @immutable
 abstract class CollectionsEvent extends Equatable {
   const CollectionsEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class GetCollectionsEvent extends CollectionsEvent {
@@ -22,3 +25,5 @@ class DeleteCollectionCollectionsEvent extends CollectionsEvent {
   @override
   List<Object> get props => [collection];
 }
+
+class ResetCollectionsEvent extends CollectionsEvent {}

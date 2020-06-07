@@ -31,6 +31,8 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     _profileBlocStreamSubscription = _profileBloc.listen((ProfileState state) {
       if (state is CompleteProfileState) {
         this.add(GetCollectionsEvent(username: state.userProfile.username));
+      } else if (state is EmptyProfileState) {
+        this.add(ResetCollectionsEvent());
       }
     });
   }
@@ -80,6 +82,8 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
           );
         }
       }
+    } else if (event is ResetCollectionsEvent) {
+      yield EmptyCollectionsState();
     }
   }
 }

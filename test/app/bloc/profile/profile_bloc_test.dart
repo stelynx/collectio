@@ -97,4 +97,19 @@ void main() {
       expect: [LoadingProfileState(), ErrorProfileState(DataFailure())],
     );
   });
+
+  group('resetProfile', () {
+    blocTest(
+      'should yield Empty on reset',
+      build: () async {
+        when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        return ProfileBloc(
+          profileFacade: mockedProfileFacade,
+          authBloc: mockedAuthBloc,
+        );
+      },
+      act: (ProfileBloc bloc) async => bloc.add(ResetUserProfileEvent()),
+      expect: [EmptyProfileState()],
+    );
+  });
 }
