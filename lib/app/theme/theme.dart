@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../../util/constant/collectio_theme.dart';
 import 'dark.dart' as Dark;
@@ -11,6 +12,12 @@ class CollectioThemeManager {
       case CollectioTheme.LIGHT:
         return _light;
       case CollectioTheme.DARK:
+        return _dark;
+      case CollectioTheme.SYSTEM:
+        final Brightness deviceBrightness =
+            SchedulerBinding.instance.window.platformBrightness;
+
+        if (deviceBrightness == Brightness.dark) return _light;
         return _dark;
     }
 

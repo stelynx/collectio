@@ -28,8 +28,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         this.add(ChangeThemeEvent(
             (_settingsBloc.state as CompleteSettingsState).settings.theme));
       } else {
-        // TODO get system theme
-        this.add(ChangeThemeEvent(CollectioTheme.DARK));
+        this.add(ChangeThemeEvent(CollectioTheme.SYSTEM));
       }
     });
   }
@@ -48,8 +47,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
               (_settingsBloc.state as CompleteSettingsState).settings.theme);
     }
 
-    // TODO otherwise get system theme
-    return InitialThemeState(themeType: CollectioTheme.DARK);
+    return InitialThemeState(themeType: CollectioTheme.SYSTEM);
   }
 
   @override
