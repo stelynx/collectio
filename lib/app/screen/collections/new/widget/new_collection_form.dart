@@ -103,6 +103,8 @@ class NewCollectionForm extends StatelessWidget {
 
               CollectioSectionTitle(
                 'Field names',
+                sectionDescription:
+                    'Pick the names of fields you would like your items to have.',
                 parentHasPadding: true,
               ),
 
