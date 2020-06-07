@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import '../theme/style.dart';
 
 class CollectioSectionTitle extends StatelessWidget {
-  final String text;
+  final String sectionTitle;
+  final String sectionDescription;
   final bool parentHasPadding;
 
-  const CollectioSectionTitle(this.text, {this.parentHasPadding = false});
+  const CollectioSectionTitle(
+    this.sectionTitle, {
+    this.sectionDescription,
+    this.parentHasPadding = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +23,13 @@ class CollectioSectionTitle extends StatelessWidget {
           CollectioStyle.itemSplitter,
           CollectioStyle.itemSplitter,
           Text(
-            text,
+            sectionTitle,
             style: Theme.of(context).textTheme.headline2,
           ),
           Divider(color: Theme.of(context).textTheme.headline2.color),
+          if (sectionDescription != null) ...[
+            Text(sectionDescription),
+          ],
           CollectioStyle.itemSplitter,
         ],
       ),
