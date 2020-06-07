@@ -2,10 +2,15 @@ import 'package:collectio/app/theme/dark.dart' as Dark;
 import 'package:collectio/app/theme/light.dart' as Light;
 import 'package:collectio/app/theme/theme.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/injection/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:injectable/injectable.dart' show Environment;
+import 'package:mockito/mockito.dart';
 
 void main() {
+  configureInjection(Environment.test);
+
   test('should be able to get light theme', () {
     final ThemeData result =
         CollectioThemeManager.getTheme(CollectioTheme.LIGHT);
@@ -18,6 +23,16 @@ void main() {
         CollectioThemeManager.getTheme(CollectioTheme.DARK);
 
     expect(result.backgroundColor, equals(Dark.backgroundColor));
+  });
+
+  test('should be able to get theme based on system', () {
+    when(CollectioThemeManager.systemInformation.getBrightness())
+        .thenReturn(Brightness.light);
+
+    final ThemeData result =
+        CollectioThemeManager.getTheme(CollectioTheme.SYSTEM);
+
+    expect(result.backgroundColor, equals(Light.backgroundColor));
   });
 
   test('should throw exception on unknown theme', () {

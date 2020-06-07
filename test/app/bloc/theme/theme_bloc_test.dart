@@ -53,4 +53,22 @@ void main() {
       themeBloc.close();
     },
   );
+
+  test(
+    'should set initial theme to system theme when no user\'s settings',
+    () async {
+      when(settingsBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<SettingsState>());
+      when(settingsBloc.state).thenReturn(ErrorSettingsState());
+
+      final ThemeBloc themeBloc = ThemeBloc(settingsBloc: settingsBloc);
+
+      expect(
+        themeBloc.state,
+        equals(InitialThemeState(themeType: CollectioTheme.SYSTEM)),
+      );
+
+      themeBloc.close();
+    },
+  );
 }

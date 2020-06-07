@@ -144,4 +144,18 @@ void main() {
       LoadedCollectionsState(collections: [collection]),
     ],
   );
+
+  blocTest(
+    'should yield EmptyCollectionsState on Reset',
+    build: () async {
+      when(mockedProfileBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<ProfileState>());
+      return CollectionsBloc(
+        collectionsFacade: mockedFirebaseCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+      );
+    },
+    act: (CollectionsBloc bloc) async => bloc.add(ResetCollectionsEvent()),
+    expect: [EmptyCollectionsState()],
+  );
 }

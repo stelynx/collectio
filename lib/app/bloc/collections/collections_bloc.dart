@@ -83,7 +83,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
         }
       }
     } else if (event is ResetCollectionsEvent) {
-      yield LoadedCollectionsState(collections: []);
+      yield EmptyCollectionsState();
     }
   }
 }

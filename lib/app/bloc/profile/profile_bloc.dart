@@ -49,6 +49,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> mapEventToState(
     ProfileEvent event,
   ) async* {
+    if (event is ResetUserProfileEvent) {
+      yield EmptyProfileState();
+      return;
+    }
+
     yield LoadingProfileState();
 
     if (event is GetUserProfileEvent) {
@@ -69,8 +74,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         (DataFailure failure) => ErrorProfileState(failure),
         (_) => CompleteProfileState(event.userProfile),
       );
-    } else if (event is ResetUserProfileEvent) {
-      yield EmptyProfileState();
     }
   }
 }
