@@ -11,6 +11,10 @@ class Settings extends Equatable {
     @required this.theme,
   });
 
+  factory Settings.defaults() => Settings(
+        theme: CollectioTheme.SYSTEM,
+      );
+
   factory Settings.fromJson(Map<String, dynamic> json) =>
       Settings(theme: enumFromString(json['theme'], CollectioTheme.values));
 

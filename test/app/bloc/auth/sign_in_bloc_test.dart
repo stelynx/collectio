@@ -4,6 +4,8 @@ import 'package:collectio/facade/auth/auth_facade.dart';
 import 'package:collectio/facade/auth/firebase/firebase_auth_facade.dart';
 import 'package:collectio/facade/profile/firebase/firebase_profile_facade.dart';
 import 'package:collectio/facade/profile/profile_facade.dart';
+import 'package:collectio/facade/settings/firebase/firebase_settings_facade.dart';
+import 'package:collectio/facade/settings/settings_facade.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/model/value_object/email.dart';
 import 'package:collectio/model/value_object/password.dart';
@@ -22,12 +24,15 @@ void main() {
   final MockedFirebaseAuthFacade mockedFirebaseAuthFacade = getIt<AuthFacade>();
   final MockedFirebaseProfileFacade mockedFirebaseProfileFacade =
       getIt<ProfileFacade>();
+  final MockedFirebaseSettingsFacade mockedFirebaseSettingsFacade =
+      getIt<SettingsFacade>();
 
   blocTest(
     'should change state.email on email change',
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async =>
         bloc..add(EmailChangedSignInEvent(email: 'a')),
@@ -46,6 +51,7 @@ void main() {
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async =>
         bloc..add(PasswordChangedSignInEvent(password: 'a')),
@@ -64,6 +70,7 @@ void main() {
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async =>
         bloc..add(UsernameChangedSignInEvent(username: 'a')),
@@ -81,6 +88,7 @@ void main() {
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(PasswordChangedSignInEvent(password: 'a'))
@@ -96,8 +104,10 @@ void main() {
   blocTest(
     'should not change state when signing in with invalid password',
     build: () async => SignInBloc(
-        authFacade: mockedFirebaseAuthFacade,
-        profileFacade: mockedFirebaseProfileFacade),
+      authFacade: mockedFirebaseAuthFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+    ),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
       ..add(SignInWithEmailAndPasswordSignInEvent()),
@@ -111,6 +121,7 @@ void main() {
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(PasswordChangedSignInEvent(password: 'a'))
@@ -134,6 +145,7 @@ void main() {
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
@@ -154,6 +166,7 @@ void main() {
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
@@ -178,6 +191,7 @@ void main() {
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
         profileFacade: mockedFirebaseProfileFacade,
+        settingsFacade: mockedFirebaseSettingsFacade,
       );
     },
     act: (SignInBloc bloc) async => bloc
@@ -223,6 +237,7 @@ void main() {
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
         profileFacade: mockedFirebaseProfileFacade,
+        settingsFacade: mockedFirebaseSettingsFacade,
       );
     },
     act: (SignInBloc bloc) async => bloc
@@ -264,6 +279,7 @@ void main() {
     build: () async => SignInBloc(
       authFacade: mockedFirebaseAuthFacade,
       profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(PasswordChangedSignInEvent(password: 'a'))
@@ -279,8 +295,10 @@ void main() {
   blocTest(
     'should not change state when checking for existing email with invalid password',
     build: () async => SignInBloc(
-        authFacade: mockedFirebaseAuthFacade,
-        profileFacade: mockedFirebaseProfileFacade),
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
+    ),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
       ..add(CheckIfEmailExistsSignInEvent()),
@@ -297,6 +315,7 @@ void main() {
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
         profileFacade: mockedFirebaseProfileFacade,
+        settingsFacade: mockedFirebaseSettingsFacade,
       );
     },
     act: (SignInBloc bloc) async => bloc
@@ -346,6 +365,7 @@ void main() {
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
         profileFacade: mockedFirebaseProfileFacade,
+        settingsFacade: mockedFirebaseSettingsFacade,
       );
     },
     act: (SignInBloc bloc) async => bloc
@@ -425,6 +445,7 @@ void main() {
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
         profileFacade: mockedFirebaseProfileFacade,
+        settingsFacade: mockedFirebaseSettingsFacade,
       );
     },
     act: (SignInBloc bloc) async => bloc
@@ -471,6 +492,7 @@ void main() {
       return SignInBloc(
         authFacade: mockedFirebaseAuthFacade,
         profileFacade: mockedFirebaseProfileFacade,
+        settingsFacade: mockedFirebaseSettingsFacade,
       );
     },
     act: (SignInBloc bloc) async => bloc

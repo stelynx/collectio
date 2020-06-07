@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../util/injection/injection.dart';
 import '../../bloc/settings/edit_settings_bloc.dart';
-import '../../bloc/settings/settings_bloc.dart';
 import '../../widgets/collectio_drawer.dart';
 import 'widgets/edit_settings_form.dart';
 
@@ -20,11 +19,7 @@ class EditSettingsScreen extends StatelessWidget {
       body: SafeArea(
         child: BlocProvider<EditSettingsBloc>(
           create: (BuildContext context) => getIt<EditSettingsBloc>(),
-          child: EditSettingsForm(
-            settings:
-                (context.bloc<SettingsBloc>().state as CompleteSettingsState)
-                    .settings,
-          ),
+          child: EditSettingsForm(),
         ),
       ),
     );
