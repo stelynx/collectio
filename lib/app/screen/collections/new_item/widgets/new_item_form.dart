@@ -135,13 +135,16 @@ class NewItemForm extends StatelessWidget {
                 CollectioButton(
                   onPressed: () =>
                       context.bloc<NewItemBloc>().add(SubmitNewItemEvent()),
-                  child: Text('Submit'),
+                  text: 'Submit',
+                  isPrimary: true,
                 ),
+
+                CollectioStyle.itemSplitter,
 
                 // Cancel
                 CollectioButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancel'),
+                  text: 'Cancel',
                 ),
               ],
             ],

@@ -172,7 +172,10 @@ class NewCollectionForm extends StatelessWidget {
                           style: TextStyle(color: Theme.of(context).errorColor),
                         ),
                     null),
+                CollectioStyle.itemSplitter,
               ],
+
+              CollectioStyle.itemSplitter,
 
               if (state.isSubmitting) ...[
                 Center(child: CircularProgressIndicator()),
@@ -182,13 +185,16 @@ class NewCollectionForm extends StatelessWidget {
                   onPressed: () => context
                       .bloc<NewCollectionBloc>()
                       .add(SubmitNewCollectionEvent()),
-                  child: Text('Submit'),
+                  text: 'Submit',
+                  isPrimary: true,
                 ),
+
+                CollectioStyle.itemSplitter,
 
                 // Cancel
                 CollectioButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancel'),
+                  text: 'Cancel',
                 ),
               ],
             ],
