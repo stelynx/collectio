@@ -93,14 +93,15 @@ class EditProfileForm extends StatelessWidget {
                   onPressed: () => context
                       .bloc<EditProfileBloc>()
                       .add(SubmitEditProfileEvent()),
-                  child: Text('Save'),
+                  text: 'Save',
+                  isPrimary: true,
                 ),
                 CollectioStyle.itemSplitter,
                 CollectioButton(
                   onPressed: () => context
                       .bloc<EditProfileBloc>()
                       .add(ResetEditProfileEvent()),
-                  child: Text('Reset'),
+                  text: 'Reset',
                 ),
               ],
             ],

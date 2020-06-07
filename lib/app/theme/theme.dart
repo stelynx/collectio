@@ -67,6 +67,9 @@ class CollectioThemeManager {
         fontWeight: FontWeight.w400,
         fontSize: 14,
       ),
+      button: TextStyle(
+        fontSize: 15,
+      ),
     );
 
     final IconThemeData iconTheme = IconThemeData(
@@ -102,6 +105,7 @@ class CollectioThemeManager {
       backgroundColor: backgroundColor,
       scaffoldBackgroundColor: backgroundColor,
       errorColor: errorColor,
+      buttonColor: backgroundDarkerColor,
       textTheme: textTheme,
       accentTextTheme: textTheme,
       appBarTheme: appBarTheme,

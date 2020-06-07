@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  Widget makeTestableWidget(Widget child) => MaterialApp(
+  Widget makeTestableWidget(String text) => MaterialApp(
         home: CollectioButton(
-          child: child,
+          text: text,
           onPressed: null,
         ),
       );
 
   testWidgets('should have a Button with given child',
       (WidgetTester tester) async {
-    await tester.pumpWidget(makeTestableWidget(Text('child')));
+    await tester.pumpWidget(makeTestableWidget('text'));
 
     final Finder textFinder = find.byType(Text);
 

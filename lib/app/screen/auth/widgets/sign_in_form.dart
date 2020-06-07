@@ -99,7 +99,8 @@ class SignInForm extends StatelessWidget {
                 onPressed: () => context
                     .bloc<SignInBloc>()
                     .add(SignInWithEmailAndPasswordSignInEvent()),
-                child: const Text('Sign in'),
+                text: 'Sign in',
+                isPrimary: true,
               ),
 
               CollectioStyle.itemSplitter,
@@ -117,7 +118,8 @@ class SignInForm extends StatelessWidget {
                         .add(CheckIfEmailExistsSignInEvent());
                   }
                 },
-                child: const Text('Register'),
+                text: 'Register',
+                isPrimary: true,
               ),
 
               // Linear progress indicator if submitting the form
