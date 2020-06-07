@@ -6,6 +6,8 @@ class CollectioDropdown<T> extends StatelessWidget {
   final String hint;
   final void Function(T) onChanged;
   final Icon icon;
+  final bool isExpanded;
+  final bool isDense;
 
   const CollectioDropdown({
     @required this.value,
@@ -13,13 +15,17 @@ class CollectioDropdown<T> extends StatelessWidget {
     @required this.hint,
     this.onChanged,
     this.icon,
+    this.isExpanded = true,
+    this.isDense = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+        padding: icon != null
+            ? EdgeInsets.symmetric(horizontal: 15, vertical: 13)
+            : EdgeInsets.fromLTRB(15, 8, 5, 8),
         decoration: BoxDecoration(
           border: onChanged == null
               ? Border.all(color: Colors.black54)
@@ -28,8 +34,8 @@ class CollectioDropdown<T> extends StatelessWidget {
         ),
         child: DropdownButton(
           icon: icon,
-          isDense: true,
-          isExpanded: true,
+          isDense: isDense,
+          isExpanded: isExpanded,
           value: value,
           items: items
               .map(
