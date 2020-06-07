@@ -17,7 +17,7 @@ class CollectioThemeManager {
         final Brightness deviceBrightness =
             SchedulerBinding.instance.window.platformBrightness;
 
-        if (deviceBrightness == Brightness.dark) return _light;
+        if (deviceBrightness == Brightness.light) return _light;
         return _dark;
     }
 
