@@ -11,6 +11,7 @@ import '../screen/collections/one/collection.dart';
 import '../screen/initial.dart';
 import '../screen/profile/edit_profile/edit_profile_screen.dart';
 import '../screen/profile/view_profile/view_profile_screen.dart';
+import '../screen/settings/edit_settings_screen.dart';
 import '../screen/shared/error.dart';
 import 'routes.dart';
 
@@ -55,6 +56,11 @@ abstract class Router {
       case Routes.editProfile:
         return MaterialPageRoute(
           builder: (_) => EditProfileScreen(),
+          fullscreenDialog: true,
+        );
+      case Routes.settings:
+        return MaterialPageRoute(
+          builder: (_) => EditSettingsScreen(),
           fullscreenDialog: true,
         );
       case Routes.error:

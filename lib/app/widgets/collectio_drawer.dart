@@ -58,6 +58,14 @@ class CollectioDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               dense: true,
+              title: Text('Settings'),
+              trailing: Icon(Icons.settings),
+              onTap: () {
+                Navigator.of(context).pushNamed(Routes.settings);
+              },
+            ),
+            ListTile(
+              dense: true,
               title: Text('Logout'),
               trailing: Icon(Icons.exit_to_app),
               onTap: () {

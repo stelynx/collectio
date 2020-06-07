@@ -9,6 +9,8 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/auth/auth_facade.dart';
 import '../../../facade/profile/profile_facade.dart';
+import '../../../facade/settings/settings_facade.dart';
+import '../../../model/settings.dart';
 import '../../../model/user_profile.dart';
 import '../../../model/value_object/email.dart';
 import '../../../model/value_object/password.dart';
@@ -25,12 +27,15 @@ part 'sign_in_state.dart';
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final AuthFacade _authFacade;
   final ProfileFacade _profileFacade;
+  final SettingsFacade _settingsFacade;
 
   SignInBloc({
     @required AuthFacade authFacade,
     @required ProfileFacade profileFacade,
+    @required SettingsFacade settingsFacade,
   })  : _authFacade = authFacade,
-        _profileFacade = profileFacade;
+        _profileFacade = profileFacade,
+        _settingsFacade = settingsFacade;
 
   @override
   SignInState get initialState => InitialSignInState();
@@ -122,7 +127,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         password: state.password,
       );
 
-      // Create user profile upon successful registration.
+      // Create user profile and settings upon successful registration.
       if (state.isRegistering && result.isRight()) {
         final String userUid = await _authFacade.getCurrentUser();
         final UserProfile newUserProfile = UserProfile(
@@ -130,6 +135,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
             userUid: userUid,
             username: state.username.get());
         await _profileFacade.addUserProfile(userProfile: newUserProfile);
+        await _settingsFacade.updateSettings(
+          username: state.username.get(),
+          settings: Settings.defaults(),
+        );
       }
 
       yield state.copyWith(
