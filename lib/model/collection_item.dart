@@ -48,6 +48,9 @@ class CollectionItem extends Equatable implements Listable {
         'raiting': raiting,
       };
 
+  static int compare(CollectionItem i1, CollectionItem i2) =>
+      i2.added.compareTo(i1.added);
+
   @override
   List<Object> get props => [
         parent,
