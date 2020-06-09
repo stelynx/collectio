@@ -17,14 +17,12 @@ class LoadedCollectionsState extends CollectionsState {
   final List<Collection> displayedCollections;
   final String toastMessage;
   final bool isSearching;
-  final String searchQuery;
 
   const LoadedCollectionsState({
     @required this.collections,
     List<Collection> displayedCollections,
     this.toastMessage,
     this.isSearching = false,
-    this.searchQuery,
   }) : displayedCollections = displayedCollections ?? collections;
 
   @override
@@ -32,11 +30,7 @@ class LoadedCollectionsState extends CollectionsState {
         collections,
         displayedCollections,
         isSearching,
-        searchQuery,
       ];
-
-  @override
-  bool get stringify => true;
 }
 
 class ErrorCollectionsState extends CollectionsState {}
