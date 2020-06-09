@@ -27,3 +27,11 @@ class DeleteCollectionCollectionsEvent extends CollectionsEvent {
 }
 
 class ResetCollectionsEvent extends CollectionsEvent {}
+
+class ToggleSearchCollectionsEvent extends CollectionsEvent {}
+
+class SearchQueryChangedCollectionsEvent extends CollectionsEvent {
+  final String searchQuery;
+
+  const SearchQueryChangedCollectionsEvent(this.searchQuery);
+}

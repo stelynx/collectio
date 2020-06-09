@@ -14,12 +14,29 @@ class LoadingCollectionsState extends CollectionsState {}
 
 class LoadedCollectionsState extends CollectionsState {
   final List<Collection> collections;
+  final List<Collection> displayedCollections;
   final String toastMessage;
+  final bool isSearching;
+  final String searchQuery;
 
-  const LoadedCollectionsState({@required this.collections, this.toastMessage});
+  const LoadedCollectionsState({
+    @required this.collections,
+    List<Collection> displayedCollections,
+    this.toastMessage,
+    this.isSearching = false,
+    this.searchQuery,
+  }) : displayedCollections = displayedCollections ?? collections;
 
   @override
-  List<Object> get props => [collections];
+  List<Object> get props => [
+        collections,
+        displayedCollections,
+        isSearching,
+        searchQuery,
+      ];
+
+  @override
+  bool get stringify => true;
 }
 
 class ErrorCollectionsState extends CollectionsState {}

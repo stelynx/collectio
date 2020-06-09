@@ -30,7 +30,6 @@ class CollectioSectionTitle extends StatelessWidget {
           if (sectionDescription != null) ...[
             Text(sectionDescription),
           ],
-          CollectioStyle.itemSplitter,
         ],
       ),
     );
