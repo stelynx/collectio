@@ -29,8 +29,8 @@ class CollectioSectionTitle extends StatelessWidget {
           Divider(color: Theme.of(context).textTheme.headline2.color),
           if (sectionDescription != null) ...[
             Text(sectionDescription),
+            CollectioStyle.itemSplitter,
           ],
-          CollectioStyle.itemSplitter,
         ],
       ),
     );

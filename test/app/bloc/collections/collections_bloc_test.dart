@@ -27,6 +27,16 @@ void main() {
       'description': 'description',
     },
   );
+  final Collection collection2 = Collection.fromJson(
+    {
+      'id': 'id',
+      'owner': 'owner',
+      'title': 'newTitle',
+      'subtitle': 'subtitle',
+      'thumbnail': 'thumbnail',
+      'description': 'description',
+    },
+  );
   final List<Collection> collections = [collection];
 
   final MockedFirebaseCollectionsFacade mockedFirebaseCollectionsFacade =
@@ -157,5 +167,55 @@ void main() {
     },
     act: (CollectionsBloc bloc) async => bloc.add(ResetCollectionsEvent()),
     expect: [EmptyCollectionsState()],
+  );
+
+  blocTest(
+    'should yield states with negated isSearching on ToggleSearch',
+    build: () async {
+      when(mockedProfileBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<ProfileState>());
+      when(mockedFirebaseCollectionsFacade.getCollectionsForUser(username))
+          .thenAnswer((_) async => Right([collection]));
+      return CollectionsBloc(
+        collectionsFacade: mockedFirebaseCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+      );
+    },
+    act: (CollectionsBloc bloc) async => bloc
+      ..add(GetCollectionsEvent(username: username))
+      ..add(ToggleSearchCollectionsEvent())
+      ..add(ToggleSearchCollectionsEvent()),
+    expect: [
+      LoadingCollectionsState(),
+      LoadedCollectionsState(collections: [collection]),
+      LoadedCollectionsState(collections: [collection], isSearching: true),
+      LoadedCollectionsState(collections: [collection], isSearching: false),
+    ],
+  );
+
+  blocTest(
+    'should yield state with filtered collections on SearchQueryChanged',
+    build: () async {
+      when(mockedProfileBloc.listen(any))
+          .thenReturn(MockedStreamSubscription<ProfileState>());
+      when(mockedFirebaseCollectionsFacade.getCollectionsForUser(username))
+          .thenAnswer((_) async => Right([collection, collection2]));
+      return CollectionsBloc(
+        collectionsFacade: mockedFirebaseCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+      );
+    },
+    act: (CollectionsBloc bloc) async => bloc
+      ..add(GetCollectionsEvent(username: username))
+      ..add(SearchQueryChangedCollectionsEvent('new')),
+    expect: [
+      LoadingCollectionsState(),
+      LoadedCollectionsState(collections: [collection2, collection]),
+      LoadedCollectionsState(
+        collections: [collection2, collection],
+        displayedCollections: [collection2],
+        isSearching: true,
+      ),
+    ],
   );
 }

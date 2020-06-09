@@ -85,6 +85,28 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       }
     } else if (event is ResetCollectionsEvent) {
       yield EmptyCollectionsState();
+    } else if (event is ToggleSearchCollectionsEvent) {
+      if (state is LoadedCollectionsState) {
+        yield LoadedCollectionsState(
+          collections: (state as LoadedCollectionsState).collections,
+          isSearching: !(state as LoadedCollectionsState).isSearching,
+        );
+      }
+    } else if (event is SearchQueryChangedCollectionsEvent) {
+      if (state is LoadedCollectionsState) {
+        final List<Collection> collections =
+            (state as LoadedCollectionsState).collections;
+
+        yield LoadedCollectionsState(
+          collections: collections,
+          displayedCollections: collections
+              .where((Collection collection) => collection.title
+                  .toLowerCase()
+                  .contains(event.searchQuery.toLowerCase()))
+              .toList(),
+          isSearching: true,
+        );
+      }
     }
   }
 }
