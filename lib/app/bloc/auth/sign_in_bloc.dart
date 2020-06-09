@@ -22,6 +22,7 @@ import '../../../util/error/data_failure.dart';
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
+/// Bloc used for sign in / register form.
 @prod
 @injectable
 class SignInBloc extends Bloc<SignInEvent, SignInState> {

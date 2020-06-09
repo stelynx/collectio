@@ -1,3 +1,6 @@
+/// Main file that cares of injection using
+/// get_it and injectable libraries.
+
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 

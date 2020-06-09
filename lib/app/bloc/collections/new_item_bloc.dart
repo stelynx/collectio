@@ -22,6 +22,7 @@ import 'collection_items_bloc.dart';
 part 'new_item_event.dart';
 part 'new_item_state.dart';
 
+/// Bloc used for new item form.
 @prod
 @injectable
 class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {

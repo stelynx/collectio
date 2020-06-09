@@ -16,6 +16,7 @@ import '../profile/profile_bloc.dart';
 part 'collections_event.dart';
 part 'collections_state.dart';
 
+/// Bloc used for displaying collections of user.
 @prod
 @lazySingleton
 class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {

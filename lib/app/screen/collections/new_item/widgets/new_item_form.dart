@@ -74,9 +74,7 @@ class NewItemForm extends StatelessWidget {
                 errorText: state.showErrorMessages && !state.subtitle.isValid()
                     ? state.subtitle.value.fold(
                         (ValidationFailure failure) =>
-                            failure is SubtitleEmptyValidationFailure
-                                ? Constants.emptyValidationFailure
-                                : Constants.subtitleValidationFailure,
+                            Constants.emptyValidationFailure,
                         (_) => null)
                     : null,
                 onChanged: (String value) => context

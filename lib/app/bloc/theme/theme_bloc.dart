@@ -13,6 +13,7 @@ import '../settings/settings_bloc.dart';
 part 'theme_event.dart';
 part 'theme_state.dart';
 
+/// Bloc that holds currently used theme.
 @prod
 @lazySingleton
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {

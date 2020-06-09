@@ -10,12 +10,6 @@ void main() {
     expect(result.value, equals(Left(SubtitleEmptyValidationFailure())));
   });
 
-  test('should have Left(SubtitleValidationFailure) on invalid subtitle', () {
-    final Subtitle result = Subtitle('aas@');
-
-    expect(result.value, equals(Left(SubtitleValidationFailure())));
-  });
-
   test('should have Right(subtitle) on valid subtitle', () {
     final Subtitle result = Subtitle('a valid subtitle');
 

@@ -1,3 +1,6 @@
+/// Defines all constants used throughout the app.
+/// Always prefer defining constants to using
+/// "magic strings" in the code.
 class Constants {
   static const String firebaseStorageBucket =
       'gs://stelynx-collectio.appspot.com';
@@ -38,7 +41,6 @@ class Constants {
   static const String emptyValidationFailure = 'Cannot be empty';
   static const String titleValidationFailure =
       'Title can contain only alphanumeric values and spaces';
-  static const String subtitleValidationFailure = 'Invalid subtitle';
   static const String descriptionValidationFailure = 'Invalid description';
 
   // Deletion messages

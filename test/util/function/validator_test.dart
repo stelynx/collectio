@@ -185,18 +185,6 @@ void main() {
     );
 
     test(
-      'should return Left(SubtitleValidationFailure) when subtitle contains illegal characters',
-      () {
-        final String subtitle = 'ckasd@';
-
-        final Either<ValidationFailure, String> result =
-            Validator.isValidSubtitle(subtitle);
-
-        expect(result, equals(Left(SubtitleValidationFailure())));
-      },
-    );
-
-    test(
       'should return Right(subtitle) when subtitle is ok',
       () {
         final String subtitle = 'New Collection 3 Subtitle';

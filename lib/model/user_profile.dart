@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 import '../util/constant/country.dart';
@@ -38,7 +39,7 @@ class UserProfile {
         'email': email,
         'firstName': firstName ?? '',
         'lastName': lastName ?? '',
-        'country': country != null ? enumToString(country) : '',
+        'country': country != null ? describeEnum(country) : '',
         'profileImg': profileImg ?? '',
         'userUid': userUid,
         'username': username,
