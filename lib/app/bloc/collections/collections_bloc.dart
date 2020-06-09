@@ -58,8 +58,8 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
 
       yield collectionsOrFailure.fold<CollectionsState>(
         (_) => ErrorCollectionsState(),
-        (List<Collection> collections) =>
-            LoadedCollectionsState(collections: collections),
+        (List<Collection> collections) => LoadedCollectionsState(
+            collections: collections..sort(Collection.compare)),
       );
     } else if (event is DeleteCollectionCollectionsEvent) {
       if (state is LoadedCollectionsState) {

@@ -35,11 +35,12 @@ class CollectionItemsBloc
     if (event is GetCollectionItemsEvent) {
       yield LoadingCollectionItemsState();
 
-      final Either<DataFailure, List<CollectionItem>> items =
+      final Either<DataFailure, List<CollectionItem>> itemsOrFailure =
           await _collectionsFacade.getItemsInCollection(event.collection);
 
-      if (items.isRight()) {
-        yield LoadedCollectionItemsState(items.getOrElse(null));
+      if (itemsOrFailure.isRight()) {
+        final List<CollectionItem> items = itemsOrFailure.getOrElse(() => null);
+        yield LoadedCollectionItemsState(items..sort(CollectionItem.compare));
       } else {
         yield ErrorCollectionItemsState();
       }

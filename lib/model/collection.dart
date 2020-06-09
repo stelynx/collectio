@@ -55,6 +55,9 @@ class Collection extends Equatable implements Listable {
     };
   }
 
+  static int compare(Collection c1, Collection c2) =>
+      c1.title.compareTo(c2.title);
+
   @override
   List<Object> get props => [
         id,
