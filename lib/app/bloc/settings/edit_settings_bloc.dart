@@ -17,6 +17,7 @@ import 'settings_bloc.dart';
 part 'edit_settings_event.dart';
 part 'edit_settings_state.dart';
 
+/// Bloc used for edit settings form.
 @prod
 @injectable
 class EditSettingsBloc extends Bloc<EditSettingsEvent, EditSettingsState> {

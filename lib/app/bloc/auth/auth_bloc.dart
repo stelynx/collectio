@@ -13,6 +13,7 @@ import '../../../util/error/auth_failure.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
+/// Bloc that holds userUid of current user if logged in.
 @prod
 @lazySingleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

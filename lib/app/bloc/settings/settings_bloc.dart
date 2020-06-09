@@ -15,6 +15,7 @@ import '../profile/profile_bloc.dart';
 part 'settings_event.dart';
 part 'settings_state.dart';
 
+/// Bloc that holds user's settings.
 @prod
 @lazySingleton
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {

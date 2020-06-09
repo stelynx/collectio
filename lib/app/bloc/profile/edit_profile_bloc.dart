@@ -19,6 +19,7 @@ import 'profile_bloc.dart';
 part 'edit_profile_event.dart';
 part 'edit_profile_state.dart';
 
+/// Bloc used for edit profile form.
 @prod
 @injectable
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {

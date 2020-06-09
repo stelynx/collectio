@@ -1,4 +1,5 @@
-String enumToString(Object o) => o.toString().split('.').last;
+import 'package:flutter/foundation.dart';
 
+/// Gets enum value corresponding to [key] from [values].
 T enumFromString<T>(String key, List<T> values) =>
-    values.firstWhere((v) => key == enumToString(v), orElse: () => null);
+    values.firstWhere((v) => key == describeEnum(v), orElse: () => null);

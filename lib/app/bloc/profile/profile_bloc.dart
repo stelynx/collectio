@@ -15,6 +15,9 @@ import '../../../util/error/data_failure.dart';
 part 'profile_event.dart';
 part 'profile_state.dart';
 
+/// Bloc used to hold profile data of current user.
+/// Another bloc should be created for getting profile
+/// data of other users in upcoming version.
 @prod
 @lazySingleton
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {

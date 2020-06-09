@@ -6,6 +6,9 @@ import 'package:mockito/mockito.dart';
 
 import '../constant/constants.dart';
 
+/// Firebase wrapper module. Used for making
+/// uninjectable Firebase instances injectable,
+/// so we can provide autoinjection.
 @registerModule
 abstract class InjectableFirebaseModule {
   @prod

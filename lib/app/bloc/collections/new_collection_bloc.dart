@@ -26,6 +26,7 @@ import 'collections_bloc.dart';
 part 'new_collection_event.dart';
 part 'new_collection_state.dart';
 
+/// Bloc used for new collection form.
 @prod
 @injectable
 class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {

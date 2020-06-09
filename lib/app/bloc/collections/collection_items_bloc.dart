@@ -16,6 +16,7 @@ import '../../../util/error/data_failure.dart';
 part 'collection_items_event.dart';
 part 'collection_items_state.dart';
 
+/// Bloc used for displaying items in a collection.
 @prod
 @lazySingleton
 class CollectionItemsBloc
