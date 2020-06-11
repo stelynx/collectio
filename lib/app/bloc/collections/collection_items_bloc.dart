@@ -41,7 +41,8 @@ class CollectionItemsBloc
 
       if (itemsOrFailure.isRight()) {
         final List<CollectionItem> items = itemsOrFailure.getOrElse(() => null);
-        yield LoadedCollectionItemsState(items..sort(CollectionItem.compare));
+        yield LoadedCollectionItemsState(
+            collectionItems: items..sort(CollectionItem.compare));
       } else {
         yield ErrorCollectionItemsState();
       }
@@ -56,15 +57,39 @@ class CollectionItemsBloc
           items.remove(event.item);
 
           yield LoadedCollectionItemsState(
-            items,
+            collectionItems: items,
             toastMessage: Constants.collectionItemDeleted,
           );
         } else {
           yield LoadedCollectionItemsState(
-            (state as LoadedCollectionItemsState).collectionItems,
+            collectionItems:
+                (state as LoadedCollectionItemsState).collectionItems,
             toastMessage: Constants.collectionItemDeletionFailed,
           );
         }
+      }
+    } else if (event is ToggleSearchCollectionItemsEvent) {
+      if (state is LoadedCollectionItemsState) {
+        yield LoadedCollectionItemsState(
+          collectionItems:
+              (state as LoadedCollectionItemsState).collectionItems,
+          isSearching: !(state as LoadedCollectionItemsState).isSearching,
+        );
+      }
+    } else if (event is SearchQueryChangedCollectionItemsEvent) {
+      if (state is LoadedCollectionItemsState) {
+        final List<CollectionItem> collectionItems =
+            (state as LoadedCollectionItemsState).collectionItems;
+
+        yield LoadedCollectionItemsState(
+          collectionItems: collectionItems,
+          displayedCollectionItems: collectionItems
+              .where((CollectionItem collectionItem) => collectionItem.title
+                  .toLowerCase()
+                  .contains(event.searchQuery.toLowerCase()))
+              .toList(),
+          isSearching: true,
+        );
       }
     }
   }

@@ -22,7 +22,8 @@ class CollectionsScreen extends StatelessWidget {
                       .add(SearchQueryChangedCollectionsEvent(value)),
                 )
               : Text('My collections'),
-          leading: state is LoadedCollectionsState
+          leading: state is LoadedCollectionsState &&
+                  state.collections.length > 0
               ? GestureDetector(
                   onTap: () => getIt<CollectionsBloc>()
                       .add(ToggleSearchCollectionsEvent()),

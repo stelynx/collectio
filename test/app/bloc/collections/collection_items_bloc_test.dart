@@ -22,18 +22,28 @@ void main() {
     thumbnail: 'thumbnail',
   );
 
-  final List<CollectionItem> collectionItems = [
-    CollectionItem(
-      parent: collection,
-      id: 'id',
-      added: DateTime.fromMillisecondsSinceEpoch(10000),
-      title: 'title',
-      subtitle: 'subtitle',
-      description: 'description',
-      imageUrl: 'imageUrl',
-      raiting: 10,
-    ),
-  ];
+  final CollectionItem collectionItem1 = CollectionItem(
+    parent: collection,
+    id: 'id',
+    added: DateTime.fromMillisecondsSinceEpoch(10000),
+    title: 'title',
+    subtitle: 'subtitle',
+    description: 'description',
+    imageUrl: 'imageUrl',
+    raiting: 10,
+  );
+  final CollectionItem collectionItem2 = CollectionItem(
+    parent: collection,
+    id: 'id',
+    added: DateTime.fromMillisecondsSinceEpoch(10000),
+    title: 'a different title',
+    subtitle: 'subtitle',
+    description: 'description',
+    imageUrl: 'imageUrl',
+    raiting: 10,
+  );
+
+  final List<CollectionItem> collectionItems = [collectionItem1];
 
   final MockedFirebaseCollectionsFacade mockedFirebaseCollectionsFacade =
       getIt<CollectionsFacade>();
@@ -50,7 +60,7 @@ void main() {
         bloc.add(GetCollectionItemsEvent(collection)),
     expect: [
       LoadingCollectionItemsState(),
-      LoadedCollectionItemsState(collectionItems)
+      LoadedCollectionItemsState(collectionItems: collectionItems)
     ],
   );
 
@@ -102,7 +112,7 @@ void main() {
       ..add(DeleteItemCollectionItemsEvent(collectionItems[0])),
     expect: [
       LoadingCollectionItemsState(),
-      LoadedCollectionItemsState([]),
+      LoadedCollectionItemsState(collectionItems: []),
     ],
   );
 
@@ -122,7 +132,55 @@ void main() {
       ..add(DeleteItemCollectionItemsEvent(collectionItems[0])),
     expect: [
       LoadingCollectionItemsState(),
-      LoadedCollectionItemsState(collectionItems),
+      LoadedCollectionItemsState(collectionItems: collectionItems),
+    ],
+  );
+
+  blocTest(
+    'should toggle isSearching when ToggleSearch',
+    build: () async {
+      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any))
+          .thenAnswer((_) async => Right(collectionItems));
+      return CollectionItemsBloc(
+          collectionsFacade: mockedFirebaseCollectionsFacade);
+    },
+    act: (CollectionItemsBloc bloc) async => bloc
+      ..add(GetCollectionItemsEvent(collection))
+      ..add(ToggleSearchCollectionItemsEvent())
+      ..add(ToggleSearchCollectionItemsEvent()),
+    expect: [
+      LoadingCollectionItemsState(),
+      LoadedCollectionItemsState(collectionItems: collectionItems),
+      LoadedCollectionItemsState(
+        collectionItems: collectionItems,
+        isSearching: true,
+      ),
+      LoadedCollectionItemsState(
+        collectionItems: collectionItems,
+        isSearching: false,
+      ),
+    ],
+  );
+
+  blocTest(
+    'should yield filtered items when searching',
+    build: () async {
+      when(mockedFirebaseCollectionsFacade.getItemsInCollection(any))
+          .thenAnswer((_) async => Right([collectionItem1, collectionItem2]));
+      return CollectionItemsBloc(
+          collectionsFacade: mockedFirebaseCollectionsFacade);
+    },
+    act: (CollectionItemsBloc bloc) async => bloc
+      ..add(GetCollectionItemsEvent(collection))
+      ..add(SearchQueryChangedCollectionItemsEvent('a diff')),
+    expect: [
+      LoadingCollectionItemsState(),
+      LoadedCollectionItemsState(
+          collectionItems: [collectionItem1, collectionItem2]),
+      LoadedCollectionItemsState(
+          collectionItems: [collectionItem1, collectionItem2],
+          displayedCollectionItems: [collectionItem2],
+          isSearching: true),
     ],
   );
 }
