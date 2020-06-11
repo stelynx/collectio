@@ -49,43 +49,46 @@ class CollectionScreen extends StatelessWidget {
                 return Expanded(
                   child: Column(
                     children: <Widget>[
-                      if (!state.isSearching) ...[
-                        Container(
-                          height: 50,
-                          child: GestureDetector(
-                            onTap: () => getIt<CollectionItemsBloc>()
-                                .add(ToggleSearchCollectionItemsEvent()),
-                            child: Icon(Icons.search),
-                          ),
-                        ),
-                      ] else ...[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 20),
-                          child: Container(
+                      if (state.collectionItems.length > 0) ...[
+                        if (!state.isSearching) ...[
+                          Container(
                             height: 50,
-                            child: Row(
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () => getIt<CollectionItemsBloc>()
-                                      .add(ToggleSearchCollectionItemsEvent()),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Icon(Icons.close),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: CollectioTextField(
-                                    labelText: null,
-                                    onChanged: (String value) =>
-                                        getIt<CollectionItemsBloc>().add(
-                                            SearchQueryChangedCollectionItemsEvent(
-                                                value)),
-                                  ),
-                                ),
-                              ],
+                            child: GestureDetector(
+                              onTap: () => getIt<CollectionItemsBloc>()
+                                  .add(ToggleSearchCollectionItemsEvent()),
+                              child: Icon(Icons.search),
                             ),
                           ),
-                        ),
+                        ] else ...[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 20),
+                            child: Container(
+                              height: 50,
+                              child: Row(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () => getIt<CollectionItemsBloc>()
+                                        .add(
+                                            ToggleSearchCollectionItemsEvent()),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Icon(Icons.close),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: CollectioTextField(
+                                      labelText: null,
+                                      onChanged: (String value) =>
+                                          getIt<CollectionItemsBloc>().add(
+                                              SearchQueryChangedCollectionItemsEvent(
+                                                  value)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                       Expanded(
                         child: CollectioList(

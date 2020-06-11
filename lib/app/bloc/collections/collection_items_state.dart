@@ -21,7 +21,7 @@ class LoadedCollectionItemsState extends CollectionItemsState {
     @required this.collectionItems,
     List<CollectionItem> displayedCollectionItems,
     this.toastMessage,
-    this.isSearching = true,
+    this.isSearching = false,
   }) : displayedCollectionItems = displayedCollectionItems ?? collectionItems;
 
   @override
