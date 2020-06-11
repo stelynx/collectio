@@ -9,6 +9,7 @@ import '../../../bloc/collections/collection_items_bloc.dart';
 import '../../../routes/routes.dart';
 import '../../../theme/style.dart';
 import '../../../widgets/collectio_list.dart';
+import '../../../widgets/collectio_text_field.dart';
 import 'widgets/collection_details_view.dart';
 
 class CollectionScreen extends StatelessWidget {
@@ -46,13 +47,57 @@ class CollectionScreen extends StatelessWidget {
             builder: (BuildContext context, CollectionItemsState state) {
               if (state is LoadedCollectionItemsState)
                 return Expanded(
-                  child: CollectioList(
-                    items: state.collectionItems,
-                    onTap: (CollectionItem item) => Navigator.of(context)
-                        .pushNamed(Routes.item, arguments: item),
-                    onDismiss: (CollectionItem item) =>
-                        getIt<CollectionItemsBloc>()
-                            .add(DeleteItemCollectionItemsEvent(item)),
+                  child: Column(
+                    children: <Widget>[
+                      if (!state.isSearching) ...[
+                        Container(
+                          height: 50,
+                          child: GestureDetector(
+                            onTap: () => getIt<CollectionItemsBloc>()
+                                .add(ToggleSearchCollectionItemsEvent()),
+                            child: Icon(Icons.search),
+                          ),
+                        ),
+                      ] else ...[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 20),
+                          child: Container(
+                            height: 50,
+                            child: Row(
+                              children: <Widget>[
+                                GestureDetector(
+                                  onTap: () => getIt<CollectionItemsBloc>()
+                                      .add(ToggleSearchCollectionItemsEvent()),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Icon(Icons.close),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: CollectioTextField(
+                                    labelText: null,
+                                    onChanged: (String value) =>
+                                        getIt<CollectionItemsBloc>().add(
+                                            SearchQueryChangedCollectionItemsEvent(
+                                                value)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                      Expanded(
+                        child: CollectioList(
+                          items: state.displayedCollectionItems,
+                          onTap: (CollectionItem item) => Navigator.of(context)
+                              .pushNamed(Routes.item, arguments: item),
+                          onDismiss: (CollectionItem item) =>
+                              getIt<CollectionItemsBloc>()
+                                  .add(DeleteItemCollectionItemsEvent(item)),
+                        ),
+                      ),
+                    ],
                   ),
                 );
 

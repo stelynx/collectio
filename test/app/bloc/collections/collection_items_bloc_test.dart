@@ -50,7 +50,7 @@ void main() {
         bloc.add(GetCollectionItemsEvent(collection)),
     expect: [
       LoadingCollectionItemsState(),
-      LoadedCollectionItemsState(collectionItems)
+      LoadedCollectionItemsState(collectionItems: collectionItems)
     ],
   );
 
@@ -102,7 +102,7 @@ void main() {
       ..add(DeleteItemCollectionItemsEvent(collectionItems[0])),
     expect: [
       LoadingCollectionItemsState(),
-      LoadedCollectionItemsState([]),
+      LoadedCollectionItemsState(collectionItems: []),
     ],
   );
 
@@ -122,7 +122,7 @@ void main() {
       ..add(DeleteItemCollectionItemsEvent(collectionItems[0])),
     expect: [
       LoadingCollectionItemsState(),
-      LoadedCollectionItemsState(collectionItems),
+      LoadedCollectionItemsState(collectionItems: collectionItems),
     ],
   );
 }
