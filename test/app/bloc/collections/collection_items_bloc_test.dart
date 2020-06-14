@@ -1,9 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/collections/collection_items_bloc.dart';
+import 'package:collectio/app/widgets/collectio_toast.dart';
 import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/facade/collections/firebase/firebase_collections_facade.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
+import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -113,6 +115,11 @@ void main() {
     expect: [
       LoadingCollectionItemsState(),
       LoadedCollectionItemsState(collectionItems: []),
+      LoadedCollectionItemsState(
+        collectionItems: [],
+        toastMessage: Constants.collectionItemDeleted,
+        toastType: ToastType.success,
+      ),
     ],
   );
 
@@ -133,6 +140,11 @@ void main() {
     expect: [
       LoadingCollectionItemsState(),
       LoadedCollectionItemsState(collectionItems: collectionItems),
+      LoadedCollectionItemsState(
+        collectionItems: collectionItems,
+        toastMessage: Constants.collectionItemDeletionFailed,
+        toastType: ToastType.error,
+      ),
     ],
   );
 

@@ -10,6 +10,7 @@ import '../../../routes/routes.dart';
 import '../../../theme/style.dart';
 import '../../../widgets/collectio_list.dart';
 import '../../../widgets/collectio_text_field.dart';
+import '../../../widgets/collectio_toast.dart';
 import 'widgets/collection_details_view.dart';
 
 class CollectionScreen extends StatelessWidget {
@@ -45,7 +46,17 @@ class CollectionScreen extends StatelessWidget {
             bloc: getIt<CollectionItemsBloc>()
               ..add(GetCollectionItemsEvent(_collection)),
             builder: (BuildContext context, CollectionItemsState state) {
-              if (state is LoadedCollectionItemsState)
+              if (state is LoadedCollectionItemsState) {
+                final LoadedCollectionItemsState loadedCollectionItemsState =
+                    state;
+                if (loadedCollectionItemsState.toastMessage != null) {
+                  final SnackBar snackBar = CollectioToast(
+                    message: loadedCollectionItemsState.toastMessage,
+                    toastType: loadedCollectionItemsState.toastType,
+                  );
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => Scaffold.of(context).showSnackBar(snackBar));
+                }
                 return Expanded(
                   child: Column(
                     children: <Widget>[
@@ -103,6 +114,7 @@ class CollectionScreen extends StatelessWidget {
                     ],
                   ),
                 );
+              }
 
               if (state is ErrorCollectionItemsState)
                 return Center(

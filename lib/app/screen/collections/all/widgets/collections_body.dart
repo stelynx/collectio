@@ -6,6 +6,7 @@ import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/collections_bloc.dart';
 import '../../../../routes/routes.dart';
 import '../../../../widgets/collectio_list.dart';
+import '../../../../widgets/collectio_toast.dart';
 import '../../../shared/error.dart';
 
 class CollectionsBody extends StatelessWidget {
@@ -20,7 +21,16 @@ class CollectionsBody extends StatelessWidget {
       return Center(
         child: CircularProgressIndicator(),
       );
-    if (_state is LoadedCollectionsState)
+    if (_state is LoadedCollectionsState) {
+      final LoadedCollectionsState loadedCollectionsState = _state;
+      if (loadedCollectionsState.toastMessage != null) {
+        final SnackBar snackBar = CollectioToast(
+          message: loadedCollectionsState.toastMessage,
+          toastType: loadedCollectionsState.toastType,
+        );
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => Scaffold.of(context).showSnackBar(snackBar));
+      }
       return CollectioList(
         items: (_state as LoadedCollectionsState).displayedCollections,
         onTap: (Collection collection) => Navigator.of(context)
@@ -29,6 +39,7 @@ class CollectionsBody extends StatelessWidget {
             .add(DeleteCollectionCollectionsEvent(collection)),
         fullScreen: true,
       );
+    }
     if (_state is ErrorCollectionsState)
       return ErrorScreen(message: 'Error occured');
     return ErrorScreen(message: Constants.unknownStateMessage);

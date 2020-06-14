@@ -43,7 +43,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
               shrinkWrap: true,
               itemCount: items.length,
               itemBuilder: (BuildContext context, int index) => Dismissible(
-                key: Key('collectio_list_item_$index'),
+                key: UniqueKey(),
                 direction: DismissDirection.endToStart,
                 onDismissed: (_) => onDismiss(items[index]),
                 dismissThresholds: <DismissDirection, double>{

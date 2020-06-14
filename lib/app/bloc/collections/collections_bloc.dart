@@ -11,6 +11,7 @@ import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
 import '../../../util/constant/constants.dart';
 import '../../../util/error/data_failure.dart';
+import '../../widgets/collectio_toast.dart';
 import '../profile/profile_bloc.dart';
 
 part 'collections_event.dart';
@@ -64,22 +65,30 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       );
     } else if (event is DeleteCollectionCollectionsEvent) {
       if (state is LoadedCollectionsState) {
+        final List<Collection> collections =
+            (state as LoadedCollectionsState).collections;
+        final int collectionIndex = collections.indexOf(event.collection);
+        print(collectionIndex);
+        print(collections.removeAt(collectionIndex));
+        print(collections);
+
+        yield LoadedCollectionsState(collections: collections);
+
         final Either<DataFailure, void> result =
             await _collectionsFacade.deleteCollection(event.collection);
 
         if (result.isRight()) {
-          final List<Collection> collections =
-              (state as LoadedCollectionsState).collections;
-          collections.remove(event.collection);
-
           yield LoadedCollectionsState(
             collections: collections,
             toastMessage: Constants.collectionDeleted,
+            toastType: ToastType.success,
           );
         } else {
+          collections.insert(collectionIndex, event.collection);
           yield LoadedCollectionsState(
             collections: (state as LoadedCollectionsState).collections,
             toastMessage: Constants.collectionDeletionFailed,
+            toastType: ToastType.error,
           );
         }
       }
