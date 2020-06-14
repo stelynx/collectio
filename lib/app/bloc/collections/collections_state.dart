@@ -16,12 +16,14 @@ class LoadedCollectionsState extends CollectionsState {
   final List<Collection> collections;
   final List<Collection> displayedCollections;
   final String toastMessage;
+  final ToastType toastType;
   final bool isSearching;
 
   const LoadedCollectionsState({
     @required this.collections,
     List<Collection> displayedCollections,
     this.toastMessage,
+    this.toastType,
     this.isSearching = false,
   }) : displayedCollections = displayedCollections ?? collections;
 
@@ -30,6 +32,8 @@ class LoadedCollectionsState extends CollectionsState {
         collections,
         displayedCollections,
         isSearching,
+        toastType,
+        toastMessage,
       ];
 }
 
