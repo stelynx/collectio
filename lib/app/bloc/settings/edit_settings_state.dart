@@ -14,7 +14,8 @@ abstract class EditSettingsState extends Equatable {
   });
 
   @override
-  List<Object> get props => [theme, updateSuccessful, settingsStateNotComplete];
+  List<Object> get props =>
+      [theme, language, updateSuccessful, settingsStateNotComplete];
 
   EditSettingsState copyWith({
     CollectioTheme theme,
