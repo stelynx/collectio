@@ -12,7 +12,7 @@ class CollectioDropdown<T> extends StatelessWidget {
   const CollectioDropdown({
     @required this.value,
     @required this.items,
-    @required this.hint,
+    this.hint = '...',
     this.onChanged,
     this.icon,
     this.isExpanded = true,

@@ -2,6 +2,7 @@ import 'package:collectio/facade/settings/firebase/firebase_settings_facade.dart
 import 'package:collectio/model/settings.dart';
 import 'package:collectio/service/settings_service.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/constant/language.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -13,7 +14,10 @@ void main() {
   configureInjection(Environment.test);
 
   final String username = 'username';
-  final Settings settings = Settings(theme: CollectioTheme.LIGHT);
+  final Settings settings = Settings(
+    theme: CollectioTheme.LIGHT,
+    language: Language.en,
+  );
   final Map<String, dynamic> settingsJson = settings.toJson();
 
   final SettingsService settingsService = getIt<SettingsService>();

@@ -9,3 +9,9 @@ class ChangeThemeEditSettingsEvent extends EditSettingsEvent {
 
   const ChangeThemeEditSettingsEvent(this.newTheme);
 }
+
+class ChangeLanguageEditSettingsEvent extends EditSettingsEvent {
+  final Language language;
+
+  const ChangeLanguageEditSettingsEvent(this.language);
+}

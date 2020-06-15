@@ -5,6 +5,7 @@ import 'package:collectio/facade/settings/settings_facade.dart';
 import 'package:collectio/model/settings.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/constant/language.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -25,7 +26,10 @@ void main() {
     userUid: 'userUid',
     username: 'username',
   );
-  final Settings settings = Settings(theme: CollectioTheme.LIGHT);
+  final Settings settings = Settings(
+    theme: CollectioTheme.LIGHT,
+    language: Language.en,
+  );
 
   tearDownAll(() {
     profileBloc.close();

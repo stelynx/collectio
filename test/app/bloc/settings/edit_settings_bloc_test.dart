@@ -6,6 +6,7 @@ import 'package:collectio/facade/settings/settings_facade.dart';
 import 'package:collectio/model/settings.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/constant/language.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -20,7 +21,10 @@ void main() {
   final SettingsBloc settingsBloc = getIt<SettingsBloc>();
   final ProfileBloc profileBloc = getIt<ProfileBloc>();
 
-  final Settings settings = Settings(theme: CollectioTheme.LIGHT);
+  final Settings settings = Settings(
+    theme: CollectioTheme.LIGHT,
+    language: Language.en,
+  );
   final UserProfile profile = UserProfile(
     email: 'a@b.c',
     userUid: 'userUid',
@@ -105,7 +109,10 @@ void main() {
     verify: (_) async => verify(
       settingsFacade.updateSettings(
         username: profile.username,
-        settings: Settings(theme: CollectioTheme.DARK),
+        settings: Settings(
+          theme: CollectioTheme.DARK,
+          language: Language.en,
+        ),
       ),
     ).called(1),
   );
