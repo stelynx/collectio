@@ -3,6 +3,7 @@ import 'package:collectio/app/bloc/settings/settings_bloc.dart';
 import 'package:collectio/app/bloc/theme/theme_bloc.dart';
 import 'package:collectio/model/settings.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/constant/language.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injectable/injectable.dart' show Environment;
@@ -13,7 +14,10 @@ import '../../../mocks.dart';
 void main() {
   configureInjection(Environment.test);
 
-  final Settings settings = Settings(theme: CollectioTheme.LIGHT);
+  final Settings settings = Settings(
+    theme: CollectioTheme.LIGHT,
+    language: Language.en,
+  );
 
   final SettingsBloc settingsBloc = getIt<SettingsBloc>();
 

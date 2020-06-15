@@ -6,6 +6,7 @@ import 'package:collectio/facade/settings/settings_facade.dart';
 import 'package:collectio/model/settings.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/constant/language.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -20,7 +21,10 @@ void main() {
   final SettingsBloc settingsBloc = getIt<SettingsBloc>();
   final ProfileBloc profileBloc = getIt<ProfileBloc>();
 
-  final Settings settings = Settings(theme: CollectioTheme.LIGHT);
+  final Settings settings = Settings(
+    theme: CollectioTheme.LIGHT,
+    language: Language.en,
+  );
   final UserProfile profile = UserProfile(
     email: 'a@b.c',
     userUid: 'userUid',
@@ -72,104 +76,215 @@ void main() {
     );
   });
 
-  blocTest(
-    'should yield nothing when profile state is not complete and changing theme',
-    build: () async {
-      when(profileBloc.state).thenReturn(EmptyProfileState());
-      return EditSettingsBloc(
-        settingsFacade: settingsFacade,
-        settingsBloc: settingsBloc,
-        profileBloc: profileBloc,
-      );
-    },
-    act: (EditSettingsBloc bloc) async =>
-        bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
-    expect: [],
-  );
+  group('change theme', () {
+    blocTest(
+      'should yield nothing when profile state is not complete and changing theme',
+      build: () async {
+        when(profileBloc.state).thenReturn(EmptyProfileState());
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
+      expect: [],
+    );
 
-  blocTest(
-    'should call SettingsFacade when profile complete and changing theme',
-    build: () async {
-      when(profileBloc.state).thenReturn(CompleteProfileState(profile));
-      when(settingsFacade.updateSettings(
-              username: anyNamed('username'), settings: anyNamed('settings')))
-          .thenAnswer((_) async => null);
-      return EditSettingsBloc(
-        settingsFacade: settingsFacade,
-        settingsBloc: settingsBloc,
-        profileBloc: profileBloc,
-      );
-    },
-    act: (EditSettingsBloc bloc) async =>
-        bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
-    verify: (_) async => verify(
-      settingsFacade.updateSettings(
-        username: profile.username,
-        settings: Settings(theme: CollectioTheme.DARK),
-      ),
-    ).called(1),
-  );
+    blocTest(
+      'should call SettingsFacade when profile complete and changing theme',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        when(settingsFacade.updateSettings(
+                username: anyNamed('username'), settings: anyNamed('settings')))
+            .thenAnswer((_) async => null);
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
+      verify: (_) async => verify(
+        settingsFacade.updateSettings(
+          username: profile.username,
+          settings: Settings(
+            theme: CollectioTheme.DARK,
+            language: Language.en,
+          ),
+        ),
+      ).called(1),
+    );
 
-  blocTest(
-    'should yield state with new theme when profile state is complete and changing theme',
-    build: () async {
-      when(profileBloc.state).thenReturn(CompleteProfileState(profile));
-      return EditSettingsBloc(
-        settingsFacade: settingsFacade,
-        settingsBloc: settingsBloc,
-        profileBloc: profileBloc,
-      );
-    },
-    act: (EditSettingsBloc bloc) async =>
-        bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
-    expect: [GeneralEditSettingsState(theme: CollectioTheme.DARK)],
-  );
+    blocTest(
+      'should yield state with new theme when profile state is complete and changing theme',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
+      expect: [GeneralEditSettingsState(theme: CollectioTheme.DARK)],
+    );
 
-  blocTest(
-    'should yield correct two states when profile state is complete, changing theme, and saving successful',
-    build: () async {
-      when(profileBloc.state).thenReturn(CompleteProfileState(profile));
-      when(settingsFacade.updateSettings(
-              username: anyNamed('username'), settings: anyNamed('settings')))
-          .thenAnswer((_) async => Right(null));
-      return EditSettingsBloc(
-        settingsFacade: settingsFacade,
-        settingsBloc: settingsBloc,
-        profileBloc: profileBloc,
-      );
-    },
-    act: (EditSettingsBloc bloc) async =>
-        bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
-    expect: [
-      GeneralEditSettingsState(theme: CollectioTheme.DARK),
-      GeneralEditSettingsState(
-        theme: CollectioTheme.DARK,
-        updateSuccessful: true,
-      ),
-    ],
-  );
+    blocTest(
+      'should yield correct two states when profile state is complete, changing theme, and saving successful',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        when(settingsFacade.updateSettings(
+                username: anyNamed('username'), settings: anyNamed('settings')))
+            .thenAnswer((_) async => Right(null));
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
+      expect: [
+        GeneralEditSettingsState(theme: CollectioTheme.DARK),
+        GeneralEditSettingsState(
+          theme: CollectioTheme.DARK,
+          updateSuccessful: true,
+        ),
+      ],
+    );
 
-  blocTest(
-    'should yield correct two states when profile state is complete, changing theme, and saving unsuccessful',
-    build: () async {
-      when(profileBloc.state).thenReturn(CompleteProfileState(profile));
-      when(settingsFacade.updateSettings(
-              username: anyNamed('username'), settings: anyNamed('settings')))
-          .thenAnswer((_) async => Left(DataFailure()));
-      return EditSettingsBloc(
-        settingsFacade: settingsFacade,
-        settingsBloc: settingsBloc,
-        profileBloc: profileBloc,
-      );
-    },
-    act: (EditSettingsBloc bloc) async =>
-        bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
-    expect: [
-      GeneralEditSettingsState(theme: CollectioTheme.DARK),
-      GeneralEditSettingsState(
-        theme: CollectioTheme.LIGHT,
-        updateSuccessful: false,
-      ),
-    ],
-  );
+    blocTest(
+      'should yield correct two states when profile state is complete, changing theme, and saving unsuccessful',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        when(settingsFacade.updateSettings(
+                username: anyNamed('username'), settings: anyNamed('settings')))
+            .thenAnswer((_) async => Left(DataFailure()));
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeThemeEditSettingsEvent(CollectioTheme.DARK)),
+      expect: [
+        GeneralEditSettingsState(theme: CollectioTheme.DARK),
+        GeneralEditSettingsState(
+          theme: CollectioTheme.LIGHT,
+          updateSuccessful: false,
+        ),
+      ],
+    );
+  });
+
+  group('change language', () {
+    blocTest(
+      'should yield nothing when profile state is not complete and changing language',
+      build: () async {
+        when(profileBloc.state).thenReturn(EmptyProfileState());
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+      expect: [],
+    );
+
+    blocTest(
+      'should call SettingsFacade when profile complete and changing language',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        when(settingsFacade.updateSettings(
+                username: anyNamed('username'), settings: anyNamed('settings')))
+            .thenAnswer((_) async => null);
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+      verify: (_) async => verify(
+        settingsFacade.updateSettings(
+          username: profile.username,
+          settings: Settings(
+            theme: CollectioTheme.LIGHT,
+            language: Language.si,
+          ),
+        ),
+      ).called(1),
+    );
+
+    blocTest(
+      'should yield state with new theme when profile state is complete and changing language',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+      expect: [GeneralEditSettingsState(language: Language.si)],
+    );
+
+    blocTest(
+      'should yield correct two states when profile state is complete, changing language, and saving successful',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        when(settingsFacade.updateSettings(
+                username: anyNamed('username'), settings: anyNamed('settings')))
+            .thenAnswer((_) async => Right(null));
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+      expect: [
+        GeneralEditSettingsState(language: Language.si),
+        GeneralEditSettingsState(
+          language: Language.si,
+          updateSuccessful: true,
+        ),
+      ],
+    );
+
+    blocTest(
+      'should yield correct two states when profile state is complete, changing language, and saving unsuccessful',
+      build: () async {
+        when(profileBloc.state).thenReturn(CompleteProfileState(profile));
+        when(settingsFacade.updateSettings(
+                username: anyNamed('username'), settings: anyNamed('settings')))
+            .thenAnswer((_) async => Left(DataFailure()));
+        return EditSettingsBloc(
+          settingsFacade: settingsFacade,
+          settingsBloc: settingsBloc,
+          profileBloc: profileBloc,
+        );
+      },
+      act: (EditSettingsBloc bloc) async =>
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+      expect: [
+        GeneralEditSettingsState(language: Language.si),
+        GeneralEditSettingsState(
+          language: Language.en,
+          updateSuccessful: false,
+        ),
+      ],
+    );
+  });
 }

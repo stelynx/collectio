@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/country.dart';
-import '../../../../../util/function/enum_helper.dart';
+import '../../../../../util/function/enum_helper/country_enum_helper.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/profile/edit_profile_bloc.dart';
 import '../../../../bloc/profile/profile_bloc.dart';
@@ -72,16 +71,18 @@ class EditProfileForm extends StatelessWidget {
               CollectioStyle.itemSplitter,
               CollectioStyle.itemSplitter,
               CollectioDropdown<String>(
-                value:
-                    state.country != null ? describeEnum(state.country) : null,
+                value: state.country != null
+                    ? CountryEnumHelper.mapEnumToString(state.country)
+                    : null,
                 items: Country.values
-                    .map((Country country) => describeEnum(country))
+                    .map((Country country) =>
+                        CountryEnumHelper.mapEnumToString(country))
                     .toList(),
                 hint: 'Country',
-                onChanged: (String country) => context
+                onChanged: (String value) => context
                     .bloc<EditProfileBloc>()
                     .add(CountryChangedEditProfileEvent(
-                        enumFromString(country, Country.values))),
+                        CountryEnumHelper.mapStringToEnum(value))),
                 icon: Icon(Icons.flag),
               ),
               CollectioStyle.itemSplitter,

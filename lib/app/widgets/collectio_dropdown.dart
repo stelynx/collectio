@@ -12,7 +12,7 @@ class CollectioDropdown<T> extends StatelessWidget {
   const CollectioDropdown({
     @required this.value,
     @required this.items,
-    @required this.hint,
+    this.hint = '...',
     this.onChanged,
     this.icon,
     this.isExpanded = true,
@@ -23,6 +23,7 @@ class CollectioDropdown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: Container(
+        width: isExpanded ? null : 150.0,
         padding: icon != null
             ? EdgeInsets.symmetric(horizontal: 15, vertical: 13)
             : EdgeInsets.fromLTRB(15, 8, 5, 8),

@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/collection.dart';
 import '../../../../model/user_profile.dart';
+import '../../../../util/function/enum_helper/country_enum_helper.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collections_bloc.dart';
 import '../../../routes/routes.dart';
@@ -45,7 +45,8 @@ class ViewProfileScreen extends StatelessWidget {
                           children: <Widget>[
                             Icon(Icons.location_on),
                             Text(profile.country != null
-                                ? describeEnum(profile.country)
+                                ? CountryEnumHelper.mapEnumToString(
+                                    profile.country)
                                 : 'Unknown'),
                           ],
                         ),

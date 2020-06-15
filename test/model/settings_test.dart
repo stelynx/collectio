@@ -1,11 +1,16 @@
 import 'package:collectio/model/settings.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/constant/language.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final Settings settings = Settings(theme: CollectioTheme.LIGHT);
+  final Settings settings = Settings(
+    theme: CollectioTheme.LIGHT,
+    language: Language.en,
+  );
   final Map<String, dynamic> settingsJson = <String, dynamic>{
     'theme': 'LIGHT',
+    'language': 'en',
   };
 
   group('fromJson', () {
@@ -22,7 +27,10 @@ void main() {
 
   group('equality', () {
     test('should two instances with same fields be equal', () {
-      final Settings settings2 = Settings(theme: CollectioTheme.LIGHT);
+      final Settings settings2 = Settings(
+        theme: CollectioTheme.LIGHT,
+        language: Language.en,
+      );
 
       expect(settings2, equals(settings));
     });

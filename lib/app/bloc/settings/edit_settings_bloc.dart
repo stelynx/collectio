@@ -10,6 +10,7 @@ import 'package:meta/meta.dart';
 import '../../../facade/settings/settings_facade.dart';
 import '../../../model/settings.dart';
 import '../../../util/constant/collectio_theme.dart';
+import '../../../util/constant/language.dart';
 import '../../../util/error/data_failure.dart';
 import '../profile/profile_bloc.dart';
 import 'settings_bloc.dart';
@@ -41,6 +42,7 @@ class EditSettingsBloc extends Bloc<EditSettingsEvent, EditSettingsState> {
 
       return InitialEditSettingsState(
         theme: settings.theme,
+        language: settings.language,
         settingsStateNotComplete: false,
       );
     }
@@ -57,19 +59,21 @@ class EditSettingsBloc extends Bloc<EditSettingsEvent, EditSettingsState> {
     if (_profileBloc.state is CompleteProfileState) {
       if (event is ChangeThemeEditSettingsEvent) {
         final CollectioTheme oldTheme = state.theme;
+        final CollectioTheme newTheme = event.newTheme;
 
         yield state.copyWith(
-          theme: event.newTheme,
+          theme: newTheme,
           updateSuccessful: null,
         );
-
-        final CollectioTheme newTheme = event.newTheme;
 
         final Either<DataFailure, void> result =
             await _settingsFacade.updateSettings(
           username:
               (_profileBloc.state as CompleteProfileState).userProfile.username,
-          settings: Settings(theme: newTheme),
+          settings: Settings(
+            theme: newTheme,
+            language: state.language,
+          ),
         );
 
         if (result.isRight()) {
@@ -78,6 +82,34 @@ class EditSettingsBloc extends Bloc<EditSettingsEvent, EditSettingsState> {
         } else {
           yield state.copyWith(
             theme: oldTheme,
+            updateSuccessful: false,
+          );
+        }
+      } else if (event is ChangeLanguageEditSettingsEvent) {
+        final Language oldLanguage = state.language;
+        final Language newLanguage = event.language;
+
+        yield state.copyWith(
+          language: newLanguage,
+          updateSuccessful: null,
+        );
+
+        final Either<DataFailure, void> result =
+            await _settingsFacade.updateSettings(
+          username:
+              (_profileBloc.state as CompleteProfileState).userProfile.username,
+          settings: Settings(
+            theme: state.theme,
+            language: newLanguage,
+          ),
+        );
+
+        if (result.isRight()) {
+          _settingsBloc.add(GetSettingsEvent());
+          yield state.copyWith(updateSuccessful: true);
+        } else {
+          yield state.copyWith(
+            language: oldLanguage,
             updateSuccessful: false,
           );
         }
