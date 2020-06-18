@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/collection.dart';
-import '../../util/constant/constants.dart';
+import '../../util/constant/translation.dart';
 import '../screen/auth/sign_in.dart';
 import '../screen/collections/all/collections.dart';
 import '../screen/collections/item_details/item_details.dart';
@@ -69,7 +69,7 @@ abstract class Router {
       default:
         return MaterialPageRoute(
             builder: (_) =>
-                ErrorScreen(message: Constants.unknownRouteMessage));
+                ErrorScreen(message: Translation.unknownRouteMessage));
     }
   }
 }

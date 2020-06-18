@@ -9,7 +9,7 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
-import '../../../util/constant/constants.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/data_failure.dart';
 import '../../widgets/collectio_toast.dart';
 import '../profile/profile_bloc.dart';
@@ -68,9 +68,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
         final List<Collection> collections =
             (state as LoadedCollectionsState).collections;
         final int collectionIndex = collections.indexOf(event.collection);
-        print(collectionIndex);
-        print(collections.removeAt(collectionIndex));
-        print(collections);
+        collections.removeAt(collectionIndex);
 
         yield LoadedCollectionsState(collections: collections);
 
@@ -80,14 +78,14 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
         if (result.isRight()) {
           yield LoadedCollectionsState(
             collections: collections,
-            toastMessage: Constants.collectionDeleted,
+            toastMessage: Translation.collectionDeleted,
             toastType: ToastType.success,
           );
         } else {
           collections.insert(collectionIndex, event.collection);
           yield LoadedCollectionsState(
             collections: (state as LoadedCollectionsState).collections,
-            toastMessage: Constants.collectionDeletionFailed,
+            toastMessage: Translation.collectionDeletionFailed,
             toastType: ToastType.error,
           );
         }

@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/collection.dart';
 import '../../../../model/user_profile.dart';
+import '../../../../util/constant/translation.dart';
 import '../../../../util/function/enum_helper/country_enum_helper.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collections_bloc.dart';
+import '../../../config/app_localizations.dart';
 import '../../../routes/routes.dart';
 import '../../../theme/style.dart';
 import '../../../widgets/circular_network_image.dart';
@@ -47,7 +49,8 @@ class ViewProfileScreen extends StatelessWidget {
                             Text(profile.country != null
                                 ? CountryEnumHelper.mapEnumToString(
                                     profile.country)
-                                : 'Unknown'),
+                                : AppLocalizations.of(context)
+                                    .translate(Translation.unknown)),
                           ],
                         ),
                       ],
@@ -56,7 +59,8 @@ class ViewProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            CollectioSectionTitle('Collections'),
+            CollectioSectionTitle(AppLocalizations.of(context)
+                .translate(Translation.collections)),
             BlocBuilder<CollectionsBloc, CollectionsState>(
               bloc: getIt<CollectionsBloc>(),
               builder: (BuildContext context, CollectionsState state) {
@@ -73,7 +77,8 @@ class ViewProfileScreen extends StatelessWidget {
                     children: <Widget>[
                       CircularProgressIndicator(),
                       const SizedBox(height: 5),
-                      Text('Retrieving collections ...'),
+                      Text(AppLocalizations.of(context)
+                          .translate(Translation.loadingCollections)),
                     ],
                   ),
                 );

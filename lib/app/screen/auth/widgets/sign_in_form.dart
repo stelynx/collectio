@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../util/constant/translation.dart';
 import '../../../../util/error/auth_failure.dart';
 import '../../../../util/error/validation_failure.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/auth/sign_in_bloc.dart';
+import '../../../config/app_localizations.dart';
 import '../../../routes/routes.dart';
 import '../../../theme/style.dart';
 import '../../../widgets/collectio_button.dart';
@@ -36,13 +38,16 @@ class SignInForm extends StatelessWidget {
                 onChanged: (String value) => context
                     .bloc<SignInBloc>()
                     .add(EmailChangedSignInEvent(email: value)),
-                labelText: 'Email',
+                labelText:
+                    AppLocalizations.of(context).translate(Translation.email),
                 errorText: state.showErrorMessages && !state.email.isValid()
                     ? state.email.value.fold(
                         (ValidationFailure failure) =>
                             failure is EmailEmptyValidationFailure
-                                ? 'Fill in email'
-                                : 'Invalid email',
+                                ? AppLocalizations.of(context)
+                                    .translate(Translation.fillInEmail)
+                                : AppLocalizations.of(context)
+                                    .translate(Translation.invalidEmail),
                         (_) => null,
                       )
                     : null,
@@ -56,9 +61,11 @@ class SignInForm extends StatelessWidget {
                 onChanged: (String value) => context
                     .bloc<SignInBloc>()
                     .add(PasswordChangedSignInEvent(password: value)),
-                labelText: 'Password',
+                labelText: AppLocalizations.of(context)
+                    .translate(Translation.password),
                 errorText: state.showErrorMessages && !state.password.isValid()
-                    ? 'Invalid password'
+                    ? AppLocalizations.of(context)
+                        .translate(Translation.invalidPassword)
                     : null,
               ),
 
@@ -70,14 +77,17 @@ class SignInForm extends StatelessWidget {
                   onChanged: (String value) => context
                       .bloc<SignInBloc>()
                       .add(UsernameChangedSignInEvent(username: value)),
-                  labelText: 'Username',
+                  labelText: AppLocalizations.of(context)
+                      .translate(Translation.username),
                   errorText: state.showErrorMessages &&
                           !state.username.isValid()
                       ? state.username.value.fold(
-                          (ValidationFailure failure) => failure
-                                  is UsernameTooShortValidationFailure
-                              ? 'Username too short'
-                              : 'Invalid username. Use only alphanumeric values!',
+                          (ValidationFailure failure) =>
+                              failure is UsernameTooShortValidationFailure
+                                  ? AppLocalizations.of(context)
+                                      .translate(Translation.usernameTooShort)
+                                  : AppLocalizations.of(context)
+                                      .translate(Translation.invalidUsername),
                           (_) => null)
                       : null,
                 ),
@@ -99,7 +109,8 @@ class SignInForm extends StatelessWidget {
                 onPressed: () => context
                     .bloc<SignInBloc>()
                     .add(SignInWithEmailAndPasswordSignInEvent()),
-                text: 'Sign in',
+                text:
+                    AppLocalizations.of(context).translate(Translation.signIn),
                 isPrimary: true,
               ),
 
@@ -118,7 +129,8 @@ class SignInForm extends StatelessWidget {
                         .add(CheckIfEmailExistsSignInEvent());
                   }
                 },
-                text: 'Register',
+                text: AppLocalizations.of(context)
+                    .translate(Translation.register),
                 isPrimary: true,
               ),
 

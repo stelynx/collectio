@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/collection.dart';
 import '../../../../model/collection_item.dart';
-import '../../../../util/constant/constants.dart';
+import '../../../../util/constant/translation.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collection_items_bloc.dart';
+import '../../../config/app_localizations.dart';
 import '../../../routes/routes.dart';
 import '../../../theme/style.dart';
 import '../../../widgets/collectio_list.dart';
@@ -51,7 +52,8 @@ class CollectionScreen extends StatelessWidget {
                     state;
                 if (loadedCollectionItemsState.toastMessage != null) {
                   final SnackBar snackBar = CollectioToast(
-                    message: loadedCollectionItemsState.toastMessage,
+                    message: AppLocalizations.of(context)
+                        .translate(loadedCollectionItemsState.toastMessage),
                     toastType: loadedCollectionItemsState.toastType,
                   );
                   WidgetsBinding.instance.addPostFrameCallback(
@@ -132,7 +134,8 @@ class CollectionScreen extends StatelessWidget {
                         ),
                         CollectioStyle.itemSplitter,
                         Text(
-                          Constants.collectionItemsFailure,
+                          AppLocalizations.of(context)
+                              .translate(Translation.collectionItemsFailure),
                           textAlign: TextAlign.center,
                         ),
                       ],

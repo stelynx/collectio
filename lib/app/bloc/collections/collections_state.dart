@@ -15,7 +15,7 @@ class LoadingCollectionsState extends CollectionsState {}
 class LoadedCollectionsState extends CollectionsState {
   final List<Collection> collections;
   final List<Collection> displayedCollections;
-  final String toastMessage;
+  final Translation toastMessage;
   final ToastType toastType;
   final bool isSearching;
 

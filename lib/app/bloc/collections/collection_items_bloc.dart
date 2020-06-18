@@ -11,6 +11,7 @@ import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
 import '../../../model/collection_item.dart';
 import '../../../util/constant/constants.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/data_failure.dart';
 import '../../widgets/collectio_toast.dart';
 
@@ -62,7 +63,7 @@ class CollectionItemsBloc
         if (result.isRight()) {
           yield LoadedCollectionItemsState(
             collectionItems: items,
-            toastMessage: Constants.collectionItemDeleted,
+            toastMessage: Translation.collectionItemDeleted,
             toastType: ToastType.success,
           );
         } else {
@@ -70,7 +71,7 @@ class CollectionItemsBloc
           yield LoadedCollectionItemsState(
             collectionItems:
                 (state as LoadedCollectionItemsState).collectionItems,
-            toastMessage: Constants.collectionItemDeletionFailed,
+            toastMessage: Translation.collectionItemDeletionFailed,
             toastType: ToastType.error,
           );
         }

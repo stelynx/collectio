@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../model/collection_item.dart';
+import '../../../../util/constant/translation.dart';
+import '../../../config/app_localizations.dart';
 import '../../../theme/style.dart';
 import '../../../widgets/collectio_dropdown.dart';
 import '../../../widgets/collectio_text_field.dart';
@@ -66,7 +68,8 @@ class ItemDetailsScreen extends StatelessWidget {
                   CollectioDropdown<int>(
                     value: item.raiting,
                     items: List<int>.generate(10, (int i) => i + 1),
-                    hint: 'Raiting',
+                    hint: AppLocalizations.of(context)
+                        .translate(Translation.raiting),
                     icon: Icon(Icons.star),
                   ),
                 ],

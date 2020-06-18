@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../util/constant/translation.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collections_bloc.dart';
+import '../../../config/app_localizations.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets/collectio_drawer.dart';
 import '../../../widgets/collectio_text_field.dart';
@@ -21,7 +23,8 @@ class CollectionsScreen extends StatelessWidget {
                   onChanged: (String value) => getIt<CollectionsBloc>()
                       .add(SearchQueryChangedCollectionsEvent(value)),
                 )
-              : Text('My collections'),
+              : Text(AppLocalizations.of(context)
+                  .translate(Translation.titleCollectionsScreen)),
           leading: state is LoadedCollectionsState &&
                   state.collections.length > 0
               ? GestureDetector(

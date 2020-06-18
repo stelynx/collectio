@@ -47,8 +47,8 @@ class FirebaseAuthFacade extends AuthFacade {
     try {
       await authService.logout();
       return Right(null);
-    } catch (e) {
-      return Left(SignOutFailure(message: e.toString()));
+    } catch (_) {
+      return Left(SignOutFailure());
     }
   }
 
@@ -82,8 +82,8 @@ class FirebaseAuthFacade extends AuthFacade {
     try {
       final bool doesEmailExist = await authService.emailExists(email.get());
       return doesEmailExist ? Left(EmailAlreadyInUseFailure()) : Right(null);
-    } on PlatformException catch (e) {
-      return Left(ServerFailure(message: e.code));
+    } on PlatformException catch (_) {
+      return Left(ServerFailure());
     }
   }
 }

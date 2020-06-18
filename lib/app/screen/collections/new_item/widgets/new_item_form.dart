@@ -6,15 +6,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../model/collection.dart';
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/constants.dart';
+import '../../../../../util/constant/translation.dart';
 import '../../../../../util/error/data_failure.dart';
 import '../../../../../util/error/validation_failure.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_item_bloc.dart';
+import '../../../../config/app_localizations.dart';
 import '../../../../theme/style.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_dropdown.dart';
 import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_text_field.dart';
+import '../../../../widgets/failure_text.dart';
 
 class NewItemForm extends StatelessWidget {
   final Collection collection;
@@ -55,10 +58,12 @@ class NewItemForm extends StatelessWidget {
                 labelText: collection.itemTitleName,
                 errorText: state.showErrorMessages && !state.title.isValid()
                     ? state.title.value.fold(
-                        (ValidationFailure failure) =>
-                            failure is TitleEmptyValidationFailure
-                                ? Constants.emptyValidationFailure
-                                : Constants.titleValidationFailure,
+                        (ValidationFailure failure) => failure
+                                is TitleEmptyValidationFailure
+                            ? AppLocalizations.of(context)
+                                .translate(Translation.emptyValidationFailure)
+                            : AppLocalizations.of(context)
+                                .translate(Translation.titleValidationFailure),
                         (_) => null)
                     : null,
                 onChanged: (String value) => context
@@ -74,7 +79,8 @@ class NewItemForm extends StatelessWidget {
                 errorText: state.showErrorMessages && !state.subtitle.isValid()
                     ? state.subtitle.value.fold(
                         (ValidationFailure failure) =>
-                            Constants.emptyValidationFailure,
+                            AppLocalizations.of(context)
+                                .translate(Translation.emptyValidationFailure),
                         (_) => null)
                     : null,
                 onChanged: (String value) => context
@@ -88,15 +94,17 @@ class NewItemForm extends StatelessWidget {
               CollectioTextField(
                 maxLines: null,
                 labelText: collection.itemDescriptionName,
-                errorText:
-                    state.showErrorMessages && !state.description.isValid()
-                        ? state.description.value.fold(
-                            (ValidationFailure failure) =>
-                                failure is DescriptionEmptyValidationFailure
-                                    ? Constants.emptyValidationFailure
-                                    : Constants.descriptionValidationFailure,
-                            (_) => null)
-                        : null,
+                errorText: state.showErrorMessages &&
+                        !state.description.isValid()
+                    ? state.description.value.fold(
+                        (ValidationFailure failure) => failure
+                                is DescriptionEmptyValidationFailure
+                            ? AppLocalizations.of(context)
+                                .translate(Translation.emptyValidationFailure)
+                            : AppLocalizations.of(context).translate(
+                                Translation.descriptionValidationFailure),
+                        (_) => null)
+                    : null,
                 onChanged: (String value) => context
                     .bloc<NewItemBloc>()
                     .add(DescriptionChangedNewItemEvent(value)),
@@ -108,7 +116,8 @@ class NewItemForm extends StatelessWidget {
               CollectioDropdown<int>(
                 value: state.raiting,
                 items: List<int>.generate(10, (int i) => i + 1),
-                hint: 'Raiting',
+                hint:
+                    AppLocalizations.of(context).translate(Translation.raiting),
                 icon: Icon(Icons.star),
                 onChanged: (int value) => context
                     .bloc<NewItemBloc>()
@@ -119,10 +128,7 @@ class NewItemForm extends StatelessWidget {
 
               if (state.dataFailure != null && state.dataFailure.isLeft()) ...[
                 state.dataFailure.fold(
-                    (DataFailure failure) => Text(
-                          failure.message,
-                          style: TextStyle(color: Theme.of(context).errorColor),
-                        ),
+                    (DataFailure failure) => FailureText(failure.message),
                     null),
               ],
 
@@ -133,7 +139,8 @@ class NewItemForm extends StatelessWidget {
                 CollectioButton(
                   onPressed: () =>
                       context.bloc<NewItemBloc>().add(SubmitNewItemEvent()),
-                  text: 'Submit',
+                  text: AppLocalizations.of(context)
+                      .translate(Translation.submit),
                   isPrimary: true,
                 ),
 
@@ -142,7 +149,8 @@ class NewItemForm extends StatelessWidget {
                 // Cancel
                 CollectioButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  text: 'Cancel',
+                  text: AppLocalizations.of(context)
+                      .translate(Translation.cancel),
                 ),
               ],
             ],

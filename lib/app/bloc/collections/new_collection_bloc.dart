@@ -15,7 +15,7 @@ import '../../../model/value_object/name.dart';
 import '../../../model/value_object/photo.dart';
 import '../../../model/value_object/subtitle.dart';
 import '../../../model/value_object/title.dart';
-import '../../../util/constant/constants.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/data_failure.dart';
 import '../../../util/function/id_generator.dart';
 import '../../../util/function/image_name_generator.dart';
@@ -151,8 +151,8 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           yield state.copyWith(
               isSubmitting: false,
               showErrorMessages: true,
-              dataFailure:
-                  Left(DataFailure(message: Constants.collectionTitleExists)));
+              dataFailure: Left(
+                  DataFailure(message: Translation.collectionTitleExists)));
         }
       } else {
         yield state.copyWith(isSubmitting: false, showErrorMessages: true);

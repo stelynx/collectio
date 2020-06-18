@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../../util/constant/translation.dart';
+import '../../config/app_localizations.dart';
 import '../../theme/style.dart';
 
 class ErrorScreen extends StatelessWidget {
-  final String _errorMessage;
+  final Translation _errorMessage;
 
-  const ErrorScreen({@required String message}) : _errorMessage = message;
+  const ErrorScreen({@required Translation message}) : _errorMessage = message;
 
-  String get errorMessage => _errorMessage;
+  Translation get errorMessage => _errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class ErrorScreen extends StatelessWidget {
                 color: Theme.of(context).errorColor,
               ),
               CollectioStyle.itemSplitter,
-              Text(_errorMessage),
+              Text(AppLocalizations.of(context).translate(_errorMessage)),
             ],
           ),
         ),

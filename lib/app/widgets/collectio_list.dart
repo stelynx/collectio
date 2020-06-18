@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../model/interface/listable.dart';
-import '../../util/constant/constants.dart';
+import '../../util/constant/translation.dart';
+import '../config/app_localizations.dart';
 import '../theme/style.dart';
 import 'circular_network_image.dart';
 
@@ -32,7 +33,8 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                   size: CollectioStyle.bigIconSize,
                 ),
                 CollectioStyle.itemSplitter,
-                Text(Constants.noItems),
+                Text(AppLocalizations.of(context)
+                    .translate(Translation.noItems)),
               ],
             ),
           )
