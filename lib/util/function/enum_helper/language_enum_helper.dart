@@ -7,6 +7,7 @@ abstract class LanguageEnumHelper {
   static const french = 'Français';
   static const italian = 'Italiano';
   static const slovene = 'Slovenščina';
+  static const russian = 'Русский';
 
   static String mapEnumToString(Language enumValue) {
     switch (enumValue) {
@@ -22,6 +23,8 @@ abstract class LanguageEnumHelper {
         return italian;
       case Language.si:
         return slovene;
+      case Language.ru:
+        return russian;
       default:
         return '';
     }
@@ -41,6 +44,8 @@ abstract class LanguageEnumHelper {
         return Language.it;
       case slovene:
         return Language.si;
+      case russian:
+        return Language.ru;
       default:
         return null;
     }

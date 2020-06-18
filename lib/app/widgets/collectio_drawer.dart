@@ -26,7 +26,8 @@ class CollectioDrawer extends StatelessWidget {
                   return ListTile(
                     title: Text(
                         '${AppLocalizations.of(context).translate(Translation.hello)}, ${state.userProfile.username}'),
-                    subtitle: Row(
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         CollectioLink(
                           text: AppLocalizations.of(context)
@@ -48,7 +49,7 @@ class CollectioDrawer extends StatelessWidget {
                     ),
                     leading: CircularNetworkImage(
                       state.userProfile.profileImg,
-                      radius: 20,
+                      radius: 25,
                     ),
                   );
 

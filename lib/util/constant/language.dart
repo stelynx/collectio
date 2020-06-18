@@ -5,4 +5,5 @@ enum Language {
   fr,
   it,
   es,
+  ru,
 }
