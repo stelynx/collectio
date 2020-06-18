@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../model/collection.dart';
 import '../../../../../platform/image_selector.dart';
-import '../../../../../util/constant/constants.dart';
 import '../../../../../util/constant/translation.dart';
 import '../../../../../util/error/data_failure.dart';
 import '../../../../../util/error/validation_failure.dart';
