@@ -124,7 +124,7 @@ void main() {
       final Either<AuthFailure, void> result =
           await firebaseAuthFacade.signOut();
 
-      expect(result, Left(SignOutFailure(message: 'Exception')));
+      expect(result, Left(SignOutFailure()));
     });
   });
 
@@ -230,7 +230,7 @@ void main() {
         final Either<AuthFailure, void> result =
             await firebaseAuthFacade.emailNotExists(tEmail);
 
-        expect(result, equals(Left(ServerFailure(message: 'some code'))));
+        expect(result, equals(Left(ServerFailure())));
       },
     );
   });

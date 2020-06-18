@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../platform/image_selector.dart';
+import '../../util/constant/translation.dart';
+import '../config/app_localizations.dart';
 
 class CollectioImagePicker extends StatelessWidget {
   final ImageSelector _imageSelector;
@@ -55,7 +57,8 @@ class CollectioImagePicker extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   trailing: Icon(Icons.photo_camera),
-                  title: Text('Camera'),
+                  title: Text(AppLocalizations.of(context)
+                      .translate(Translation.camera)),
                   onTap: () {
                     Navigator.pop(context);
                     _getImage(_imageSelector.takeImageWithCamera);
@@ -63,7 +66,8 @@ class CollectioImagePicker extends StatelessWidget {
                 ),
                 ListTile(
                   trailing: Icon(Icons.photo_library),
-                  title: Text('Photo library'),
+                  title: Text(AppLocalizations.of(context)
+                      .translate(Translation.photoLibrary)),
                   onTap: () {
                     Navigator.pop(context);
                     _getImage(_imageSelector.getImageFromPhotos);
@@ -96,7 +100,8 @@ class CollectioImagePicker extends StatelessWidget {
                           ),
                           if (showError) ...[
                             Text(
-                              'Please select a photo',
+                              AppLocalizations.of(context).translate(
+                                  Translation.photoValidationFailure),
                               style: TextStyle(
                                   color: Theme.of(context).errorColor),
                             ),

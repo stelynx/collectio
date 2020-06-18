@@ -1,0 +1,4 @@
+ignore:
+  - "lib/app/screen"
+  - "lib/app/widgets"
+  - "lib/platform"

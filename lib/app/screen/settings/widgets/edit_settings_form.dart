@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../util/constant/collectio_theme.dart';
 import '../../../../util/constant/language.dart';
+import '../../../../util/constant/translation.dart';
 import '../../../../util/function/enum_helper/language_enum_helper.dart';
 import '../../../../util/function/enum_helper/theme_enum_helper.dart';
 import '../../../bloc/settings/edit_settings_bloc.dart';
+import '../../../config/app_localizations.dart';
 import '../../../widgets/collectio_dropdown.dart';
 
 class EditSettingsForm extends StatelessWidget {
@@ -18,7 +20,8 @@ class EditSettingsForm extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             ListTile(
-              title: Text('App theme'),
+              title: Text(AppLocalizations.of(context)
+                  .translate(Translation.settingsTheme)),
               trailing: CollectioDropdown<String>(
                 value: ThemeEnumHelper.mapEnumToString(state.theme),
                 items: CollectioTheme.values
@@ -33,7 +36,8 @@ class EditSettingsForm extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Language'),
+              title: Text(AppLocalizations.of(context)
+                  .translate(Translation.settingsLanguage)),
               trailing: CollectioDropdown<String>(
                 value: LanguageEnumHelper.mapEnumToString(state.language),
                 items: Language.values

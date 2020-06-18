@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../util/constant/translation.dart';
 import '../../util/injection/injection.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/profile/profile_bloc.dart';
+import '../config/app_localizations.dart';
 import '../routes/routes.dart';
 import 'circular_network_image.dart';
 import 'collectio_link.dart';
@@ -22,11 +24,13 @@ class CollectioDrawer extends StatelessWidget {
               builder: (BuildContext context, ProfileState state) {
                 if (state is CompleteProfileState)
                   return ListTile(
-                    title: Text('Hi, ${state.userProfile.username}'),
+                    title: Text(
+                        '${AppLocalizations.of(context).translate(Translation.hello)}, ${state.userProfile.username}'),
                     subtitle: Row(
                       children: <Widget>[
                         CollectioLink(
-                          text: 'View profile',
+                          text: AppLocalizations.of(context)
+                              .translate(Translation.viewProfile),
                           onTap: () => Navigator.of(context).pushNamed(
                             Routes.profile,
                             arguments: state.userProfile,
@@ -34,7 +38,8 @@ class CollectioDrawer extends StatelessWidget {
                         ),
                         SizedBox(width: 10),
                         CollectioLink(
-                          text: 'Edit profile',
+                          text: AppLocalizations.of(context)
+                              .translate(Translation.editProfile),
                           onTap: () => Navigator.of(context).pushNamed(
                             Routes.editProfile,
                           ),
@@ -49,7 +54,8 @@ class CollectioDrawer extends StatelessWidget {
 
                 return Row(
                   children: <Widget>[
-                    Text('Retrieving profile data ...'),
+                    Text(AppLocalizations.of(context)
+                        .translate(Translation.loadingProfile)),
                     CircularProgressIndicator(),
                   ],
                 );
@@ -58,7 +64,8 @@ class CollectioDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               dense: true,
-              title: Text('Settings'),
+              title: Text(AppLocalizations.of(context)
+                  .translate(Translation.titleSettings)),
               trailing: Icon(Icons.settings),
               onTap: () {
                 Navigator.of(context).pushNamed(Routes.settings);
@@ -66,7 +73,8 @@ class CollectioDrawer extends StatelessWidget {
             ),
             ListTile(
               dense: true,
-              title: Text('Logout'),
+              title: Text(
+                  AppLocalizations.of(context).translate(Translation.logout)),
               trailing: Icon(Icons.exit_to_app),
               onTap: () {
                 context.bloc<AuthBloc>().add(SignedOutAuthEvent());
@@ -75,7 +83,7 @@ class CollectioDrawer extends StatelessWidget {
               },
             ),
             Spacer(),
-            Text('Copyright Stelynx, 2020'),
+            Text(AppLocalizations.of(context).translate(Translation.copyright)),
           ],
         ),
       ),

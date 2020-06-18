@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:collectio/app/bloc/app_configuration/app_configuration_bloc.dart';
 import 'package:collectio/app/bloc/settings/settings_bloc.dart';
-import 'package:collectio/app/bloc/theme/theme_bloc.dart';
 import 'package:collectio/model/settings.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
 import 'package:collectio/util/constant/language.dart';
@@ -26,32 +26,42 @@ void main() {
   });
 
   blocTest(
-    'should yield a state with selected theme',
+    'should yield a state with selected theme and language',
     build: () async {
       when(settingsBloc.listen(any))
           .thenReturn(MockedStreamSubscription<SettingsState>());
       when(settingsBloc.state).thenReturn(CompleteSettingsState(settings));
-      return ThemeBloc(settingsBloc: settingsBloc);
+      return AppConfigurationBloc(settingsBloc: settingsBloc);
     },
-    act: (ThemeBloc bloc) async =>
-        bloc.add(ChangeThemeEvent(CollectioTheme.LIGHT)),
+    act: (AppConfigurationBloc bloc) async =>
+        bloc.add(ChangeAppConfigurationEvent(Settings(
+      theme: CollectioTheme.LIGHT,
+      language: Language.de,
+    ))),
     expect: [
-      GeneralThemeState(themeType: CollectioTheme.LIGHT),
+      AppConfigurationState(
+        theme: CollectioTheme.LIGHT,
+        language: Language.de,
+      ),
     ],
   );
 
   test(
-    'should set initial theme to user\'s preferences when available',
+    'should set initial configuration to user\'s preferences when available',
     () async {
       when(settingsBloc.listen(any))
           .thenReturn(MockedStreamSubscription<SettingsState>());
       when(settingsBloc.state).thenReturn(CompleteSettingsState(settings));
 
-      final ThemeBloc themeBloc = ThemeBloc(settingsBloc: settingsBloc);
+      final AppConfigurationBloc themeBloc =
+          AppConfigurationBloc(settingsBloc: settingsBloc);
 
       expect(
         themeBloc.state,
-        equals(InitialThemeState(themeType: CollectioTheme.LIGHT)),
+        equals(AppConfigurationState(
+          theme: CollectioTheme.LIGHT,
+          language: Language.en,
+        )),
       );
 
       themeBloc.close();
@@ -59,17 +69,18 @@ void main() {
   );
 
   test(
-    'should set initial theme to system theme when no user\'s settings',
+    'should set initial configuration to defaults when no user\'s settings',
     () async {
       when(settingsBloc.listen(any))
           .thenReturn(MockedStreamSubscription<SettingsState>());
       when(settingsBloc.state).thenReturn(ErrorSettingsState());
 
-      final ThemeBloc themeBloc = ThemeBloc(settingsBloc: settingsBloc);
+      final AppConfigurationBloc themeBloc =
+          AppConfigurationBloc(settingsBloc: settingsBloc);
 
       expect(
         themeBloc.state,
-        equals(InitialThemeState(themeType: CollectioTheme.SYSTEM)),
+        equals(AppConfigurationState.fromSettings(Settings.defaults())),
       );
 
       themeBloc.close();

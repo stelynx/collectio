@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import '../../../model/user_profile.dart';
 import '../../../service/data_service.dart';
 import '../../../service/storage_service.dart';
-import '../../../util/constant/constants.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/data_failure.dart';
 import '../profile_facade.dart';
 
@@ -34,7 +34,7 @@ class FirebaseProfileFacade extends ProfileFacade {
       await dataService.addUserProfile(id: id, userProfile: userProfileJson);
       return Right(null);
     } catch (e) {
-      return Left(DataFailure(message: e.toString()));
+      return Left(DataFailure());
     }
   }
 
@@ -49,7 +49,7 @@ class FirebaseProfileFacade extends ProfileFacade {
       final List<DocumentSnapshot> documents =
           userProfileQuerySnapshot.documents;
       if (documents.length != 1) {
-        return Left(DataFailure(message: Constants.notExactlyOneObjectFound));
+        return Left(DataFailure(message: Translation.notExactlyOneObjectFound));
       }
 
       final Map<String, dynamic> profileJson = documents[0].data;
@@ -63,7 +63,7 @@ class FirebaseProfileFacade extends ProfileFacade {
       final UserProfile userProfile = UserProfile.fromJson(profileJson);
       return Right(userProfile);
     } catch (e) {
-      return Left(DataFailure(message: e.toString()));
+      return Left(DataFailure());
     }
   }
 
@@ -78,7 +78,7 @@ class FirebaseProfileFacade extends ProfileFacade {
       final List<DocumentSnapshot> documents =
           userProfileQuerySnapshot.documents;
       if (documents.length != 1) {
-        return Left(DataFailure(message: Constants.notExactlyOneObjectFound));
+        return Left(DataFailure(message: Translation.notExactlyOneObjectFound));
       }
 
       final Map<String, dynamic> profileJson = documents[0].data;
@@ -92,7 +92,7 @@ class FirebaseProfileFacade extends ProfileFacade {
       final UserProfile userProfile = UserProfile.fromJson(profileJson);
       return Right(userProfile);
     } catch (e) {
-      return Left(DataFailure(message: e.toString()));
+      return Left(DataFailure());
     }
   }
 

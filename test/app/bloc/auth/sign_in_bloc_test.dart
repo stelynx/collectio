@@ -10,7 +10,7 @@ import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/model/value_object/email.dart';
 import 'package:collectio/model/value_object/password.dart';
 import 'package:collectio/model/value_object/username.dart';
-import 'package:collectio/util/constant/constants.dart';
+import 'package:collectio/util/constant/translation.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/error/failure.dart';
 import 'package:collectio/util/injection/injection.dart';
@@ -356,7 +356,7 @@ void main() {
       when(mockedFirebaseProfileFacade.getUserProfileByUsername(
               username: 'username'))
           .thenAnswer((_) async =>
-              Left(DataFailure(message: Constants.notExactlyOneObjectFound)));
+              Left(DataFailure(message: Translation.notExactlyOneObjectFound)));
       when(mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
               email: anyNamed('email'), password: anyNamed('password')))
           .thenAnswer((_) async => Right(null));

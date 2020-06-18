@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/country.dart';
+import '../../../../../util/constant/translation.dart';
 import '../../../../../util/function/enum_helper/country_enum_helper.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/profile/edit_profile_bloc.dart';
 import '../../../../bloc/profile/profile_bloc.dart';
+import '../../../../config/app_localizations.dart';
 import '../../../../theme/style.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_dropdown.dart';
@@ -49,7 +51,8 @@ class EditProfileForm extends StatelessWidget {
               CollectioStyle.itemSplitter,
               CollectioStyle.itemSplitter,
               CollectioTextField(
-                labelText: 'First name',
+                labelText: AppLocalizations.of(context)
+                    .translate(Translation.firstName),
                 initialValue: state is InitialEditProfileState
                     ? state.firstName.get()
                     : null,
@@ -60,7 +63,8 @@ class EditProfileForm extends StatelessWidget {
               CollectioStyle.itemSplitter,
               CollectioStyle.itemSplitter,
               CollectioTextField(
-                labelText: 'Last name',
+                labelText: AppLocalizations.of(context)
+                    .translate(Translation.lastName),
                 initialValue: state is InitialEditProfileState
                     ? state.lastName.get()
                     : null,
@@ -78,7 +82,8 @@ class EditProfileForm extends StatelessWidget {
                     .map((Country country) =>
                         CountryEnumHelper.mapEnumToString(country))
                     .toList(),
-                hint: 'Country',
+                hint:
+                    AppLocalizations.of(context).translate(Translation.country),
                 onChanged: (String value) => context
                     .bloc<EditProfileBloc>()
                     .add(CountryChangedEditProfileEvent(
@@ -94,7 +99,8 @@ class EditProfileForm extends StatelessWidget {
                   onPressed: () => context
                       .bloc<EditProfileBloc>()
                       .add(SubmitEditProfileEvent()),
-                  text: 'Save',
+                  text:
+                      AppLocalizations.of(context).translate(Translation.save),
                   isPrimary: true,
                 ),
                 CollectioStyle.itemSplitter,
@@ -102,7 +108,8 @@ class EditProfileForm extends StatelessWidget {
                   onPressed: () => context
                       .bloc<EditProfileBloc>()
                       .add(ResetEditProfileEvent()),
-                  text: 'Reset',
+                  text:
+                      AppLocalizations.of(context).translate(Translation.reset),
                 ),
               ],
             ],

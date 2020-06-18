@@ -2,7 +2,7 @@ import 'package:collectio/facade/profile/firebase/firebase_profile_facade.dart';
 import 'package:collectio/model/user_profile.dart';
 import 'package:collectio/service/data_service.dart';
 import 'package:collectio/service/storage_service.dart';
-import 'package:collectio/util/constant/constants.dart';
+import 'package:collectio/util/constant/translation.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -70,8 +70,7 @@ void main() {
       final Either<DataFailure, void> result =
           await firebaseProfileFacade.addUserProfile(userProfile: userProfile);
 
-      expect(
-          result, equals(Left(DataFailure(message: Exception().toString()))));
+      expect(result, equals(Left(DataFailure())));
     });
   });
 
@@ -116,7 +115,8 @@ void main() {
 
       expect(
         result,
-        equals(Left(DataFailure(message: Constants.notExactlyOneObjectFound))),
+        equals(
+            Left(DataFailure(message: Translation.notExactlyOneObjectFound))),
       );
     });
 
@@ -138,7 +138,8 @@ void main() {
 
       expect(
         result,
-        equals(Left(DataFailure(message: Constants.notExactlyOneObjectFound))),
+        equals(
+            Left(DataFailure(message: Translation.notExactlyOneObjectFound))),
       );
     });
 
@@ -153,7 +154,7 @@ void main() {
 
       expect(
         result,
-        equals(Left(DataFailure(message: Exception().toString()))),
+        equals(Left(DataFailure())),
       );
     });
 
@@ -234,7 +235,8 @@ void main() {
 
       expect(
         result,
-        equals(Left(DataFailure(message: Constants.notExactlyOneObjectFound))),
+        equals(
+            Left(DataFailure(message: Translation.notExactlyOneObjectFound))),
       );
     });
 
@@ -255,7 +257,8 @@ void main() {
 
       expect(
         result,
-        equals(Left(DataFailure(message: Constants.notExactlyOneObjectFound))),
+        equals(
+            Left(DataFailure(message: Translation.notExactlyOneObjectFound))),
       );
     });
 
@@ -269,7 +272,7 @@ void main() {
 
       expect(
         result,
-        equals(Left(DataFailure(message: Exception().toString()))),
+        equals(Left(DataFailure())),
       );
     });
 

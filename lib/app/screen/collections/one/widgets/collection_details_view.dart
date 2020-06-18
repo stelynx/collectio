@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../model/collection.dart';
+import '../../../../../util/constant/translation.dart';
+import '../../../../config/app_localizations.dart';
 import '../../../../theme/style.dart';
 import '../../../../widgets/circular_network_image.dart';
 
@@ -25,19 +27,26 @@ class CollectionDetailsView extends StatelessWidget {
                 children: <TableRow>[
                   TableRow(
                     children: <TableCell>[
-                      _buildFirstColumnCell('Title'),
+                      _buildFirstColumnCell(AppLocalizations.of(context)
+                          .translate(Translation.collectionTitle)),
                       _buildSecondColumnCell(_collection.title),
                     ],
                   ),
                   TableRow(
                     children: <TableCell>[
-                      _buildFirstColumnCell('Subtitle', center: true),
+                      _buildFirstColumnCell(
+                          AppLocalizations.of(context)
+                              .translate(Translation.collectionSubtitle),
+                          center: true),
                       _buildSecondColumnCell(_collection.subtitle),
                     ],
                   ),
                   TableRow(
                     children: <TableCell>[
-                      _buildFirstColumnCell('Description', center: true),
+                      _buildFirstColumnCell(
+                          AppLocalizations.of(context)
+                              .translate(Translation.collectionDescription),
+                          center: true),
                       _buildSecondColumnCell(
                         _collection.description,
                         maxLines: 5,

@@ -14,7 +14,7 @@ import 'package:collectio/app/screen/shared/error.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/model/user_profile.dart';
-import 'package:collectio/util/constant/constants.dart';
+import 'package:collectio/util/constant/translation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -168,7 +168,7 @@ void main() {
 
     test('should map Routes.error to ErrorScreen with appropriate message', () {
       final String path = Routes.error;
-      final String errorMessage = 'Error message';
+      final Translation errorMessage = Translation.cancel;
       final RouteSettings routeSettings =
           RouteSettings(name: path, arguments: errorMessage);
 
@@ -191,7 +191,7 @@ void main() {
       expect(screen, isA<ErrorScreen>());
 
       ErrorScreen errorScreen = screen as ErrorScreen;
-      expect(errorScreen.errorMessage, equals(Constants.unknownRouteMessage));
+      expect(errorScreen.errorMessage, equals(Translation.unknownRouteMessage));
     });
   });
 }

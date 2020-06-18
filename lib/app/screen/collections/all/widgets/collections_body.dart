@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../model/collection.dart';
-import '../../../../../util/constant/constants.dart';
+import '../../../../../util/constant/translation.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/collections_bloc.dart';
+import '../../../../config/app_localizations.dart';
 import '../../../../routes/routes.dart';
 import '../../../../widgets/collectio_list.dart';
 import '../../../../widgets/collectio_toast.dart';
@@ -25,7 +26,8 @@ class CollectionsBody extends StatelessWidget {
       final LoadedCollectionsState loadedCollectionsState = _state;
       if (loadedCollectionsState.toastMessage != null) {
         final SnackBar snackBar = CollectioToast(
-          message: loadedCollectionsState.toastMessage,
+          message: AppLocalizations.of(context)
+              .translate(loadedCollectionsState.toastMessage),
           toastType: loadedCollectionsState.toastType,
         );
         WidgetsBinding.instance.addPostFrameCallback(
@@ -41,7 +43,7 @@ class CollectionsBody extends StatelessWidget {
       );
     }
     if (_state is ErrorCollectionsState)
-      return ErrorScreen(message: 'Error occured');
-    return ErrorScreen(message: Constants.unknownStateMessage);
+      return ErrorScreen(message: Translation.errorOccured);
+    return ErrorScreen(message: Translation.unknownStateMessage);
   }
 }

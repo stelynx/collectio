@@ -15,7 +15,7 @@ import '../../../model/user_profile.dart';
 import '../../../model/value_object/email.dart';
 import '../../../model/value_object/password.dart';
 import '../../../model/value_object/username.dart';
-import '../../../util/constant/constants.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/auth_failure.dart';
 import '../../../util/error/data_failure.dart';
 
@@ -80,7 +80,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
         userProfileOrFailure.fold(
           (DataFailure failure) {
-            if (failure.message == Constants.notExactlyOneObjectFound) {
+            if (failure.message == Translation.notExactlyOneObjectFound) {
               isUsernameInUse = false;
             } else {
               authFailure = Left(ServerFailure());

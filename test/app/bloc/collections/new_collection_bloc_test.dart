@@ -12,7 +12,7 @@ import 'package:collectio/model/value_object/name.dart';
 import 'package:collectio/model/value_object/photo.dart';
 import 'package:collectio/model/value_object/subtitle.dart';
 import 'package:collectio/model/value_object/title.dart';
-import 'package:collectio/util/constant/constants.dart';
+import 'package:collectio/util/constant/translation.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/function/image_name_generator.dart';
 import 'package:collectio/util/injection/injection.dart';
@@ -554,7 +554,7 @@ void main() {
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure:
-                Left(DataFailure(message: Constants.collectionTitleExists))),
+                Left(DataFailure(message: Translation.collectionTitleExists))),
       ],
     );
 

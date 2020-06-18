@@ -5,7 +5,7 @@ import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/facade/collections/firebase/firebase_collections_facade.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
-import 'package:collectio/util/constant/constants.dart';
+import 'package:collectio/util/constant/translation.dart';
 import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
@@ -117,7 +117,7 @@ void main() {
       LoadedCollectionItemsState(collectionItems: []),
       LoadedCollectionItemsState(
         collectionItems: [],
-        toastMessage: Constants.collectionItemDeleted,
+        toastMessage: Translation.collectionItemDeleted,
         toastType: ToastType.success,
       ),
     ],
@@ -142,7 +142,7 @@ void main() {
       LoadedCollectionItemsState(collectionItems: collectionItems),
       LoadedCollectionItemsState(
         collectionItems: collectionItems,
-        toastMessage: Constants.collectionItemDeletionFailed,
+        toastMessage: Translation.collectionItemDeletionFailed,
         toastType: ToastType.error,
       ),
     ],
