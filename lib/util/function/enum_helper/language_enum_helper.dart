@@ -21,7 +21,7 @@ abstract class LanguageEnumHelper {
         return french;
       case Language.it:
         return italian;
-      case Language.si:
+      case Language.sl:
         return slovene;
       case Language.ru:
         return russian;
@@ -43,7 +43,7 @@ abstract class LanguageEnumHelper {
       case italian:
         return Language.it;
       case slovene:
-        return Language.si;
+        return Language.sl;
       case russian:
         return Language.ru;
       default:

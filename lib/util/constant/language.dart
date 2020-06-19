@@ -1,7 +1,7 @@
 enum Language {
   en,
   de,
-  si,
+  sl,
   fr,
   it,
   es,

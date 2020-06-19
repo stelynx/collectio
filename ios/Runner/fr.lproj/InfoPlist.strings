@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Marcel Campa on 19/06/2020.
+  Copyright © 2020 The Chromium Authors. All rights reserved.
+*/
+
+NSCameraUsageDescription = "Nous devons accéder à votre caméra pour que vous puissiez prendre une superbe photo de votre précieux objet.";
+NSMicrophoneUsageDescription = "Nous n'avons pas vraiment besoin d'un microphone, car vous ne pouvez pas télécharger une vidéo.";
+NSPhotoLibraryUsageDescription = "Nous devons accéder à votre photothèque pour que vous puissiez choisir une superbe image de votre précieux article.";

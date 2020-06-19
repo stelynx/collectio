@@ -194,7 +194,7 @@ void main() {
         );
       },
       act: (EditSettingsBloc bloc) async =>
-          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.sl)),
       expect: [],
     );
 
@@ -212,13 +212,13 @@ void main() {
         );
       },
       act: (EditSettingsBloc bloc) async =>
-          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.sl)),
       verify: (_) async => verify(
         settingsFacade.updateSettings(
           username: profile.username,
           settings: Settings(
             theme: CollectioTheme.LIGHT,
-            language: Language.si,
+            language: Language.sl,
           ),
         ),
       ).called(1),
@@ -235,8 +235,8 @@ void main() {
         );
       },
       act: (EditSettingsBloc bloc) async =>
-          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
-      expect: [GeneralEditSettingsState(language: Language.si)],
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.sl)),
+      expect: [GeneralEditSettingsState(language: Language.sl)],
     );
 
     blocTest(
@@ -253,11 +253,11 @@ void main() {
         );
       },
       act: (EditSettingsBloc bloc) async =>
-          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.sl)),
       expect: [
-        GeneralEditSettingsState(language: Language.si),
+        GeneralEditSettingsState(language: Language.sl),
         GeneralEditSettingsState(
-          language: Language.si,
+          language: Language.sl,
           updateSuccessful: true,
         ),
       ],
@@ -277,9 +277,9 @@ void main() {
         );
       },
       act: (EditSettingsBloc bloc) async =>
-          bloc.add(ChangeLanguageEditSettingsEvent(Language.si)),
+          bloc.add(ChangeLanguageEditSettingsEvent(Language.sl)),
       expect: [
-        GeneralEditSettingsState(language: Language.si),
+        GeneralEditSettingsState(language: Language.sl),
         GeneralEditSettingsState(
           language: Language.en,
           updateSuccessful: false,
