@@ -20,8 +20,8 @@ void main() {
       expect(result, equals(LanguageEnumHelper.german));
     });
 
-    test('should map Language.si to LanguageEnumHelper.slovene', () {
-      final Language language = Language.si;
+    test('should map Language.sl to LanguageEnumHelper.slovene', () {
+      final Language language = Language.sl;
 
       final String result = LanguageEnumHelper.mapEnumToString(language);
 
@@ -78,12 +78,12 @@ void main() {
       expect(result, equals(Language.de));
     });
 
-    test('should map LanguageEnumHelper.slovene to Language.si', () {
+    test('should map LanguageEnumHelper.slovene to Language.sl', () {
       final String language = LanguageEnumHelper.slovene;
 
       final Language result = LanguageEnumHelper.mapStringToEnum(language);
 
-      expect(result, equals(Language.si));
+      expect(result, equals(Language.sl));
     });
 
     test('should map LanguageEnumHelper.french to Language.fr', () {
