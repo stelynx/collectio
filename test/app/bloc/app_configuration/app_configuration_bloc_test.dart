@@ -80,7 +80,7 @@ void main() {
 
       expect(
         themeBloc.state,
-        equals(AppConfigurationState.fromSettings(Settings.defaults())),
+        equals(InitialAppConfigurationState()),
       );
 
       themeBloc.close();

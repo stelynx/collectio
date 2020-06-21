@@ -30,7 +30,7 @@ class AppConfigurationBloc
       if (state is CompleteSettingsState) {
         this.add(ChangeAppConfigurationEvent(
             (_settingsBloc.state as CompleteSettingsState).settings));
-      } else {
+      } else if (!(state is InitialSettingsState)) {
         this.add(ChangeAppConfigurationEvent(Settings.defaults()));
       }
     });
@@ -49,7 +49,7 @@ class AppConfigurationBloc
           (_settingsBloc.state as CompleteSettingsState).settings);
     }
 
-    return AppConfigurationState.fromSettings(Settings.defaults());
+    return InitialAppConfigurationState();
   }
 
   @override

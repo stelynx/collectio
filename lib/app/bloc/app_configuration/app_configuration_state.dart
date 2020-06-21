@@ -15,3 +15,11 @@ class AppConfigurationState extends Equatable {
   @override
   List<Object> get props => [theme, language];
 }
+
+class InitialAppConfigurationState extends AppConfigurationState {
+  InitialAppConfigurationState()
+      : super(
+          theme: Settings.defaults().theme,
+          language: Settings.defaults().language,
+        );
+}

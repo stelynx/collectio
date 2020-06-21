@@ -34,6 +34,9 @@ class CollectioApp extends StatelessWidget {
         BlocProvider(
           create: (_) => getIt<SettingsBloc>(),
         ),
+        BlocProvider(
+          create: (_) => getIt<AppConfigurationBloc>(),
+        ),
       ],
       child: BlocBuilder<AppConfigurationBloc, AppConfigurationState>(
         bloc: getIt<AppConfigurationBloc>(),
