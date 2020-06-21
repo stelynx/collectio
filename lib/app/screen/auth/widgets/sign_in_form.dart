@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +35,16 @@ class SignInForm extends StatelessWidget {
             shrinkWrap: true,
             padding: CollectioStyle.screenPadding,
             children: <Widget>[
+              // Logo
+              Image.asset(
+                'assets/images/collectio_icon.png',
+                height: min(200, MediaQuery.of(context).size.width / 2),
+                width: min(200, MediaQuery.of(context).size.height / 2),
+              ),
+
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+
               // Email field
               CollectioTextField(
                 onChanged: (String value) => context
@@ -104,40 +116,53 @@ class SignInForm extends StatelessWidget {
                 CollectioStyle.itemSplitter,
               ],
 
-              // Sign in with email and password button
-              CollectioButton(
-                onPressed: () => context
-                    .bloc<SignInBloc>()
-                    .add(SignInWithEmailAndPasswordSignInEvent()),
-                text:
-                    AppLocalizations.of(context).translate(Translation.signIn),
-                isPrimary: true,
-              ),
-
-              CollectioStyle.itemSplitter,
-
-              // Sign in with email and password button
-              CollectioButton(
-                onPressed: () {
-                  if (state.isRegistering && state.username.isValid()) {
-                    context
-                        .bloc<SignInBloc>()
-                        .add(RegisterWithEmailAndPasswordSignInEvent());
-                  } else {
-                    context
-                        .bloc<SignInBloc>()
-                        .add(CheckIfEmailExistsSignInEvent());
-                  }
-                },
-                text: AppLocalizations.of(context)
-                    .translate(Translation.register),
-                isPrimary: true,
-              ),
-
-              // Linear progress indicator if submitting the form
+              // Circular progress indicator if submitting the form
               if (state.isSubmitting) ...[
                 CollectioStyle.itemSplitter,
                 const Center(child: const CircularProgressIndicator()),
+              ] else ...[
+                if (!state.isRegistering) ...[
+                  // Sign in with email and password button
+                  CollectioButton(
+                    onPressed: () => context
+                        .bloc<SignInBloc>()
+                        .add(SignInWithEmailAndPasswordSignInEvent()),
+                    text: AppLocalizations.of(context)
+                        .translate(Translation.signIn),
+                    isPrimary: true,
+                  ),
+
+                  CollectioStyle.itemSplitter,
+                ],
+
+                // Register with email and password button
+                CollectioButton(
+                  onPressed: () {
+                    if (state.isRegistering && state.username.isValid()) {
+                      context
+                          .bloc<SignInBloc>()
+                          .add(RegisterWithEmailAndPasswordSignInEvent());
+                    } else {
+                      context
+                          .bloc<SignInBloc>()
+                          .add(CheckIfEmailExistsSignInEvent());
+                    }
+                  },
+                  text: AppLocalizations.of(context)
+                      .translate(Translation.register),
+                  isPrimary: true,
+                ),
+
+                if (state.isRegistering) ...[
+                  CollectioStyle.itemSplitter,
+                  CollectioButton(
+                    onPressed: () => context
+                        .bloc<SignInBloc>()
+                        .add(CancelRegistrationSignInEvent()),
+                    text: AppLocalizations.of(context)
+                        .translate(Translation.cancel),
+                  ),
+                ],
               ],
             ],
           ),
