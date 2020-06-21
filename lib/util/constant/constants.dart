@@ -5,6 +5,8 @@ class Constants {
   static const String firebaseStorageBucket =
       'gs://stelynx-collectio.appspot.com';
 
+  static const String pathCollectioIcon = 'assets/images/collectio_icon.png';
+
   // FirebaseAuth errors
   static const String emailAlreadyInUseError = 'ERROR_EMAIL_ALREADY_IN_USE';
   static const String wrongPasswordError = 'ERROR_WRONG_PASSWORD';
@@ -16,4 +18,9 @@ class Constants {
   static const String userUidField = 'userUid';
   static const String usernameField = 'username';
   static const String settingsCollection = 'stelynx_settings';
+
+  // This constant is not translated because it is shown until
+  // the app knows what language to use. It could be translated
+  // and app locale picked up, but it is completely useless.
+  static const String loadingConfiguration = 'One app to rule them all ...';
 }

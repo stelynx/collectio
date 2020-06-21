@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app/bloc/app_configuration/app_configuration_bloc.dart';
+import 'app/bloc/app_configuration/app_configuration_bloc.dart';
 import 'app/bloc/auth/auth_bloc.dart';
 import 'app/bloc/settings/settings_bloc.dart';
 import 'app/config/app_localizations.dart';
@@ -33,6 +34,9 @@ class CollectioApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => getIt<SettingsBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => getIt<AppConfigurationBloc>(),
         ),
       ],
       child: BlocBuilder<AppConfigurationBloc, AppConfigurationState>(
