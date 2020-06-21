@@ -30,6 +30,9 @@
   "camera": "Camera",
   "photoLibrary": "Photo library",
 
+  "deleteCollectionNotice": "Are you sure you want to delete this collection?",
+  "deleteCollectionItemNotice": "Are you sure you want to delete this item?",
+
   "hello": "Hi",
   "viewProfile": "View profile",
   "editProfile": "Edit profile",
@@ -41,6 +44,7 @@
   "save": "Save",
   "signIn": "Sign in",
   "register": "Register",
+  "delete": "Delete",
   "reset": "Reset",
   "cancel": "Cancel",
 

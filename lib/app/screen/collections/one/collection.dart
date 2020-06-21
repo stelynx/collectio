@@ -111,6 +111,7 @@ class CollectionScreen extends StatelessWidget {
                           onDismiss: (CollectionItem item) =>
                               getIt<CollectionItemsBloc>()
                                   .add(DeleteItemCollectionItemsEvent(item)),
+                          dialogText: Translation.deleteCollectionItemNotice,
                         ),
                       ),
                     ],

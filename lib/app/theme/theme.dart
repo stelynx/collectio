@@ -99,6 +99,21 @@ class CollectioThemeManager {
       backgroundColor: backgroundDarkerColor,
     );
 
+    final DialogTheme dialogTheme = base.dialogTheme.copyWith(
+      backgroundColor: backgroundDarkerColor,
+      elevation: CollectioStyle.elevation,
+      titleTextStyle: textTheme.headline1.copyWith(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+      contentTextStyle: textTheme.subtitle2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    );
+
+    final DividerThemeData dividerTheme = base.dividerTheme.copyWith(
+      color: textColor,
+    );
+
     return base.copyWith(
       primaryColor: primaryColor,
       primaryColorBrightness: primaryBrightness,
@@ -111,6 +126,8 @@ class CollectioThemeManager {
       appBarTheme: appBarTheme,
       iconTheme: iconTheme,
       floatingActionButtonTheme: floatingActionButtonThemeData,
+      dialogTheme: dialogTheme,
+      dividerTheme: dividerTheme,
     );
   }
 }

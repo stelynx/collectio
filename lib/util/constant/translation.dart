@@ -30,6 +30,9 @@ enum Translation {
   camera,
   photoLibrary,
 
+  deleteCollectionNotice,
+  deleteCollectionItemNotice,
+
   hello,
   viewProfile,
   editProfile,
@@ -41,6 +44,7 @@ enum Translation {
   save,
   signIn,
   register,
+  delete,
   reset,
   cancel,
 

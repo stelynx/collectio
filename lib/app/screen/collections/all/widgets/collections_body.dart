@@ -35,6 +35,7 @@ class CollectionsBody extends StatelessWidget {
             .pushNamed(Routes.collection, arguments: collection),
         onDismiss: (Collection collection) => getIt<CollectionsBloc>()
             .add(DeleteCollectionCollectionsEvent(collection)),
+        dialogText: Translation.deleteCollectionNotice,
         fullScreen: true,
       );
     }
