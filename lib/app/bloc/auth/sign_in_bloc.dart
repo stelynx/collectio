@@ -104,6 +104,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       }
     } else if (event is CheckIfEmailExistsSignInEvent) {
       yield* _callAuthFacadeWithEmail(_authFacade.emailNotExists);
+    } else if (event is CancelRegistrationSignInEvent) {
+      yield state.copyWith(
+        isRegistering: false,
+        authFailure: null,
+        overrideAuthFailure: true,
+      );
     }
   }
 
