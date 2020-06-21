@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../util/constant/constants.dart';
 import '../../theme/style.dart';
 
 class CollectioLoadingScreen extends StatelessWidget {
