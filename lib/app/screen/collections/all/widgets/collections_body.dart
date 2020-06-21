@@ -18,10 +18,6 @@ class CollectionsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_state is InitialCollectionsState || _state is LoadingCollectionsState)
-      return Center(
-        child: CircularProgressIndicator(),
-      );
     if (_state is LoadedCollectionsState) {
       final LoadedCollectionsState loadedCollectionsState = _state;
       if (loadedCollectionsState.toastMessage != null) {
@@ -44,6 +40,9 @@ class CollectionsBody extends StatelessWidget {
     }
     if (_state is ErrorCollectionsState)
       return ErrorScreen(message: Translation.errorOccured);
-    return ErrorScreen(message: Translation.unknownStateMessage);
+
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }
