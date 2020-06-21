@@ -44,6 +44,16 @@ class SignInForm extends StatelessWidget {
 
               CollectioStyle.itemSplitter,
               CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
+              CollectioStyle.itemSplitter,
 
               // Email field
               CollectioTextField(

@@ -30,6 +30,9 @@
   "camera": "Kamera",
   "photoLibrary": "Fotobibliothek",
 
+  "deleteCollectionNotice": "Möchten Sie diese Sammlung wirklich löschen?",
+  "deleteCollectionItemNotice": "Möchten Sie dieses Element wirklich löschen?",
+
   "hello": "Hallo",
   "viewProfile": "Profil anzeigen",
   "editProfile": "Profil bearbeiten",
@@ -41,6 +44,7 @@
   "save": "Speichern",
   "signIn": "Anmelden",
   "register": "registrieren",
+  "delete": "Löschen",
   "reset": "Reset",
   "cancel": "Abbrechen",
 

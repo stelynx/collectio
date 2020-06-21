@@ -30,6 +30,9 @@
   "camera": "Kamera",
   "photoLibrary": "Fotografije",
 
+  "deleteCollectionNotice": "Ste prepričani, da želite izbrisati to zbirko?",
+  "deleteCollectionItemNotice": "Ste prepričani, da želite izbrisati ta vnos?",
+
   "hello": "Pozdravljen",
   "viewProfile": "Poglej profil",
   "editProfile": "Uredi profil",
@@ -41,6 +44,7 @@
   "save": "Shrani",
   "signIn": "Prijavi",
   "register": "Registriraj",
+  "delete": "Izbriši",
   "reset": "Ponastavi",
   "cancel": "Prekliči",
 

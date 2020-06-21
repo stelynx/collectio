@@ -30,6 +30,9 @@
   "camera": "Camera",
   "photoLibrary": "Fototeca",
 
+  "deleteCollectionNotice": "Sei sicuro di voler eliminare questa raccolta?",
+  "deleteCollectionItemNotice": "Sei sicuro di voler eliminare questo elemento?",
+
   "hello": "Ciao",
   "viewProfile": "Visualizza profilo",
   "editProfile": "Modifica profilo",
@@ -41,6 +44,7 @@
   "save": "Salva",
   "signIn": "Accedi",
   "register": "Registrati",
+  "delete": "Eliminare",
   "reset": "Reset",
   "cancel": "Annulla",
 
