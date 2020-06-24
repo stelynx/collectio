@@ -2,3 +2,10 @@ ignore:
   - "lib/app/screen"
   - "lib/app/widgets"
   - "lib/platform"
+
+coverage:
+  status:
+    project:
+      default:
+        target: 0%
+        threshold: -5%
