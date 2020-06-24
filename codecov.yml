@@ -5,7 +5,7 @@ ignore:
 
 coverage:
   status:
-    project:
+    patch:
       default:
         target: 0%
         threshold: -5%
