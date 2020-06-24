@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:exif/exif.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mockito/mockito.dart';
+
+import '../model/image_metadata.dart';
 
 /// Provides ability for accessing camera and photo
 /// library for image picking and cropping.
@@ -20,23 +23,26 @@ class ImageSelector {
 
   /// Crop image for collection thumbnail.
   Future<File> cropThumbnailImage(String source) => ImageCropper.cropImage(
-      sourcePath: source,
-      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-      androidUiSettings: androidUiSettings,
-      iosUiSettings: iosUiSettings);
+        sourcePath: source,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      );
 
   /// Crop image for item image.
   Future<File> cropItemImage(String source) => ImageCropper.cropImage(
-      sourcePath: source,
-      aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
-      androidUiSettings: androidUiSettings,
-      iosUiSettings: iosUiSettings);
+        sourcePath: source,
+        aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
+      );
+
+  /// Gets important image exif data.
+  Future<ImageMetadata> getImageMetadata(File image) async {
+    try {
+      final Map<String, IfdTag> exifData = await readExifFromFile(image);
+      return ImageMetadata.fromExif(exifData);
+    } catch (_) {
+      return null;
+    }
+  }
 }
-
-AndroidUiSettings androidUiSettings =
-    AndroidUiSettings(toolbarTitle: 'Crop image');
-
-IOSUiSettings iosUiSettings = IOSUiSettings(title: 'Crop image');
 
 @test
 @lazySingleton

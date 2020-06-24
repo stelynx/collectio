@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:collectio/app/bloc/auth/auth_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -11,6 +10,7 @@ import 'package:meta/meta.dart';
 import '../../../facade/profile/profile_facade.dart';
 import '../../../model/user_profile.dart';
 import '../../../util/error/data_failure.dart';
+import '../auth/auth_bloc.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';

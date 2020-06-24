@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../model/collection.dart';
+import '../../../../../model/image_metadata.dart';
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/translation.dart';
 import '../../../../../util/error/data_failure.dart';
@@ -42,9 +43,14 @@ class NewItemForm extends StatelessWidget {
                 parentContext: context,
                 aspectRatio: 16 / 9,
                 thumbnail: state.localImage.get(),
-                croppedImageHandler: (File croppedImage) => context
-                    .bloc<NewItemBloc>()
-                    .add(ImageChangedNewItemEvent(croppedImage)),
+                croppedImageHandler: ({
+                  @required File image,
+                  @required ImageMetadata metadata,
+                }) =>
+                    context.bloc<NewItemBloc>().add(ImageChangedNewItemEvent(
+                          image: image,
+                          metadata: metadata,
+                        )),
                 showError:
                     state.showErrorMessages && !state.localImage.isValid(),
               ),

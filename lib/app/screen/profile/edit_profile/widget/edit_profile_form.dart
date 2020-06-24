@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../model/image_metadata.dart';
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/country.dart';
 import '../../../../../util/constant/translation.dart';
@@ -38,9 +39,13 @@ class EditProfileForm extends StatelessWidget {
                 imageSelector: getIt<ImageSelector>(),
                 parentContext: context,
                 aspectRatio: 1 / 1,
-                croppedImageHandler: (File photo) => context
-                    .bloc<EditProfileBloc>()
-                    .add(ImageChangedEditProfileEvent(photo)),
+                croppedImageHandler: ({
+                  @required File image,
+                  @required ImageMetadata metadata,
+                }) =>
+                    context
+                        .bloc<EditProfileBloc>()
+                        .add(ImageChangedEditProfileEvent(image)),
                 thumbnail: state.profileImage?.get(),
                 isImageLocal: state.profileImage?.get() != null ||
                     state.oldImageUrl == null,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../model/image_metadata.dart';
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/translation.dart';
 import '../../../../../util/error/data_failure.dart';
@@ -39,9 +40,13 @@ class NewCollectionForm extends StatelessWidget {
                 parentContext: context,
                 aspectRatio: 1 / 1,
                 thumbnail: state.thumbnail.get(),
-                croppedImageHandler: (File croppedImage) => context
-                    .bloc<NewCollectionBloc>()
-                    .add(ImageChangedNewCollectionEvent(croppedImage)),
+                croppedImageHandler: ({
+                  @required File image,
+                  @required ImageMetadata metadata,
+                }) =>
+                    context
+                        .bloc<NewCollectionBloc>()
+                        .add(ImageChangedNewCollectionEvent(image)),
                 showError:
                     state.showErrorMessages && !state.thumbnail.isValid(),
               ),
