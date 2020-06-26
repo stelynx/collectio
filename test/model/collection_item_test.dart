@@ -12,6 +12,7 @@ void main() {
       imageUrl: 'imageUrl',
       raiting: 10,
       added: added,
+      imageMetadata: null,
     );
     final Map<String, dynamic> collectionItemJson = <String, dynamic>{
       'description': 'description',
@@ -20,6 +21,7 @@ void main() {
       'image': 'imageUrl',
       'raiting': 10,
       'added': added.millisecondsSinceEpoch,
+      'imageMetadata': null,
     };
 
     final Map<String, dynamic> result = collectionItem.toJson();
@@ -37,6 +39,7 @@ void main() {
       imageUrl: 'imageUrl',
       raiting: 10,
       added: added,
+      imageMetadata: null,
     );
     final Map<String, dynamic> collectionItemJson = <String, dynamic>{
       'id': 'title',
@@ -62,6 +65,7 @@ void main() {
       imageUrl: 'imageUrl',
       raiting: 10,
       added: null,
+      imageMetadata: null,
     );
 
     final String thumbnail = collectionItem.thumbnail;
@@ -78,6 +82,7 @@ void main() {
       description: null,
       imageUrl: null,
       raiting: null,
+      imageMetadata: null,
     );
     final CollectionItem collectionItem2 = CollectionItem(
       added: DateTime.fromMillisecondsSinceEpoch(now - 900),
@@ -86,6 +91,7 @@ void main() {
       description: null,
       imageUrl: null,
       raiting: null,
+      imageMetadata: null,
     );
     final CollectionItem collectionItem3 = CollectionItem(
       added: DateTime.fromMillisecondsSinceEpoch(now - 500),
@@ -94,6 +100,7 @@ void main() {
       description: null,
       imageUrl: null,
       raiting: null,
+      imageMetadata: null,
     );
     final CollectionItem collectionItem4 = CollectionItem(
       added: DateTime.fromMillisecondsSinceEpoch(now),
@@ -102,6 +109,7 @@ void main() {
       description: null,
       imageUrl: null,
       raiting: null,
+      imageMetadata: null,
     );
 
     final List<CollectionItem> unsortedItems = <CollectionItem>[

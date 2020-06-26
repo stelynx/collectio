@@ -93,6 +93,7 @@ void main() {
           imageUrl: '',
           added: null,
           raiting: 10,
+          imageMetadata: null,
         );
         final RouteSettings routeSettings =
             RouteSettings(name: path, arguments: item);

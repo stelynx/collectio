@@ -11,6 +11,7 @@ import 'package:meta/meta.dart';
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
 import '../../../model/collection_item.dart';
+import '../../../model/image_metadata.dart';
 import '../../../model/value_object/description.dart';
 import '../../../model/value_object/photo.dart';
 import '../../../model/value_object/subtitle.dart';
@@ -71,6 +72,8 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
     } else if (event is ImageChangedNewItemEvent) {
       yield state.copyWith(
         localImage: Photo(event.image),
+        imageMetadata: event.metadata,
+        overrideImageMetadata: true,
         dataFailure: null,
         overrideDataFailure: true,
       );
@@ -103,6 +106,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           description: state.description.get(),
           imageUrl: imageUrl,
           raiting: state.raiting,
+          imageMetadata: state.imageMetadata,
         );
 
         final Either<DataFailure, void> result =

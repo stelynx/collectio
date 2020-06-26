@@ -9,6 +9,7 @@ abstract class NewItemState extends Equatable {
   final int raiting;
   final String imageUrl;
   final Photo localImage;
+  final ImageMetadata imageMetadata;
   final bool isSubmitting;
   final bool showErrorMessages;
   final Either<DataFailure, void> dataFailure;
@@ -21,6 +22,7 @@ abstract class NewItemState extends Equatable {
     @required this.raiting,
     @required this.imageUrl,
     @required this.localImage,
+    @required this.imageMetadata,
     @required this.isSubmitting,
     @required this.showErrorMessages,
     @required this.dataFailure,
@@ -34,6 +36,8 @@ abstract class NewItemState extends Equatable {
     int raiting,
     String imageUrl,
     Photo localImage,
+    ImageMetadata imageMetadata,
+    bool overrideImageMetadata = false,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -47,6 +51,9 @@ abstract class NewItemState extends Equatable {
         raiting: raiting ?? this.raiting,
         imageUrl: imageUrl ?? this.imageUrl,
         localImage: localImage ?? this.localImage,
+        imageMetadata: (imageMetadata != null || overrideImageMetadata)
+            ? imageMetadata
+            : this.imageMetadata,
         isSubmitting: isSubmitting ?? this.isSubmitting,
         showErrorMessages: showErrorMessages ?? this.showErrorMessages,
         dataFailure: (dataFailure != null || overrideDataFailure == true)
@@ -63,6 +70,7 @@ abstract class NewItemState extends Equatable {
         raiting,
         imageUrl,
         localImage,
+        imageMetadata,
         isSubmitting,
         showErrorMessages,
         dataFailure
@@ -79,6 +87,7 @@ class InitialNewItemState extends NewItemState {
             raiting: null,
             imageUrl: '',
             localImage: Photo(null),
+            imageMetadata: null,
             isSubmitting: false,
             showErrorMessages: false,
             dataFailure: null);
@@ -93,6 +102,7 @@ class GeneralNewItemState extends NewItemState {
     int raiting,
     String imageUrl,
     Photo localImage,
+    ImageMetadata imageMetadata,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -101,9 +111,10 @@ class GeneralNewItemState extends NewItemState {
           title: title ?? Title(''),
           subtitle: subtitle ?? Subtitle(''),
           description: description ?? Description(''),
-          raiting: raiting,
+          raiting: raiting ?? null,
           imageUrl: imageUrl ?? '',
           localImage: localImage ?? Photo(null),
+          imageMetadata: imageMetadata ?? null,
           isSubmitting: isSubmitting ?? false,
           showErrorMessages: showErrorMessages ?? false,
           dataFailure: dataFailure ?? null,

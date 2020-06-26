@@ -110,7 +110,7 @@ void main() {
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async =>
-        bloc.add(ImageChangedNewItemEvent(mockedFile)),
+        bloc.add(ImageChangedNewItemEvent(image: mockedFile, metadata: null)),
     expect: [
       GeneralNewItemState(localImage: Photo(mockedFile)),
     ],
@@ -127,7 +127,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(collection: null),
@@ -183,7 +183,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(collection: collection),
@@ -230,7 +230,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(
@@ -279,7 +279,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(
@@ -328,7 +328,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(
@@ -434,7 +434,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     verify: (_) async => verify(mockedCollectionsFacade.addItemToCollection(
         owner: 'owner',
@@ -446,6 +446,7 @@ void main() {
           description: 'description',
           imageUrl: null, // imageUrl is not in the props
           raiting: 5,
+          imageMetadata: null,
         ))).called(1),
   );
 
@@ -472,7 +473,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     verify: (_) async => verify(mockedCollectionItemsBloc.add(
       GetCollectionItemsEvent(collection),
@@ -502,7 +503,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(collection: collection),
@@ -582,7 +583,7 @@ void main() {
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
       ..add(RaitingChangedNewItemEvent(5))
-      ..add(ImageChangedNewItemEvent(mockedFile))
+      ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(

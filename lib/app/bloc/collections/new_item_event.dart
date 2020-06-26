@@ -36,8 +36,12 @@ class RaitingChangedNewItemEvent extends NewItemEvent {
 
 class ImageChangedNewItemEvent extends NewItemEvent {
   final File image;
+  final ImageMetadata metadata;
 
-  const ImageChangedNewItemEvent(this.image);
+  const ImageChangedNewItemEvent({
+    @required this.image,
+    @required this.metadata,
+  });
 }
 
 class SubmitNewItemEvent extends NewItemEvent {}

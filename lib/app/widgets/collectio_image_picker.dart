@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../model/image_metadata.dart';
 import '../../platform/image_selector.dart';
 import '../../util/constant/translation.dart';
 import '../config/app_localizations.dart';
@@ -12,7 +13,7 @@ class CollectioImagePicker extends StatelessWidget {
   final BuildContext parentContext;
   final double aspectRatio;
   final File thumbnail;
-  final void Function(File) croppedImageHandler;
+  final void Function({File image, ImageMetadata metadata}) croppedImageHandler;
   final bool isImageLocal;
   final String url;
   final bool showError;
@@ -35,13 +36,17 @@ class CollectioImagePicker extends StatelessWidget {
 
     if (image == null) return;
 
+    final ImageMetadata imageMetadata =
+        await _imageSelector.getImageMetadata(image);
+
     File croppedImage;
     if (aspectRatio == 1 / 1)
       croppedImage = await _imageSelector.cropThumbnailImage(image.path);
     else if (aspectRatio == 16 / 9)
       croppedImage = await _imageSelector.cropItemImage(image.path);
 
-    if (croppedImage != null) croppedImageHandler(croppedImage);
+    if (croppedImage != null)
+      croppedImageHandler(image: croppedImage, metadata: imageMetadata);
   }
 
   @override
