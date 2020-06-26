@@ -446,6 +446,7 @@ void main() {
           description: 'description',
           imageUrl: null, // imageUrl is not in the props
           raiting: 5,
+          imageMetadata: null,
         ))).called(1),
   );
 

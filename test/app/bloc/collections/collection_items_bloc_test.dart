@@ -33,6 +33,7 @@ void main() {
     description: 'description',
     imageUrl: 'imageUrl',
     raiting: 10,
+    imageMetadata: null,
   );
   final CollectionItem collectionItem2 = CollectionItem(
     parent: collection,
@@ -43,6 +44,7 @@ void main() {
     description: 'description',
     imageUrl: 'imageUrl',
     raiting: 10,
+    imageMetadata: null,
   );
 
   final List<CollectionItem> collectionItems = [collectionItem1];

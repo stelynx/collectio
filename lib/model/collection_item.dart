@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import 'collection.dart';
+import 'image_metadata.dart';
 import 'interface/listable.dart';
 
 class CollectionItem extends Equatable implements Listable {
@@ -13,6 +14,7 @@ class CollectionItem extends Equatable implements Listable {
   final String description;
   final String imageUrl;
   final int raiting;
+  final ImageMetadata imageMetadata;
 
   String get thumbnail => imageUrl;
 
@@ -25,19 +27,24 @@ class CollectionItem extends Equatable implements Listable {
     @required this.description,
     @required this.imageUrl,
     @required this.raiting,
+    @required this.imageMetadata,
   });
 
   factory CollectionItem.fromJson(Map<String, dynamic> json,
           {Collection parent}) =>
       CollectionItem(
-          parent: parent,
-          id: json['id'],
-          added: DateTime.fromMillisecondsSinceEpoch(json['added']),
-          title: json['title'],
-          subtitle: json['subtitle'],
-          description: json['description'],
-          imageUrl: json['image'],
-          raiting: json['raiting']);
+        parent: parent,
+        id: json['id'],
+        added: DateTime.fromMillisecondsSinceEpoch(json['added']),
+        title: json['title'],
+        subtitle: json['subtitle'],
+        description: json['description'],
+        imageUrl: json['image'],
+        raiting: json['raiting'],
+        imageMetadata: json['imageMetadata'] != null
+            ? ImageMetadata.fromJson(json['imageMetadata'])
+            : null,
+      );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'added': added.millisecondsSinceEpoch,
@@ -46,6 +53,7 @@ class CollectionItem extends Equatable implements Listable {
         'description': description,
         'image': imageUrl,
         'raiting': raiting,
+        'imageMetadata': imageMetadata != null ? imageMetadata.toJson() : null,
       };
 
   static int compare(CollectionItem i1, CollectionItem i2) =>

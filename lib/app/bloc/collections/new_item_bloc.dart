@@ -106,6 +106,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           description: state.description.get(),
           imageUrl: imageUrl,
           raiting: state.raiting,
+          imageMetadata: state.imageMetadata,
         );
 
         final Either<DataFailure, void> result =

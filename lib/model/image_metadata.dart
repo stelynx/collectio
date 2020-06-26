@@ -38,6 +38,20 @@ class ImageMetadata {
         ),
       );
 
+  factory ImageMetadata.fromJson(Map<String, dynamic> json) => ImageMetadata(
+        created: json['created'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(json['created'])
+            : null,
+        latitude: json['latitude'],
+        longitude: json['longitude'],
+      );
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'created': created?.millisecondsSinceEpoch,
+        'latitude': latitude,
+        'longitude': longitude,
+      };
+
   static double _parseLatLong({
     @required List<dynamic> exifDynamicGeoList,
     @required String direction,

@@ -312,6 +312,7 @@ void main() {
       description: 'description',
       imageUrl: 'imageUrl',
       raiting: 10,
+      imageMetadata: null,
     );
 
     test('should call DataService.deleteItemInCollection', () async {
@@ -411,6 +412,7 @@ void main() {
         description: 'description',
         imageUrl: 'imageUrl',
         raiting: 10,
+        imageMetadata: null,
       );
       final MockedDocumentSnapshot documentSnapshot =
           MockedDocumentSnapshot('documentID', firestoreCollectionItem);
@@ -473,6 +475,7 @@ void main() {
       imageUrl: 'imageUrl',
       raiting: 10,
       added: DateTime.now(),
+      imageMetadata: null,
     );
 
     final Map<String, dynamic> itemJson = item.toJson();
