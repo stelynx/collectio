@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/style.dart';
+
 class CollectioDropdown<T> extends StatelessWidget {
   final T value;
   final List<T> items;
@@ -31,7 +33,7 @@ class CollectioDropdown<T> extends StatelessWidget {
           border: onChanged == null
               ? Border.all(color: Colors.black54)
               : Border.all(),
-          borderRadius: BorderRadius.all(Radius.circular(5)),
+          borderRadius: CollectioStyle.borderRadius,
         ),
         child: DropdownButton(
           icon: icon,

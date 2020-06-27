@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../model/collection_item.dart';
 import '../../../../util/constant/translation.dart';
@@ -9,8 +10,20 @@ import '../../../widgets/collectio_text_field.dart';
 
 class ItemDetailsScreen extends StatelessWidget {
   final CollectionItem item;
+  final CameraPosition _cameraPosition;
 
-  const ItemDetailsScreen(this.item);
+  ItemDetailsScreen(this.item)
+      : _cameraPosition = item.imageMetadata != null &&
+                item.imageMetadata.latitude != null &&
+                item.imageMetadata.longitude != null
+            ? CameraPosition(
+                target: LatLng(
+                  item.imageMetadata.latitude,
+                  item.imageMetadata.longitude,
+                ),
+                zoom: 5,
+              )
+            : null;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +36,15 @@ class ItemDetailsScreen extends StatelessWidget {
           child: Center(
             child: Padding(
               padding: CollectioStyle.screenPadding,
-              child: Column(
+              child: ListView(
                 children: <Widget>[
-                  //Image
-                  AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: Image.network(item.imageUrl),
+                  // Image
+                  ClipRRect(
+                    borderRadius: CollectioStyle.borderRadius,
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image.network(item.imageUrl),
+                    ),
                   ),
 
                   CollectioStyle.itemSplitter,
@@ -72,6 +88,27 @@ class ItemDetailsScreen extends StatelessWidget {
                         .translate(Translation.raiting),
                     icon: Icon(Icons.star),
                   ),
+
+                  if (_cameraPosition != null) ...[
+                    CollectioStyle.itemSplitter,
+                    Container(
+                      height: 300,
+                      child: ClipRRect(
+                        borderRadius: CollectioStyle.borderRadius,
+                        child: GoogleMap(
+                          mapType: MapType.normal,
+                          initialCameraPosition: _cameraPosition,
+                          markers: <Marker>{
+                            Marker(
+                              markerId: MarkerId('originalMarker'),
+                              position: _cameraPosition.target,
+                              icon: BitmapDescriptor.defaultMarker,
+                            ),
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

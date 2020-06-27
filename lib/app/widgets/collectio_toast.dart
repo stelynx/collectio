@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/style.dart';
+
 enum ToastType {
   error,
   warning,
@@ -14,7 +16,7 @@ class CollectioToast extends SnackBar {
           content: Container(
             height: 50.0,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(const Radius.circular(5.0)),
+              borderRadius: CollectioStyle.borderRadius,
               color: _getToastColor(toastType),
             ),
             child: Center(
