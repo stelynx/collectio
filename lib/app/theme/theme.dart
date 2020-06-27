@@ -107,7 +107,7 @@ class CollectioThemeManager {
         fontWeight: FontWeight.w600,
       ),
       contentTextStyle: textTheme.subtitle2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: RoundedRectangleBorder(borderRadius: CollectioStyle.borderRadius),
     );
 
     final DividerThemeData dividerTheme = base.dividerTheme.copyWith(

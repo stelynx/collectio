@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/style.dart';
+
 class CollectioTextField extends StatelessWidget {
   final String labelText;
   final String errorText;
@@ -35,15 +37,24 @@ class CollectioTextField extends StatelessWidget {
         labelText: labelText,
         isDense: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 15),
-        enabledBorder: OutlineInputBorder(),
-        disabledBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.black54)),
+        enabledBorder:
+            OutlineInputBorder(borderRadius: CollectioStyle.borderRadius),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black54),
+          borderRadius: CollectioStyle.borderRadius,
+        ),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          borderRadius: CollectioStyle.borderRadius,
+        ),
         errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).errorColor)),
+          borderSide: BorderSide(color: Theme.of(context).errorColor),
+          borderRadius: CollectioStyle.borderRadius,
+        ),
         focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).errorColor)),
+          borderSide: BorderSide(color: Theme.of(context).errorColor),
+          borderRadius: CollectioStyle.borderRadius,
+        ),
         errorText: errorText,
       ),
       onChanged: onChanged,

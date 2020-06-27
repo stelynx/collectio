@@ -6,6 +6,7 @@ import '../../model/image_metadata.dart';
 import '../../platform/image_selector.dart';
 import '../../util/constant/translation.dart';
 import '../config/app_localizations.dart';
+import '../theme/style.dart';
 
 class CollectioImagePicker extends StatelessWidget {
   final ImageSelector _imageSelector;
@@ -90,8 +91,13 @@ class CollectioImagePicker extends StatelessWidget {
                     decoration: showError
                         ? BoxDecoration(
                             border:
-                                Border.all(color: Theme.of(context).errorColor))
-                        : BoxDecoration(border: Border.all()),
+                                Border.all(color: Theme.of(context).errorColor),
+                            borderRadius: CollectioStyle.borderRadius,
+                          )
+                        : BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: CollectioStyle.borderRadius,
+                          ),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -14,6 +14,7 @@ class CollectionDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: CollectioStyle.borderRadius),
       elevation: CollectioStyle.elevation,
       child: Padding(
         padding: CollectioStyle.screenPadding,
