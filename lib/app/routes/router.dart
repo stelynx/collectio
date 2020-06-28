@@ -38,8 +38,13 @@ abstract class Router {
         return MaterialPageRoute(
             builder: (_) => CollectionScreen(routeArguments));
       case Routes.item:
+        final Map<String, dynamic> args = routeArguments;
         return MaterialPageRoute(
-          builder: (_) => ItemDetailsScreen(routeArguments),
+          builder: (_) => ItemDetailsScreen(
+            item: args['item'],
+            itemNumber: args['itemNumber'],
+            numberOfItems: args['numberOfItems'],
+          ),
           fullscreenDialog: true,
         );
       case Routes.newItem:
