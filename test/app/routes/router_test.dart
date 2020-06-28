@@ -95,8 +95,14 @@ void main() {
           raiting: 10,
           imageMetadata: null,
         );
-        final RouteSettings routeSettings =
-            RouteSettings(name: path, arguments: item);
+        final RouteSettings routeSettings = RouteSettings(
+          name: path,
+          arguments: <String, dynamic>{
+            'item': item,
+            'itemNumber': 1,
+            'numberOfItems': 1,
+          },
+        );
 
         final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
 

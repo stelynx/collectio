@@ -106,8 +106,16 @@ class CollectionScreen extends StatelessWidget {
                       Expanded(
                         child: CollectioList(
                           items: state.displayedCollectionItems,
-                          onTap: (CollectionItem item) => Navigator.of(context)
-                              .pushNamed(Routes.item, arguments: item),
+                          onTap: (CollectionItem item) =>
+                              Navigator.of(context).pushNamed(
+                            Routes.item,
+                            arguments: <String, dynamic>{
+                              'item': item,
+                              'itemNumber': state.collectionItems.length -
+                                  state.collectionItems.indexOf(item),
+                              'numberOfItems': state.collectionItems.length,
+                            },
+                          ),
                           onDismiss: (CollectionItem item) =>
                               getIt<CollectionItemsBloc>()
                                   .add(DeleteItemCollectionItemsEvent(item)),
