@@ -28,7 +28,7 @@ class ItemDetailsScreen extends StatelessWidget {
                   item.imageMetadata.latitude,
                   item.imageMetadata.longitude,
                 ),
-                zoom: 5,
+                zoom: 8,
               )
             : null;
 

@@ -4,6 +4,11 @@
 class Constants {
   static const String firebaseStorageBucket =
       'gs://stelynx-collectio.appspot.com';
+  static const String googleApiKey = 'AIzaSyCCaSNu_vU9PUKKQjDdZi-NVcLmVDmM7i8';
+  static const String googleMapsPlaceApiUrl =
+      'https://maps.googleapis.com/maps/api/place';
+  static const String googleMapsGeocodingApiUrl =
+      'https://maps.googleapis.com/maps/api/geocode';
 
   static const String pathCollectioIcon = 'assets/images/collectio_icon.png';
 

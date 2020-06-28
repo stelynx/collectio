@@ -84,9 +84,15 @@ class CollectioImagePicker extends StatelessWidget {
           ),
         ),
         child: thumbnail != null
-            ? Image.file(thumbnail)
+            ? ClipRRect(
+                borderRadius: CollectioStyle.borderRadius,
+                child: Image.file(thumbnail),
+              )
             : (!isImageLocal
-                ? Image.network(url)
+                ? ClipRRect(
+                    borderRadius: CollectioStyle.borderRadius,
+                    child: Image.network(url),
+                  )
                 : Container(
                     decoration: showError
                         ? BoxDecoration(
