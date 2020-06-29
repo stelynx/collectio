@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -119,6 +121,12 @@ class ItemDetailsScreen extends StatelessWidget {
                             markerId: MarkerId('originalMarker'),
                             position: _cameraPosition.target,
                             icon: BitmapDescriptor.defaultMarker,
+                          ),
+                        },
+                        gestureRecognizers: <
+                            Factory<OneSequenceGestureRecognizer>>{
+                          Factory<OneSequenceGestureRecognizer>(
+                            () => new EagerGestureRecognizer(),
                           ),
                         },
                       ),
