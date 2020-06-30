@@ -77,6 +77,12 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         dataFailure: null,
         overrideDataFailure: true,
       );
+    } else if (event is LocationChangedNewItemEvent) {
+      yield state.copyWith(
+        location: event.location,
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is SubmitNewItemEvent) {
       if (state.collection != null &&
           state.title.isValid() &&

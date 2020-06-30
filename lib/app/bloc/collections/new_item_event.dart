@@ -44,4 +44,10 @@ class ImageChangedNewItemEvent extends NewItemEvent {
   });
 }
 
+class LocationChangedNewItemEvent extends NewItemEvent {
+  final String location;
+
+  const LocationChangedNewItemEvent(this.location);
+}
+
 class SubmitNewItemEvent extends NewItemEvent {}

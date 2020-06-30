@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_dropdown.dart';
 import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_text_field.dart';
+import '../../../../widgets/collectio_typeahead_field.dart';
 import '../../../../widgets/failure_text.dart';
 
 class NewItemForm extends StatelessWidget {
@@ -127,6 +129,26 @@ class NewItemForm extends StatelessWidget {
                 onChanged: (int value) => context
                     .bloc<NewItemBloc>()
                     .add(RaitingChangedNewItemEvent(value)),
+              ),
+
+              CollectioStyle.itemSplitter,
+
+              // Location
+              CollectioTypeAheadField(
+                text: state.location,
+                suggestionsCallback: (String searchQuery) async {
+                  return Future<Iterable<String>>.value([
+                    'ananas',
+                    'banana',
+                    'bananas'
+                  ].where((element) => element.contains(searchQuery)));
+                },
+                itemBuilder: (BuildContext context, String value) {
+                  return ListTile(title: Text(value));
+                },
+                onSuggestionSelected: (String value) => context
+                    .bloc<NewItemBloc>()
+                    .add(LocationChangedNewItemEvent(value)),
               ),
 
               CollectioStyle.itemSplitter,
