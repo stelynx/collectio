@@ -7,7 +7,7 @@ class CollectioDropdown<T> extends StatelessWidget {
   final List<T> items;
   final String hint;
   final void Function(T) onChanged;
-  final Icon icon;
+  final IconData icon;
   final bool isExpanded;
   final bool isDense;
 
@@ -27,7 +27,7 @@ class CollectioDropdown<T> extends StatelessWidget {
       child: Container(
         width: isExpanded ? null : 150.0,
         padding: icon != null
-            ? EdgeInsets.symmetric(horizontal: 15, vertical: 13)
+            ? EdgeInsets.symmetric(horizontal: 15, vertical: 12)
             : EdgeInsets.fromLTRB(15, 8, 5, 8),
         decoration: BoxDecoration(
           border: onChanged == null
@@ -36,7 +36,13 @@ class CollectioDropdown<T> extends StatelessWidget {
           borderRadius: CollectioStyle.borderRadius,
         ),
         child: DropdownButton(
-          icon: icon,
+          icon: icon == null
+              ? null
+              : Icon(
+                  icon,
+                  size: Theme.of(context).iconTheme.size,
+                  color: Theme.of(context).iconTheme.color,
+                ),
           isDense: isDense,
           isExpanded: isExpanded,
           value: value,

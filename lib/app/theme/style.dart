@@ -11,9 +11,20 @@ class CollectioStyle {
     @required BuildContext context,
     @required String labelText,
     String errorText,
+    IconData icon,
   }) =>
       InputDecoration(
         labelText: labelText,
+        suffixIcon: icon == null
+            ? null
+            : Container(
+                padding: const EdgeInsets.only(right: 10),
+                child: Icon(
+                  icon,
+                  size: Theme.of(context).iconTheme.size,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ),
         isDense: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 15),
         enabledBorder:

@@ -9,11 +9,13 @@ class CollectioTypeAheadField extends StatelessWidget {
   final SuggestionsCallback suggestionsCallback;
   final void Function(String) onSuggestionSelected;
   final String text;
+  final IconData icon;
 
   CollectioTypeAheadField({
     @required this.suggestionsCallback,
     @required this.onSuggestionSelected,
     @required this.text,
+    this.icon,
   });
 
   @override
@@ -34,6 +36,7 @@ class CollectioTypeAheadField extends StatelessWidget {
           context: context,
           labelText: AppLocalizations.of(context)
               .translate(Translation.fieldNameLocation),
+          icon: icon,
         ),
       ),
       suggestionsBoxDecoration: const SuggestionsBoxDecoration(),

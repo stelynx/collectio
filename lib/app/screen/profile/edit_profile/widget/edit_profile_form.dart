@@ -93,7 +93,7 @@ class EditProfileForm extends StatelessWidget {
                     .bloc<EditProfileBloc>()
                     .add(CountryChangedEditProfileEvent(
                         CountryEnumHelper.mapStringToEnum(value))),
-                icon: Icon(Icons.flag),
+                icon: Icons.flag,
               ),
               CollectioStyle.itemSplitter,
               CollectioStyle.itemSplitter,

@@ -125,7 +125,7 @@ class NewItemForm extends StatelessWidget {
                 items: List<int>.generate(10, (int i) => i + 1),
                 hint:
                     AppLocalizations.of(context).translate(Translation.raiting),
-                icon: Icon(Icons.star),
+                icon: Icons.star,
                 onChanged: (int value) => context
                     .bloc<NewItemBloc>()
                     .add(RaitingChangedNewItemEvent(value)),
@@ -136,6 +136,7 @@ class NewItemForm extends StatelessWidget {
               // Location
               CollectioTypeAheadField(
                 text: state.location,
+                icon: Icons.location_on,
                 suggestionsCallback: (String searchQuery) async {
                   return Future<Iterable<String>>.value([
                     'ananas',
