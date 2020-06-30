@@ -17,6 +17,7 @@ jobs:
         with:
           channel: "stable"
       - run: sed -i'.bak' -e 's/GOOGLE_API_KEY_ANDROID/${{ secrets.GOOGLE_API_KEY_ANDROID }}/g' android/app/src/main/AndroidManifest.xml
+      - run: echo "${{ secrets.FIREBASE_CONFIG_FILE_ANDROID }}"" | base64 --decode > android/app/google-services.json
       - run: flutter pub get
       - run: flutter packages pub run build_runner build
       - run: flutter build appbundle
