@@ -19,6 +19,7 @@
   "fieldNameTitle": "Titelname",
   "fieldNameSubtitle": "Untertitelname",
   "fieldNameDescription": "Beschreibungsname",
+  "fieldNameLocation": "Standort",
   "firstName": "Vorname",
   "lastName": "Nachname",
   "Land": "Land",

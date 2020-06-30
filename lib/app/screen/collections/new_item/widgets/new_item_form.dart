@@ -143,9 +143,6 @@ class NewItemForm extends StatelessWidget {
                     'bananas'
                   ].where((element) => element.contains(searchQuery)));
                 },
-                itemBuilder: (BuildContext context, String value) {
-                  return ListTile(title: Text(value));
-                },
                 onSuggestionSelected: (String value) => context
                     .bloc<NewItemBloc>()
                     .add(LocationChangedNewItemEvent(value)),

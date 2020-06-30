@@ -33,28 +33,9 @@ class CollectioTextField extends StatelessWidget {
           ? null
           : TextEditingController.fromValue(
               TextEditingValue(text: initialValue)),
-      decoration: InputDecoration(
+      decoration: CollectioStyle.textFieldDecoration(
+        context: context,
         labelText: labelText,
-        isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 17, vertical: 15),
-        enabledBorder:
-            OutlineInputBorder(borderRadius: CollectioStyle.borderRadius),
-        disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black54),
-          borderRadius: CollectioStyle.borderRadius,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
-          borderRadius: CollectioStyle.borderRadius,
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).errorColor),
-          borderRadius: CollectioStyle.borderRadius,
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).errorColor),
-          borderRadius: CollectioStyle.borderRadius,
-        ),
         errorText: errorText,
       ),
       onChanged: onChanged,

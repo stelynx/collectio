@@ -19,6 +19,7 @@ enum Translation {
   fieldNameTitle,
   fieldNameSubtitle,
   fieldNameDescription,
+  fieldNameLocation,
   firstName,
   lastName,
   country,
