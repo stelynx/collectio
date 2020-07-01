@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../service/maps_service.dart';
+import '../../../util/constant/constants.dart';
 import '../maps_facade.dart';
 
 @prod
@@ -49,6 +50,8 @@ class GoogleMapsFacade extends MapsFacade {
     double latitude,
     double longitude,
   }) async {
+    if (searchQuery.length < Constants.minCharsForAutocomplete) return null;
+
     final http.Response response = await _mapsService.getSuggestionsFor(
       searchQuery,
       languageCode: languageCode,
@@ -60,11 +63,11 @@ class GoogleMapsFacade extends MapsFacade {
       throw http.ClientException(response.statusCode.toString());
 
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
-    if (!jsonResponse.containsKey('results'))
+    if (!jsonResponse.containsKey('predictions'))
       throw http.ClientException(response.statusCode.toString());
 
-    return (jsonResponse['results'] as List)
-        .map<String>((element) => element['formatted_address'])
+    return (jsonResponse['predictions'] as List)
+        .map<String>((element) => element['description'])
         .toList();
   }
 }

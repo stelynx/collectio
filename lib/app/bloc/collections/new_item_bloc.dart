@@ -9,6 +9,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
+import '../../../facade/maps/maps_facade.dart';
 import '../../../model/collection.dart';
 import '../../../model/collection_item.dart';
 import '../../../model/image_metadata.dart';
@@ -27,13 +28,16 @@ part 'new_item_state.dart';
 @prod
 @injectable
 class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
+  final MapsFacade _mapsFacade;
   final CollectionsFacade _collectionsFacade;
   final CollectionItemsBloc _collectionItemsBloc;
 
   NewItemBloc({
+    @required MapsFacade mapsFacade,
     @required CollectionsFacade collectionsFacade,
     @required CollectionItemsBloc collectionItemsBloc,
-  })  : _collectionsFacade = collectionsFacade,
+  })  : _mapsFacade = mapsFacade,
+        _collectionsFacade = collectionsFacade,
         _collectionItemsBloc = collectionItemsBloc;
 
   @override
@@ -143,6 +147,13 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
       }
     }
   }
+
+  Future<Iterable<String>> getLocationSuggestions(String searchQuery) =>
+      _mapsFacade.getSuggestionsFor(
+        searchQuery,
+        latitude: state.imageMetadata?.latitude,
+        longitude: state.imageMetadata?.longitude,
+      );
 }
 
 @test

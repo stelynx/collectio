@@ -40,7 +40,14 @@ class CollectioTypeAheadField extends StatelessWidget {
         ),
       ),
       suggestionsBoxDecoration: const SuggestionsBoxDecoration(),
-      loadingBuilder: null,
+      loadingBuilder: (BuildContext context) {
+        return Center(
+          child: Padding(
+            padding: CollectioStyle.screenPadding,
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
       noItemsFoundBuilder: null,
       errorBuilder: null,
       transitionBuilder: (_, Widget suggestionsBox, __) => suggestionsBox,

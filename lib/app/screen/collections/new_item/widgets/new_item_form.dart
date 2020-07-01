@@ -137,13 +137,8 @@ class NewItemForm extends StatelessWidget {
               CollectioTypeAheadField(
                 text: state.location,
                 icon: Icons.location_on,
-                suggestionsCallback: (String searchQuery) async {
-                  return Future<Iterable<String>>.value([
-                    'ananas',
-                    'banana',
-                    'bananas'
-                  ].where((element) => element.contains(searchQuery)));
-                },
+                suggestionsCallback:
+                    context.bloc<NewItemBloc>().getLocationSuggestions,
                 onSuggestionSelected: (String value) => context
                     .bloc<NewItemBloc>()
                     .add(LocationChangedNewItemEvent(value)),
