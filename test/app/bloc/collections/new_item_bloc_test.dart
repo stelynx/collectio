@@ -4,6 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/collections/collection_items_bloc.dart';
 import 'package:collectio/app/bloc/collections/new_item_bloc.dart';
 import 'package:collectio/facade/collections/collections_facade.dart';
+import 'package:collectio/facade/maps/maps_facade.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
 import 'package:collectio/model/value_object/description.dart' as model;
@@ -33,10 +34,12 @@ void main() {
 
   File mockedFile = MockedFile();
 
+  MapsFacade mockedMapsFacade;
   CollectionsFacade mockedCollectionsFacade;
   CollectionItemsBloc mockedCollectionItemsBloc;
 
   setUp(() {
+    mockedMapsFacade = getIt<MapsFacade>();
     mockedCollectionsFacade = getIt<CollectionsFacade>();
     mockedCollectionItemsBloc = getIt<CollectionItemsBloc>();
   });
@@ -48,6 +51,7 @@ void main() {
   blocTest(
     'should set owner and collection name on initialization event',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async =>
@@ -60,6 +64,7 @@ void main() {
   blocTest(
     'should set title on title changed event',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async =>
@@ -72,6 +77,7 @@ void main() {
   blocTest(
     'should set subtitle on subtitle changed event',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async =>
@@ -84,6 +90,7 @@ void main() {
   blocTest(
     'should set description on description changed event',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async =>
@@ -96,6 +103,7 @@ void main() {
   blocTest(
     'should set raiting on raiting changed event',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async => bloc.add(RaitingChangedNewItemEvent(6)),
@@ -107,6 +115,7 @@ void main() {
   blocTest(
     'should set local image on image changed event',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async =>
@@ -119,6 +128,7 @@ void main() {
   blocTest(
     'should start showing error messages on submit if collection is null',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async => bloc
@@ -176,6 +186,7 @@ void main() {
   blocTest(
     'should start showing error messages on submit if bad title',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async => bloc
@@ -223,6 +234,7 @@ void main() {
   blocTest(
     'should start showing error messages on submit if bad subtitle',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async => bloc
@@ -272,6 +284,7 @@ void main() {
   blocTest(
     'should start showing error messages on submit if bad description',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async => bloc
@@ -321,6 +334,7 @@ void main() {
   blocTest(
     'should start showing error messages on submit if bad raiting',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async => bloc
@@ -370,6 +384,7 @@ void main() {
   blocTest(
     'should start showing error messages on submit if no image',
     build: () async => NewItemBloc(
+        mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
     act: (NewItemBloc bloc) async => bloc
@@ -425,6 +440,7 @@ void main() {
               destinationName: anyNamed('destinationName')))
           .thenAnswer((_) async => Right(null));
       return NewItemBloc(
+          mapsFacade: mockedMapsFacade,
           collectionItemsBloc: mockedCollectionItemsBloc,
           collectionsFacade: mockedCollectionsFacade);
     },
@@ -464,6 +480,7 @@ void main() {
               destinationName: anyNamed('destinationName')))
           .thenAnswer((_) async => Right(null));
       return NewItemBloc(
+          mapsFacade: mockedMapsFacade,
           collectionItemsBloc: mockedCollectionItemsBloc,
           collectionsFacade: mockedCollectionsFacade);
     },
@@ -494,6 +511,7 @@ void main() {
               item: anyNamed('item')))
           .thenAnswer((_) async => Right(null));
       return NewItemBloc(
+          mapsFacade: mockedMapsFacade,
           collectionItemsBloc: mockedCollectionItemsBloc,
           collectionsFacade: mockedCollectionsFacade);
     },
@@ -574,6 +592,7 @@ void main() {
               item: anyNamed('item')))
           .thenAnswer((_) async => Left(DataFailure()));
       return NewItemBloc(
+          mapsFacade: mockedMapsFacade,
           collectionItemsBloc: mockedCollectionItemsBloc,
           collectionsFacade: mockedCollectionsFacade);
     },

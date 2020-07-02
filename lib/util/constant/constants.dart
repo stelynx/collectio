@@ -28,4 +28,6 @@ class Constants {
   // the app knows what language to use. It could be translated
   // and app locale picked up, but it is completely useless.
   static const String loadingConfiguration = 'One app to rule them all ...';
+
+  static const int minCharsForAutocomplete = 2;
 }
