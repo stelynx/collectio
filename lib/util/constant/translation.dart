@@ -77,5 +77,7 @@ enum Translation {
   collectionDeleted,
   collectionItemDeleted,
   collectionDeletionFailed,
-  collectionItemDeletionFailed
+  collectionItemDeletionFailed,
+
+  autocompleteNoText,
 }

@@ -13,11 +13,11 @@ import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_item_bloc.dart';
 import '../../../../config/app_localizations.dart';
 import '../../../../theme/style.dart';
+import '../../../../widgets/collectio_autocomplete.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_dropdown.dart';
 import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_text_field.dart';
-import '../../../../widgets/collectio_typeahead_field.dart';
 import '../../../../widgets/failure_text.dart';
 
 class NewItemForm extends StatelessWidget {
@@ -133,14 +133,34 @@ class NewItemForm extends StatelessWidget {
               CollectioStyle.itemSplitter,
 
               // Location
-              CollectioTypeAheadField(
-                text: state.location,
-                icon: Icons.location_on,
-                suggestionsCallback:
-                    context.bloc<NewItemBloc>().getLocationSuggestions,
-                onSuggestionSelected: (String value) => context
-                    .bloc<NewItemBloc>()
-                    .add(LocationChangedNewItemEvent(value)),
+              // CollectioTypeAheadField(
+              //   text: state.location,
+              //   icon: Icons.location_on,
+              //   suggestionsCallback:
+              //       context.bloc<NewItemBloc>().getLocationSuggestions,
+              //   onSuggestionSelected: (String value) => context
+              //       .bloc<NewItemBloc>()
+              //       .add(LocationChangedNewItemEvent(value)),
+              // ),
+              CollectioAutocompleteField<String>(
+                onItemSelected: (String value) {
+                  print(value);
+                  context
+                      .bloc<NewItemBloc>()
+                      .add(LocationChangedNewItemEvent(value));
+                },
+                onQueryChanged: (String value) => Future.value([
+                  'banana',
+                  'ananas',
+                  'banas'
+                ]
+                    .where((element) =>
+                        value.length > 0 ? element.contains(value) : false)
+                    .toList()),
+                initialSuggestions: ['banana', 'ananas', 'banas'],
+                initialValue: state.location,
+                baseFieldSuffixIcon: Icons.location_on,
+                autocompleteFieldSuffixIcon: Icons.search,
               ),
 
               CollectioStyle.itemSplitter,

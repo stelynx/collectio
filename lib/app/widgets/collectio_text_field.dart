@@ -9,6 +9,10 @@ class CollectioTextField extends StatelessWidget {
   final int maxLines;
   final bool obscureText;
   final bool enabled;
+  final bool showCursor;
+  final bool readOnly;
+  final IconData icon;
+  final VoidCallback onTap;
   final void Function(String) onChanged;
 
   const CollectioTextField({
@@ -16,9 +20,13 @@ class CollectioTextField extends StatelessWidget {
     this.errorText,
     this.initialValue,
     this.onChanged,
+    this.icon,
+    this.onTap,
     this.maxLines = 1,
     this.obscureText = false,
     this.enabled = true,
+    this.showCursor = true,
+    this.readOnly = false,
   });
 
   @override
@@ -29,6 +37,9 @@ class CollectioTextField extends StatelessWidget {
       maxLines: maxLines,
       obscureText: obscureText,
       enabled: enabled,
+      onTap: onTap,
+      showCursor: showCursor,
+      readOnly: readOnly,
       controller: initialValue == null
           ? null
           : TextEditingController.fromValue(
@@ -37,6 +48,7 @@ class CollectioTextField extends StatelessWidget {
         context: context,
         labelText: labelText,
         errorText: errorText,
+        icon: icon,
       ),
       onChanged: onChanged,
     );
