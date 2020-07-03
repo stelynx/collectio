@@ -149,15 +149,10 @@ class NewItemForm extends StatelessWidget {
                       .bloc<NewItemBloc>()
                       .add(LocationChangedNewItemEvent(value));
                 },
-                onQueryChanged: (String value) => Future.value([
-                  'banana',
-                  'ananas',
-                  'banas'
-                ]
-                    .where((element) =>
-                        value.length > 0 ? element.contains(value) : false)
-                    .toList()),
-                initialSuggestions: ['banana', 'ananas', 'banas'],
+                onQueryChanged:
+                    context.bloc<NewItemBloc>().getLocationSuggestions,
+                suggestionsInitializer:
+                    context.bloc<NewItemBloc>().getInitialSuggestions,
                 initialValue: state.location,
                 baseFieldSuffixIcon: Icons.location_on,
                 autocompleteFieldSuffixIcon: Icons.search,

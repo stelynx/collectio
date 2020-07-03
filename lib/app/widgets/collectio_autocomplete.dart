@@ -9,12 +9,12 @@ import '../config/app_localizations.dart';
 import '../theme/style.dart';
 import 'collectio_text_field.dart';
 
-typedef FutureOr<List<T>> SearchCallback<T>(String value);
+typedef FutureOr<Iterable<T>> SearchCallback<T>(String value);
 
 class CollectioAutocompleteField<T> extends StatelessWidget {
   final void Function(T) onItemSelected;
   final SearchCallback<T> onQueryChanged;
-  final List<T> initialSuggestions;
+  final Future<List<T>> Function() suggestionsInitializer;
   final T initialValue;
   final IconData baseFieldSuffixIcon;
   final IconData autocompleteFieldSuffixIcon;
@@ -22,7 +22,7 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
   const CollectioAutocompleteField({
     @required this.onItemSelected,
     @required this.onQueryChanged,
-    this.initialSuggestions,
+    this.suggestionsInitializer,
     this.initialValue,
     this.baseFieldSuffixIcon,
     this.autocompleteFieldSuffixIcon,
@@ -43,13 +43,14 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
             builder: (_) => BlocProvider<AutocompleteBloc>(
               create: (BuildContext context) => AutocompleteBloc<T>(
                 onQueryChanged: onQueryChanged,
-                initialSuggestions: initialSuggestions,
+                suggestionsInitializer: suggestionsInitializer,
                 initialValue: initialValue,
               ),
               child: CollectioAutocompleteScreen<T>(
                 autocompleteFieldSuffixIcon: autocompleteFieldSuffixIcon,
               ),
             ),
+            fullscreenDialog: true,
           ),
         );
 
@@ -76,7 +77,7 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
             width: 40.0,
             height: 40.0,
             child: FloatingActionButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop(''),
               child: Icon(
                 Icons.close,
                 color: Theme.of(context).errorColor,
@@ -94,18 +95,31 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
                 child: CollectioTextField(
                   labelText: AppLocalizations.of(context)
                       .translate(Translation.fieldNameLocation),
-                  icon: state.query.length == 0 ? Icons.search : null,
-                  onChanged: (String value) {
-                    print('here');
-                    context
-                        .bloc<AutocompleteBloc>()
-                        .add(QueryChangedAutocompleteEvent(value));
-                  },
+                  icon: Icons.search,
+                  initialValue: state.query,
+                  onChanged: (String value) => context
+                      .bloc<AutocompleteBloc>()
+                      .add(QueryChangedAutocompleteEvent(value)),
                 ),
               ),
 
               // Results
-              if (state.suggestions == null) ...[
+              if (state.error != null) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: CollectioStyle.bigIconSize / 2),
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.error,
+                        size: CollectioStyle.bigIconSize,
+                        color: Theme.of(context).errorColor,
+                      ),
+                      Text(state.error.toString()),
+                    ],
+                  ),
+                ),
+              ] else if (state.suggestions == null) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: CollectioStyle.bigIconSize / 2),
@@ -161,18 +175,18 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
 
 class AutocompleteBloc<T> extends Bloc<AutocompleteEvent, AutocompleteState> {
   final SearchCallback<T> onQueryChanged;
-  final List<T> initialSuggestions;
   final T initialValue;
 
   AutocompleteBloc({
     @required this.onQueryChanged,
-    this.initialSuggestions,
     this.initialValue,
-  });
+    Future<List<T>> Function() suggestionsInitializer,
+  }) {
+    this.add(InitializeAutocompleteEvent<T>(suggestionsInitializer));
+  }
 
   @override
   AutocompleteState get initialState => AutocompleteState.initial(
-        initialSuggestions: initialSuggestions,
         initialValue: initialValue,
       );
 
@@ -181,6 +195,20 @@ class AutocompleteBloc<T> extends Bloc<AutocompleteEvent, AutocompleteState> {
     AutocompleteEvent event,
   ) async* {
     print(event);
+    if (event is InitializeAutocompleteEvent<T>) {
+      yield state.copyWith(isLoading: true);
+
+      try {
+        final List<T> initialSuggestions = await event.suggestionsInitializer();
+
+        yield state.copyWith(
+          suggestions: initialSuggestions,
+          isLoading: false,
+        );
+      } catch (e) {
+        yield state.copyWith(isLoading: false, error: e);
+      }
+    }
     if (event is QueryChangedAutocompleteEvent) {
       yield state.copyWith(query: event.query, isLoading: true);
 
@@ -199,6 +227,12 @@ class AutocompleteBloc<T> extends Bloc<AutocompleteEvent, AutocompleteState> {
 
 abstract class AutocompleteEvent {
   const AutocompleteEvent();
+}
+
+class InitializeAutocompleteEvent<T> extends AutocompleteEvent {
+  final Future<List<T>> Function() suggestionsInitializer;
+
+  const InitializeAutocompleteEvent(this.suggestionsInitializer);
 }
 
 class QueryChangedAutocompleteEvent extends AutocompleteEvent {
@@ -221,12 +255,11 @@ class AutocompleteState<T> extends Equatable {
   });
 
   factory AutocompleteState.initial({
-    List<T> initialSuggestions,
     T initialValue,
   }) =>
       AutocompleteState(
         query: initialValue ?? '',
-        suggestions: initialSuggestions,
+        suggestions: null,
         isLoading: false,
         error: null,
       );

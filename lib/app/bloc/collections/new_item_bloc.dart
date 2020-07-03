@@ -156,6 +156,12 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         latitude: state.imageMetadata?.latitude,
         longitude: state.imageMetadata?.longitude,
       );
+
+  Future<List<String>> getInitialSuggestions() =>
+      _mapsFacade.getLocationsForLatLng(
+        state.imageMetadata?.latitude,
+        state.imageMetadata?.longitude,
+      );
 }
 
 @test

@@ -24,6 +24,8 @@ class GoogleMapsFacade extends MapsFacade {
     double longitude, {
     String language,
   }) async {
+    if (latitude == null || longitude == null) return null;
+
     final http.Response response = await _mapsService.getLocationsForLatLng(
       latitude,
       longitude,
@@ -35,11 +37,11 @@ class GoogleMapsFacade extends MapsFacade {
     }
 
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
-    if (!jsonResponse.containsKey('predictions'))
+    if (!jsonResponse.containsKey('results'))
       throw http.ClientException(response.statusCode.toString());
 
-    return (jsonResponse['predictions'] as List)
-        .map<String>((prediction) => prediction['description'])
+    return (jsonResponse['results'] as List)
+        .map<String>((prediction) => prediction['formatted_address'])
         .toList();
   }
 
