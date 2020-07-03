@@ -12,6 +12,8 @@ class CollectioStyle {
     @required String labelText,
     String errorText,
     IconData icon,
+    bool hasFocus = false,
+    bool isEmpty = true,
   }) =>
       InputDecoration(
         labelText: labelText,
@@ -22,7 +24,9 @@ class CollectioStyle {
                 child: Icon(
                   icon,
                   size: Theme.of(context).iconTheme.size,
-                  color: Theme.of(context).iconTheme.color,
+                  color: hasFocus
+                      ? Theme.of(context).primaryColor
+                      : !isEmpty ? Theme.of(context).iconTheme.color : null,
                 ),
               ),
         isDense: true,

@@ -33,6 +33,7 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
     return CollectioTextField(
       labelText:
           AppLocalizations.of(context).translate(Translation.fieldNameLocation),
+      initialValue: initialValue.toString(),
       icon: baseFieldSuffixIcon,
       showCursor: false,
       readOnly: true,

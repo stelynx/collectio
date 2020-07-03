@@ -41,7 +41,8 @@ class CollectioDropdown<T> extends StatelessWidget {
               : Icon(
                   icon,
                   size: Theme.of(context).iconTheme.size,
-                  color: Theme.of(context).iconTheme.color,
+                  color:
+                      value != null ? Theme.of(context).iconTheme.color : null,
                 ),
           isDense: isDense,
           isExpanded: isExpanded,
