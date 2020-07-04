@@ -33,23 +33,27 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
     return CollectioTextField(
       labelText:
           AppLocalizations.of(context).translate(Translation.fieldNameLocation),
-      initialValue: initialValue.toString(),
+      initialValue: initialValue?.toString(),
       icon: baseFieldSuffixIcon,
       showCursor: false,
       readOnly: true,
       onTap: () async {
         final T selection = await Navigator.of(context).push<T>(
           MaterialPageRoute(
-            builder: (_) => BlocProvider<AutocompleteBloc>(
-              create: (BuildContext context) => AutocompleteBloc<T>(
-                onQueryChanged: onQueryChanged,
-                suggestionsInitializer: suggestionsInitializer,
-                initialValue: initialValue,
-              ),
-              child: CollectioAutocompleteScreen<T>(
-                autocompleteFieldSuffixIcon: autocompleteFieldSuffixIcon,
-              ),
-            ),
+            builder: (_) {
+              return BlocProvider<AutocompleteBloc>(
+                create: (BuildContext context) {
+                  return AutocompleteBloc<T>(
+                    onQueryChanged: onQueryChanged,
+                    suggestionsInitializer: suggestionsInitializer,
+                    initialValue: initialValue,
+                  );
+                },
+                child: CollectioAutocompleteScreen<T>(
+                  autocompleteFieldSuffixIcon: autocompleteFieldSuffixIcon,
+                ),
+              );
+            },
             fullscreenDialog: true,
           ),
         );
@@ -77,7 +81,7 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
             width: 40.0,
             height: 40.0,
             child: FloatingActionButton(
-              onPressed: () => Navigator.of(context).pop(''),
+              onPressed: () => Navigator.of(context).pop<T>(),
               child: Icon(
                 Icons.close,
                 color: Theme.of(context).errorColor,
@@ -194,7 +198,6 @@ class AutocompleteBloc<T> extends Bloc<AutocompleteEvent, AutocompleteState> {
   Stream<AutocompleteState> mapEventToState(
     AutocompleteEvent event,
   ) async* {
-    print(event);
     if (event is InitializeAutocompleteEvent<T>) {
       yield state.copyWith(isLoading: true);
 

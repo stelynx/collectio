@@ -15,4 +15,7 @@ abstract class MapsService {
     double latitude,
     double longitude,
   });
+
+  /// Returns all the details for place with [placeId].
+  Future<http.Response> getPlaceDetails(String placeId);
 }

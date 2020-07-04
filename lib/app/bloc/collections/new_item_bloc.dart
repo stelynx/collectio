@@ -12,6 +12,7 @@ import '../../../facade/collections/collections_facade.dart';
 import '../../../facade/maps/maps_facade.dart';
 import '../../../model/collection.dart';
 import '../../../model/collection_item.dart';
+import '../../../model/geo_data.dart';
 import '../../../model/image_metadata.dart';
 import '../../../model/value_object/description.dart';
 import '../../../model/value_object/photo.dart';
@@ -82,10 +83,14 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         overrideDataFailure: true,
       );
     } else if (event is LocationChangedNewItemEvent) {
-      print('here');
-      print(event.location);
+      GeoData fullGeoData = event.geoData;
+      if (fullGeoData == null) return;
+
+      if (fullGeoData.latitude == null || fullGeoData.longitude == null)
+        fullGeoData = await _mapsFacade.getPlaceDetails(event.geoData.id);
+
       yield state.copyWith(
-        location: event.location,
+        geoData: fullGeoData,
         dataFailure: null,
         overrideDataFailure: true,
       );
@@ -118,6 +123,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           description: state.description.get(),
           imageUrl: imageUrl,
           raiting: state.raiting,
+          geoData: state.geoData,
           imageMetadata: state.imageMetadata,
         );
 
@@ -150,14 +156,14 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
     }
   }
 
-  Future<Iterable<String>> getLocationSuggestions(String searchQuery) =>
+  Future<Iterable<GeoData>> getLocationSuggestions(String searchQuery) =>
       _mapsFacade.getSuggestionsFor(
         searchQuery,
         latitude: state.imageMetadata?.latitude,
         longitude: state.imageMetadata?.longitude,
       );
 
-  Future<List<String>> getInitialSuggestions() =>
+  Future<List<GeoData>> getInitialSuggestions() =>
       _mapsFacade.getLocationsForLatLng(
         state.imageMetadata?.latitude,
         state.imageMetadata?.longitude,

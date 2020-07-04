@@ -45,9 +45,9 @@ class ImageChangedNewItemEvent extends NewItemEvent {
 }
 
 class LocationChangedNewItemEvent extends NewItemEvent {
-  final String location;
+  final GeoData geoData;
 
-  const LocationChangedNewItemEvent(this.location);
+  const LocationChangedNewItemEvent(this.geoData);
 }
 
 class SubmitNewItemEvent extends NewItemEvent {}

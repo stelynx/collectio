@@ -144,6 +144,7 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
   }) async {
     try {
       final Map<String, dynamic> itemJson = item.toJson();
+
       itemJson['added'] =
           Timestamp.fromMillisecondsSinceEpoch(itemJson['added']);
 

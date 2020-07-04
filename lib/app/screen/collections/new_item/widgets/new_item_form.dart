@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../model/collection.dart';
+import '../../../../../model/geo_data.dart';
 import '../../../../../model/image_metadata.dart';
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/translation.dart';
@@ -132,19 +133,8 @@ class NewItemForm extends StatelessWidget {
 
               CollectioStyle.itemSplitter,
 
-              // Location
-              // CollectioTypeAheadField(
-              //   text: state.location,
-              //   icon: Icons.location_on,
-              //   suggestionsCallback:
-              //       context.bloc<NewItemBloc>().getLocationSuggestions,
-              //   onSuggestionSelected: (String value) => context
-              //       .bloc<NewItemBloc>()
-              //       .add(LocationChangedNewItemEvent(value)),
-              // ),
-              CollectioAutocompleteField<String>(
-                onItemSelected: (String value) {
-                  print(value);
+              CollectioAutocompleteField<GeoData>(
+                onItemSelected: (GeoData value) {
                   context
                       .bloc<NewItemBloc>()
                       .add(LocationChangedNewItemEvent(value));
@@ -153,7 +143,7 @@ class NewItemForm extends StatelessWidget {
                     context.bloc<NewItemBloc>().getLocationSuggestions,
                 suggestionsInitializer:
                     context.bloc<NewItemBloc>().getInitialSuggestions,
-                initialValue: state.location,
+                initialValue: state.geoData,
                 baseFieldSuffixIcon: Icons.location_on,
                 autocompleteFieldSuffixIcon: Icons.search,
               ),

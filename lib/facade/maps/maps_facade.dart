@@ -1,14 +1,18 @@
+import '../../model/geo_data.dart';
+
 abstract class MapsFacade {
-  Future<List<String>> getLocationsForLatLng(
+  Future<List<GeoData>> getLocationsForLatLng(
     double latitude,
     double longitude, {
     String language,
   });
 
-  Future<List<String>> getSuggestionsFor(
+  Future<List<GeoData>> getSuggestionsFor(
     String searchQuery, {
     String languageCode,
     double latitude,
     double longitude,
   });
+
+  Future<GeoData> getPlaceDetails(String placeId);
 }

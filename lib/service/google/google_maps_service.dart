@@ -59,6 +59,20 @@ class GoogleMapsService extends MapsService {
         '${Constants.googleMapsPlaceApiUrl}$uri', params);
   }
 
+  @override
+  Future<http.Response> getPlaceDetails(String placeId) async {
+    if (placeId == null) throw ArgumentError.notNull('placeId');
+
+    final String uri = '/details/json';
+
+    final Map<String, String> params = <String, String>{
+      'place_id': placeId,
+    };
+
+    return await _requestGoogleApi(
+        '${Constants.googleMapsPlaceApiUrl}$uri', params);
+  }
+
   Future<http.Response> _requestGoogleApi(
     String url,
     Map<String, String> params,
