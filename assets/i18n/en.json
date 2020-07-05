@@ -77,5 +77,7 @@
   "collectionDeleted": "Collection successfully deleted!",
   "collectionItemDeleted": "Item successfully deleted!",
   "collectionDeletionFailed": "Collection could not be deleted!",
-  "collectionItemDeletionFailed": "Item could not be deleted!"
+  "collectionItemDeletionFailed": "Item could not be deleted!",
+
+  "autocompleteNoText": "Start typing ..."
 }

@@ -77,5 +77,7 @@
   "collectionDeleted": "Коллекция успешно удалена!",
   "collectionItemDeleted": "Элемент успешно удален!",
   "collectionDeletionFailed": "Невозможно удалить коллекцию!",
-  "collectionItemDeletionFailed": "Элемент не может быть удален!"
+  "collectionItemDeletionFailed": "Элемент не может быть удален!",
+
+  "autocompleteNoText": "Начните печатать ..."
 }

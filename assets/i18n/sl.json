@@ -77,5 +77,7 @@
   "collectionDeleted": "Zbirka je bila uspešno izbrisana",
   "collectionItemDeleted": "Vnos je bil uspešno izbrisan",
   "collectionDeletionFailed": "Zbirke ni bilo mogoče izbrisati",
-  "collectionItemDeletionFailed": "Vnosa ni bilo mogoče izbrisati"
+  "collectionItemDeletionFailed": "Vnosa ni bilo mogoče izbrisati",
+
+  "autocompleteNoText": "Začnite tipkati ..."
 }

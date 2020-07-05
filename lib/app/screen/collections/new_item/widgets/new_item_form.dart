@@ -134,6 +134,8 @@ class NewItemForm extends StatelessWidget {
               CollectioStyle.itemSplitter,
 
               CollectioAutocompleteField<GeoData>(
+                labelText: AppLocalizations.of(context)
+                    .translate(Translation.fieldNameLocation),
                 onItemSelected: (GeoData value) {
                   context
                       .bloc<NewItemBloc>()

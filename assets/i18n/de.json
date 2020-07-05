@@ -77,5 +77,7 @@
   "collectionDeleted": "Sammlung erfolgreich gelöscht!",
   "collectionItemDeleted": "Artikel erfolgreich gelöscht!",
   "collectionDeletionFailed": "Sammlung konnte nicht gelöscht werden!",
-  "collectionItemDeletionFailed": "Artikel konnte nicht gelöscht werden!"
+  "collectionItemDeletionFailed": "Artikel konnte nicht gelöscht werden!",
+
+  "autocompleteNoText": "Tippe ein ..."
 }
