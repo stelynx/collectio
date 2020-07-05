@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../model/collection.dart';
+import '../../../../../model/geo_data.dart';
 import '../../../../../model/image_metadata.dart';
 import '../../../../../platform/image_selector.dart';
 import '../../../../../util/constant/translation.dart';
@@ -13,6 +14,7 @@ import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_item_bloc.dart';
 import '../../../../config/app_localizations.dart';
 import '../../../../theme/style.dart';
+import '../../../../widgets/collectio_autocomplete.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_dropdown.dart';
 import '../../../../widgets/collectio_image_picker.dart';
@@ -123,10 +125,27 @@ class NewItemForm extends StatelessWidget {
                 items: List<int>.generate(10, (int i) => i + 1),
                 hint:
                     AppLocalizations.of(context).translate(Translation.raiting),
-                icon: Icon(Icons.star),
+                icon: Icons.star,
                 onChanged: (int value) => context
                     .bloc<NewItemBloc>()
                     .add(RaitingChangedNewItemEvent(value)),
+              ),
+
+              CollectioStyle.itemSplitter,
+
+              CollectioAutocompleteField<GeoData>(
+                onItemSelected: (GeoData value) {
+                  context
+                      .bloc<NewItemBloc>()
+                      .add(LocationChangedNewItemEvent(value));
+                },
+                onQueryChanged:
+                    context.bloc<NewItemBloc>().getLocationSuggestions,
+                suggestionsInitializer:
+                    context.bloc<NewItemBloc>().getInitialSuggestions,
+                initialValue: state.geoData,
+                baseFieldSuffixIcon: Icons.location_on,
+                autocompleteFieldSuffixIcon: Icons.search,
               ),
 
               CollectioStyle.itemSplitter,

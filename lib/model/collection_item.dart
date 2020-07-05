@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import 'collection.dart';
+import 'geo_data.dart';
 import 'image_metadata.dart';
 import 'interface/listable.dart';
 
@@ -14,6 +15,7 @@ class CollectionItem extends Equatable implements Listable {
   final String description;
   final String imageUrl;
   final int raiting;
+  final GeoData geoData;
   final ImageMetadata imageMetadata;
 
   String get thumbnail => imageUrl;
@@ -27,7 +29,8 @@ class CollectionItem extends Equatable implements Listable {
     @required this.description,
     @required this.imageUrl,
     @required this.raiting,
-    @required this.imageMetadata,
+    this.geoData,
+    this.imageMetadata,
   });
 
   factory CollectionItem.fromJson(Map<String, dynamic> json,
@@ -41,6 +44,8 @@ class CollectionItem extends Equatable implements Listable {
         description: json['description'],
         imageUrl: json['image'],
         raiting: json['raiting'],
+        geoData:
+            json['geoData'] != null ? GeoData.fromJson(json['geoData']) : null,
         imageMetadata: json['imageMetadata'] != null
             ? ImageMetadata.fromJson(json['imageMetadata'])
             : null,
@@ -53,6 +58,7 @@ class CollectionItem extends Equatable implements Listable {
         'description': description,
         'image': imageUrl,
         'raiting': raiting,
+        'geoData': geoData != null ? geoData.toJson() : null,
         'imageMetadata': imageMetadata != null ? imageMetadata.toJson() : null,
       };
 
@@ -67,5 +73,6 @@ class CollectionItem extends Equatable implements Listable {
         subtitle,
         description,
         raiting,
+        geoData,
       ];
 }

@@ -21,6 +21,7 @@ void main() {
       'image': 'imageUrl',
       'raiting': 10,
       'added': added.millisecondsSinceEpoch,
+      'geoData': null,
       'imageMetadata': null,
     };
 

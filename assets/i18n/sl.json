@@ -19,6 +19,7 @@
   "fieldNameTitle": "Ime naslova",
   "fieldNameSubtitle": "Ime podnaslova",
   "fieldNameDescription": "Ime opisa",
+  "fieldNameLocation": "Lokacija",
   "firstName": "Ime",
   "lastName": "Priimek",
   "country": "Država",

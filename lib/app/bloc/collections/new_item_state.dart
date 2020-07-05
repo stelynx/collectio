@@ -10,6 +10,7 @@ abstract class NewItemState extends Equatable {
   final String imageUrl;
   final Photo localImage;
   final ImageMetadata imageMetadata;
+  final GeoData geoData;
   final bool isSubmitting;
   final bool showErrorMessages;
   final Either<DataFailure, void> dataFailure;
@@ -23,6 +24,7 @@ abstract class NewItemState extends Equatable {
     @required this.imageUrl,
     @required this.localImage,
     @required this.imageMetadata,
+    @required this.geoData,
     @required this.isSubmitting,
     @required this.showErrorMessages,
     @required this.dataFailure,
@@ -38,6 +40,7 @@ abstract class NewItemState extends Equatable {
     Photo localImage,
     ImageMetadata imageMetadata,
     bool overrideImageMetadata = false,
+    GeoData geoData,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -54,6 +57,7 @@ abstract class NewItemState extends Equatable {
         imageMetadata: (imageMetadata != null || overrideImageMetadata)
             ? imageMetadata
             : this.imageMetadata,
+        geoData: geoData ?? this.geoData,
         isSubmitting: isSubmitting ?? this.isSubmitting,
         showErrorMessages: showErrorMessages ?? this.showErrorMessages,
         dataFailure: (dataFailure != null || overrideDataFailure == true)
@@ -71,6 +75,7 @@ abstract class NewItemState extends Equatable {
         imageUrl,
         localImage,
         imageMetadata,
+        geoData,
         isSubmitting,
         showErrorMessages,
         dataFailure
@@ -88,6 +93,7 @@ class InitialNewItemState extends NewItemState {
             imageUrl: '',
             localImage: Photo(null),
             imageMetadata: null,
+            geoData: null,
             isSubmitting: false,
             showErrorMessages: false,
             dataFailure: null);
@@ -103,6 +109,7 @@ class GeneralNewItemState extends NewItemState {
     String imageUrl,
     Photo localImage,
     ImageMetadata imageMetadata,
+    GeoData geoData,
     bool isSubmitting,
     bool showErrorMessages,
     Either<DataFailure, void> dataFailure,
@@ -115,6 +122,7 @@ class GeneralNewItemState extends NewItemState {
           imageUrl: imageUrl ?? '',
           localImage: localImage ?? Photo(null),
           imageMetadata: imageMetadata ?? null,
+          geoData: geoData ?? null,
           isSubmitting: isSubmitting ?? false,
           showErrorMessages: showErrorMessages ?? false,
           dataFailure: dataFailure ?? null,

@@ -44,4 +44,10 @@ class ImageChangedNewItemEvent extends NewItemEvent {
   });
 }
 
+class LocationChangedNewItemEvent extends NewItemEvent {
+  final GeoData geoData;
+
+  const LocationChangedNewItemEvent(this.geoData);
+}
+
 class SubmitNewItemEvent extends NewItemEvent {}

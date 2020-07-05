@@ -4,6 +4,11 @@
 class Constants {
   static const String firebaseStorageBucket =
       'gs://stelynx-collectio.appspot.com';
+  static const String googleApiKey = 'GOOGLE_API_KEY';
+  static const String googleMapsPlaceApiUrl =
+      'https://maps.googleapis.com/maps/api/place';
+  static const String googleMapsGeocodingApiUrl =
+      'https://maps.googleapis.com/maps/api/geocode';
 
   static const String pathCollectioIcon = 'assets/images/collectio_icon.png';
 
@@ -23,4 +28,6 @@ class Constants {
   // the app knows what language to use. It could be translated
   // and app locale picked up, but it is completely useless.
   static const String loadingConfiguration = 'One app to rule them all ...';
+
+  static const int minCharsForAutocomplete = 2;
 }

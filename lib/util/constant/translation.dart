@@ -19,6 +19,7 @@ enum Translation {
   fieldNameTitle,
   fieldNameSubtitle,
   fieldNameDescription,
+  fieldNameLocation,
   firstName,
   lastName,
   country,
@@ -76,5 +77,7 @@ enum Translation {
   collectionDeleted,
   collectionItemDeleted,
   collectionDeletionFailed,
-  collectionItemDeletionFailed
+  collectionItemDeletionFailed,
+
+  autocompleteNoText,
 }

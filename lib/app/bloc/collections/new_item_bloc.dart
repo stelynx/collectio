@@ -9,8 +9,10 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
+import '../../../facade/maps/maps_facade.dart';
 import '../../../model/collection.dart';
 import '../../../model/collection_item.dart';
+import '../../../model/geo_data.dart';
 import '../../../model/image_metadata.dart';
 import '../../../model/value_object/description.dart';
 import '../../../model/value_object/photo.dart';
@@ -27,13 +29,16 @@ part 'new_item_state.dart';
 @prod
 @injectable
 class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
+  final MapsFacade _mapsFacade;
   final CollectionsFacade _collectionsFacade;
   final CollectionItemsBloc _collectionItemsBloc;
 
   NewItemBloc({
+    @required MapsFacade mapsFacade,
     @required CollectionsFacade collectionsFacade,
     @required CollectionItemsBloc collectionItemsBloc,
-  })  : _collectionsFacade = collectionsFacade,
+  })  : _mapsFacade = mapsFacade,
+        _collectionsFacade = collectionsFacade,
         _collectionItemsBloc = collectionItemsBloc;
 
   @override
@@ -77,6 +82,18 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         dataFailure: null,
         overrideDataFailure: true,
       );
+    } else if (event is LocationChangedNewItemEvent) {
+      GeoData fullGeoData = event.geoData;
+      if (fullGeoData == null) return;
+
+      if (fullGeoData.latitude == null || fullGeoData.longitude == null)
+        fullGeoData = await _mapsFacade.getPlaceDetails(event.geoData.id);
+
+      yield state.copyWith(
+        geoData: fullGeoData,
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is SubmitNewItemEvent) {
       if (state.collection != null &&
           state.title.isValid() &&
@@ -106,6 +123,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           description: state.description.get(),
           imageUrl: imageUrl,
           raiting: state.raiting,
+          geoData: state.geoData,
           imageMetadata: state.imageMetadata,
         );
 
@@ -137,6 +155,19 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
       }
     }
   }
+
+  Future<Iterable<GeoData>> getLocationSuggestions(String searchQuery) =>
+      _mapsFacade.getSuggestionsFor(
+        searchQuery,
+        latitude: state.imageMetadata?.latitude,
+        longitude: state.imageMetadata?.longitude,
+      );
+
+  Future<List<GeoData>> getInitialSuggestions() =>
+      _mapsFacade.getLocationsForLatLng(
+        state.imageMetadata?.latitude,
+        state.imageMetadata?.longitude,
+      );
 }
 
 @test
