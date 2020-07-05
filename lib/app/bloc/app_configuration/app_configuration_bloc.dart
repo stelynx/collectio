@@ -30,7 +30,9 @@ class AppConfigurationBloc
       if (state is CompleteSettingsState) {
         this.add(ChangeAppConfigurationEvent(
             (_settingsBloc.state as CompleteSettingsState).settings));
-      } else if (!(state is InitialSettingsState)) {
+      } else if (state is InitialSettingsState || state is EmptySettingsState) {
+        this.add(ResetAppConfigurationEvent());
+      } else {
         this.add(ChangeAppConfigurationEvent(Settings.defaults()));
       }
     });
@@ -58,6 +60,8 @@ class AppConfigurationBloc
   ) async* {
     if (event is ChangeAppConfigurationEvent) {
       yield AppConfigurationState.fromSettings(event.settings);
+    } else if (event is ResetAppConfigurationEvent) {
+      yield initialState;
     }
   }
 }
