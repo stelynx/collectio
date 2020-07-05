@@ -101,7 +101,7 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
               Padding(
                 padding: CollectioStyle.screenPadding,
                 child: CollectioTextField(
-                  labelText: labelText,
+                  labelText: labelText?.toString(),
                   icon: Icons.search,
                   initialValue: state.query,
                   onChanged: (String value) => context
@@ -264,7 +264,7 @@ class AutocompleteState<T> extends Equatable {
     T initialValue,
   }) =>
       AutocompleteState(
-        query: initialValue ?? '',
+        query: initialValue != null ? initialValue.toString() : '',
         suggestions: null,
         isLoading: false,
         error: null,
