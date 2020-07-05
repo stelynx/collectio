@@ -12,6 +12,7 @@ import 'collectio_text_field.dart';
 typedef FutureOr<Iterable<T>> SearchCallback<T>(String value);
 
 class CollectioAutocompleteField<T> extends StatelessWidget {
+  final String labelText;
   final void Function(T) onItemSelected;
   final SearchCallback<T> onQueryChanged;
   final Future<List<T>> Function() suggestionsInitializer;
@@ -20,6 +21,7 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
   final IconData autocompleteFieldSuffixIcon;
 
   const CollectioAutocompleteField({
+    @required this.labelText,
     @required this.onItemSelected,
     @required this.onQueryChanged,
     this.suggestionsInitializer,
@@ -31,8 +33,7 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CollectioTextField(
-      labelText:
-          AppLocalizations.of(context).translate(Translation.fieldNameLocation),
+      labelText: labelText,
       initialValue: initialValue?.toString(),
       icon: baseFieldSuffixIcon,
       showCursor: false,
@@ -50,6 +51,7 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
                   );
                 },
                 child: CollectioAutocompleteScreen<T>(
+                  labelText: labelText,
                   autocompleteFieldSuffixIcon: autocompleteFieldSuffixIcon,
                 ),
               );
@@ -65,9 +67,11 @@ class CollectioAutocompleteField<T> extends StatelessWidget {
 }
 
 class CollectioAutocompleteScreen<T> extends StatelessWidget {
+  final String labelText;
   final IconData autocompleteFieldSuffixIcon;
 
   const CollectioAutocompleteScreen({
+    @required this.labelText,
     this.autocompleteFieldSuffixIcon,
   });
 
@@ -97,8 +101,7 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
               Padding(
                 padding: CollectioStyle.screenPadding,
                 child: CollectioTextField(
-                  labelText: AppLocalizations.of(context)
-                      .translate(Translation.fieldNameLocation),
+                  labelText: labelText,
                   icon: Icons.search,
                   initialValue: state.query,
                   onChanged: (String value) => context
@@ -134,7 +137,7 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
                         size: CollectioStyle.bigIconSize,
                       ),
                       Text(AppLocalizations.of(context)
-                          .translate(Translation.cancel)),
+                          .translate(Translation.autocompleteNoText)),
                     ],
                   ),
                 ),
