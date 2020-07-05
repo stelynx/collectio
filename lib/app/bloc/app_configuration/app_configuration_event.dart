@@ -9,3 +9,5 @@ class ChangeAppConfigurationEvent extends AppConfigurationEvent {
 
   const ChangeAppConfigurationEvent(this.settings);
 }
+
+class ResetAppConfigurationEvent extends AppConfigurationEvent {}
