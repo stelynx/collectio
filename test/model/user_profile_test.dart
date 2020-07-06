@@ -59,6 +59,7 @@ void main() {
       profileImg: '',
       userUid: '123456',
       username: 'username',
+      premiumCollectionsAvailable: 1,
     );
     final Map<String, dynamic> userProfileJson = <String, dynamic>{
       'email': 'a@b.co',
@@ -68,6 +69,7 @@ void main() {
       'profileImg': '',
       'userUid': '123456',
       'username': 'username',
+      'premiumCollectionsAvailable': 1,
     };
 
     final Map<String, dynamic> result = userProfile.toJson();
