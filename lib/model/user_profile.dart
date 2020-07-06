@@ -12,6 +12,7 @@ class UserProfile {
   String profileImg;
   String userUid;
   String username;
+  int premiumCollectionsAvailable;
 
   String get id => username;
 
@@ -23,6 +24,7 @@ class UserProfile {
     this.profileImg,
     @required this.userUid,
     @required this.username,
+    this.premiumCollectionsAvailable = 0,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
@@ -33,6 +35,7 @@ class UserProfile {
         profileImg: json['profileImg'] != '' ? json['profileImg'] : null,
         userUid: json['userUid'],
         username: json['username'],
+        premiumCollectionsAvailable: json['premiumCollectionsAvailable'],
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -43,6 +46,7 @@ class UserProfile {
         'profileImg': profileImg ?? '',
         'userUid': userUid,
         'username': username,
+        'premiumCollectionsAvailable': premiumCollectionsAvailable,
       };
 
   @override
