@@ -128,6 +128,8 @@ class CollectioThemeManager {
       floatingActionButtonTheme: floatingActionButtonThemeData,
       dialogTheme: dialogTheme,
       dividerTheme: dividerTheme,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
     );
   }
 }

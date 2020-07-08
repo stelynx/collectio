@@ -14,6 +14,7 @@ enum Translation {
   collectionTitle,
   collectionSubtitle,
   collectionDescription,
+  collectionPremium,
   fieldNamesSectionTitle,
   fieldNamesSectionDescription,
   fieldNameTitle,

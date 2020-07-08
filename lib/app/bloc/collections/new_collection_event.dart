@@ -29,6 +29,8 @@ class ImageChangedNewCollectionEvent extends NewCollectionEvent {
   const ImageChangedNewCollectionEvent(this.image);
 }
 
+class IsPremiumChangedNewCollectionEvent extends NewCollectionEvent {}
+
 class ItemTitleNameChangedNewCollectionEvent extends NewCollectionEvent {
   final String itemTitleName;
 

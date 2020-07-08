@@ -53,6 +53,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                     title: items[index].title,
                     subtitle: items[index].subtitle,
                     image: items[index].thumbnail,
+                    isPremium: items[index].isPremium,
                     onTap: () => onTap(items[index]),
                   );
                 }
@@ -94,6 +95,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                     title: items[index].title,
                     subtitle: items[index].subtitle,
                     image: items[index].thumbnail,
+                    isPremium: items[index].isPremium,
                     onTap: () => onTap(items[index]),
                   ),
                 );
@@ -108,12 +110,26 @@ class CollectioListTile extends ListTile {
     @required String title,
     @required String subtitle,
     @required String image,
+    @required bool isPremium,
     @required VoidCallback onTap,
   }) : super(
           title: Text(title),
           subtitle: Text(subtitle),
           leading: CircularNetworkImage(image, radius: 25),
-          trailing: Icon(Icons.chevron_right),
+          trailing: Row(
+            // mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              // if (isPremium) ...[
+              //   Image.asset(
+              //     'assets/images/premium.png',
+              //     height: 10.0,
+              //     width: 10.0,
+              //   ),
+              // ],
+              Icon(Icons.chevron_right),
+            ],
+          ),
           onTap: onTap,
         );
 }

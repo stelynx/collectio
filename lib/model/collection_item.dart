@@ -19,6 +19,7 @@ class CollectionItem extends Equatable implements Listable {
   final ImageMetadata imageMetadata;
 
   String get thumbnail => imageUrl;
+  bool get isPremium => false;
 
   CollectionItem({
     this.parent,
