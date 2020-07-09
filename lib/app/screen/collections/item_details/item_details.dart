@@ -20,27 +20,29 @@ class ItemDetailsScreen extends StatelessWidget {
     @required this.item,
     @required this.itemNumber,
     @required this.numberOfItems,
-  }) : _cameraPosition = item.geoData != null &&
-                item.geoData.latitude != null &&
-                item.geoData.longitude != null
-            ? CameraPosition(
-                target: LatLng(
-                  item.geoData.latitude,
-                  item.geoData.longitude,
-                ),
-                zoom: 8,
-              )
-            : (item.imageMetadata != null &&
-                    item.imageMetadata.latitude != null &&
-                    item.imageMetadata.longitude != null
+  }) : _cameraPosition = !item.parent.isPremium
+            ? null
+            : (item.geoData != null &&
+                    item.geoData.latitude != null &&
+                    item.geoData.longitude != null
                 ? CameraPosition(
                     target: LatLng(
-                      item.imageMetadata.latitude,
-                      item.imageMetadata.longitude,
+                      item.geoData.latitude,
+                      item.geoData.longitude,
                     ),
                     zoom: 8,
                   )
-                : null);
+                : (item.imageMetadata != null &&
+                        item.imageMetadata.latitude != null &&
+                        item.imageMetadata.longitude != null
+                    ? CameraPosition(
+                        target: LatLng(
+                          item.imageMetadata.latitude,
+                          item.imageMetadata.longitude,
+                        ),
+                        zoom: 8,
+                      )
+                    : null));
 
   @override
   Widget build(BuildContext context) {

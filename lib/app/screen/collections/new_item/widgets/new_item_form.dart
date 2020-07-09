@@ -133,24 +133,25 @@ class NewItemForm extends StatelessWidget {
 
               CollectioStyle.itemSplitter,
 
-              CollectioAutocompleteField<GeoData>(
-                labelText: AppLocalizations.of(context)
-                    .translate(Translation.fieldNameLocation),
-                onItemSelected: (GeoData value) {
-                  context
-                      .bloc<NewItemBloc>()
-                      .add(LocationChangedNewItemEvent(value));
-                },
-                onQueryChanged:
-                    context.bloc<NewItemBloc>().getLocationSuggestions,
-                suggestionsInitializer:
-                    context.bloc<NewItemBloc>().getInitialSuggestions,
-                initialValue: state.geoData,
-                baseFieldSuffixIcon: Icons.location_on,
-                autocompleteFieldSuffixIcon: Icons.search,
-              ),
-
-              CollectioStyle.itemSplitter,
+              if (collection.isPremium) ...[
+                CollectioAutocompleteField<GeoData>(
+                  labelText: AppLocalizations.of(context)
+                      .translate(Translation.fieldNameLocation),
+                  onItemSelected: (GeoData value) {
+                    context
+                        .bloc<NewItemBloc>()
+                        .add(LocationChangedNewItemEvent(value));
+                  },
+                  onQueryChanged:
+                      context.bloc<NewItemBloc>().getLocationSuggestions,
+                  suggestionsInitializer:
+                      context.bloc<NewItemBloc>().getInitialSuggestions,
+                  initialValue: state.geoData,
+                  baseFieldSuffixIcon: Icons.location_on,
+                  autocompleteFieldSuffixIcon: Icons.search,
+                ),
+                CollectioStyle.itemSplitter,
+              ],
 
               if (state.dataFailure != null && state.dataFailure.isLeft()) ...[
                 state.dataFailure.fold(
