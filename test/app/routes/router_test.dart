@@ -86,6 +86,14 @@ void main() {
       () {
         final String path = Routes.item;
         final CollectionItem item = CollectionItem(
+          parent: Collection(
+            id: 'title',
+            owner: 'owner',
+            title: 'title',
+            subtitle: 'subtitle',
+            description: 'description',
+            thumbnail: null,
+          ),
           id: 'title',
           title: 'title',
           subtitle: 'subtitle',
