@@ -10,10 +10,11 @@
   "password": "Пароль",
   "username": "Имя пользователя",
 
-  "raiting": "Рейтинг",
+  "rating": "Рейтинг",
   "collectionTitle": "Заголовок",
   "collectionSubtitle": "Подзаголовок",
   "collectionDescription": "Описание",
+  "collectionPremium": "Премиум",
   "fieldNamesSectionTitle": "Имена полей",
   "fieldNamesSectionDescription": "Выберите имена полей, которые вы хотите, чтобы ваши элементы имели.",
   "fieldNameTitle": "Название заголовка",

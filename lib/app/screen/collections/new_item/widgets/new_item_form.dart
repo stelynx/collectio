@@ -119,38 +119,39 @@ class NewItemForm extends StatelessWidget {
 
               CollectioStyle.itemSplitter,
 
-              // Raiting
+              // rating
               CollectioDropdown<int>(
-                value: state.raiting,
+                value: state.rating,
                 items: List<int>.generate(10, (int i) => i + 1),
                 hint:
-                    AppLocalizations.of(context).translate(Translation.raiting),
+                    AppLocalizations.of(context).translate(Translation.rating),
                 icon: Icons.star,
                 onChanged: (int value) => context
                     .bloc<NewItemBloc>()
-                    .add(RaitingChangedNewItemEvent(value)),
+                    .add(RatingChangedNewItemEvent(value)),
               ),
 
               CollectioStyle.itemSplitter,
 
-              CollectioAutocompleteField<GeoData>(
-                labelText: AppLocalizations.of(context)
-                    .translate(Translation.fieldNameLocation),
-                onItemSelected: (GeoData value) {
-                  context
-                      .bloc<NewItemBloc>()
-                      .add(LocationChangedNewItemEvent(value));
-                },
-                onQueryChanged:
-                    context.bloc<NewItemBloc>().getLocationSuggestions,
-                suggestionsInitializer:
-                    context.bloc<NewItemBloc>().getInitialSuggestions,
-                initialValue: state.geoData,
-                baseFieldSuffixIcon: Icons.location_on,
-                autocompleteFieldSuffixIcon: Icons.search,
-              ),
-
-              CollectioStyle.itemSplitter,
+              if (collection.isPremium) ...[
+                CollectioAutocompleteField<GeoData>(
+                  labelText: AppLocalizations.of(context)
+                      .translate(Translation.fieldNameLocation),
+                  onItemSelected: (GeoData value) {
+                    context
+                        .bloc<NewItemBloc>()
+                        .add(LocationChangedNewItemEvent(value));
+                  },
+                  onQueryChanged:
+                      context.bloc<NewItemBloc>().getLocationSuggestions,
+                  suggestionsInitializer:
+                      context.bloc<NewItemBloc>().getInitialSuggestions,
+                  initialValue: state.geoData,
+                  baseFieldSuffixIcon: Icons.location_on,
+                  autocompleteFieldSuffixIcon: Icons.search,
+                ),
+                CollectioStyle.itemSplitter,
+              ],
 
               if (state.dataFailure != null && state.dataFailure.isLeft()) ...[
                 state.dataFailure.fold(

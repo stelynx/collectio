@@ -14,11 +14,12 @@ class CollectionItem extends Equatable implements Listable {
   final String subtitle;
   final String description;
   final String imageUrl;
-  final int raiting;
+  final int rating;
   final GeoData geoData;
   final ImageMetadata imageMetadata;
 
   String get thumbnail => imageUrl;
+  bool get isPremium => false;
 
   CollectionItem({
     this.parent,
@@ -28,7 +29,7 @@ class CollectionItem extends Equatable implements Listable {
     @required this.subtitle,
     @required this.description,
     @required this.imageUrl,
-    @required this.raiting,
+    @required this.rating,
     this.geoData,
     this.imageMetadata,
   });
@@ -43,7 +44,7 @@ class CollectionItem extends Equatable implements Listable {
         subtitle: json['subtitle'],
         description: json['description'],
         imageUrl: json['image'],
-        raiting: json['raiting'],
+        rating: json['rating'],
         geoData:
             json['geoData'] != null ? GeoData.fromJson(json['geoData']) : null,
         imageMetadata: json['imageMetadata'] != null
@@ -57,7 +58,7 @@ class CollectionItem extends Equatable implements Listable {
         'subtitle': subtitle,
         'description': description,
         'image': imageUrl,
-        'raiting': raiting,
+        'rating': rating,
         'geoData': geoData != null ? geoData.toJson() : null,
         'imageMetadata': imageMetadata != null ? imageMetadata.toJson() : null,
       };
@@ -72,7 +73,7 @@ class CollectionItem extends Equatable implements Listable {
         title,
         subtitle,
         description,
-        raiting,
+        rating,
         geoData,
       ];
 }

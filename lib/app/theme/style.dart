@@ -6,6 +6,7 @@ class CollectioStyle {
   static const SizedBox itemSplitter = const SizedBox(height: 10.0);
   static const EdgeInsets screenPadding = const EdgeInsets.all(20.0);
   static BorderRadius borderRadius = BorderRadius.circular(20.0);
+  static const goldColor = const Color(0xffffd700);
 
   static InputDecoration textFieldDecoration({
     @required BuildContext context,

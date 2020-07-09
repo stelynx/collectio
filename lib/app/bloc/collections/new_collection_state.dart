@@ -7,6 +7,7 @@ abstract class NewCollectionState extends Equatable {
   final Subtitle subtitle;
   final Description description;
   final Photo thumbnail;
+  final bool isPremium;
   final Name itemTitleName;
   final Name itemSubtitleName;
   final Name itemDescriptionName;
@@ -19,6 +20,7 @@ abstract class NewCollectionState extends Equatable {
     @required this.subtitle,
     @required this.description,
     @required this.thumbnail,
+    @required this.isPremium,
     @required this.itemTitleName,
     @required this.itemSubtitleName,
     @required this.itemDescriptionName,
@@ -32,6 +34,7 @@ abstract class NewCollectionState extends Equatable {
     Subtitle subtitle,
     Description description,
     Photo thumbnail,
+    bool isPremium,
     Name itemTitleName,
     Name itemSubtitleName,
     Name itemDescriptionName,
@@ -45,6 +48,7 @@ abstract class NewCollectionState extends Equatable {
         subtitle: subtitle ?? this.subtitle,
         description: description ?? this.description,
         thumbnail: thumbnail ?? this.thumbnail,
+        isPremium: isPremium ?? this.isPremium,
         itemTitleName: itemTitleName ?? this.itemTitleName,
         itemSubtitleName: itemSubtitleName ?? this.itemSubtitleName,
         itemDescriptionName: itemDescriptionName ?? this.itemDescriptionName,
@@ -61,6 +65,7 @@ abstract class NewCollectionState extends Equatable {
         title,
         subtitle,
         description,
+        isPremium,
         itemTitleName,
         itemSubtitleName,
         itemDescriptionName,
@@ -78,6 +83,7 @@ class InitialNewCollectionState extends NewCollectionState {
           subtitle: Subtitle(''),
           description: Description(''),
           thumbnail: Photo(null),
+          isPremium: false,
           itemTitleName: Name('Title'),
           itemSubtitleName: Name('Subtitle'),
           itemDescriptionName: Name('Description'),
@@ -93,6 +99,7 @@ class GeneralNewCollectionState extends NewCollectionState {
     Subtitle subtitle,
     Description description,
     Photo thumbnail,
+    bool isPremium,
     Name itemTitleName,
     Name itemSubtitleName,
     Name itemDescriptionName,
@@ -104,6 +111,7 @@ class GeneralNewCollectionState extends NewCollectionState {
           subtitle: subtitle ?? Subtitle(''),
           description: description ?? Description(''),
           thumbnail: thumbnail ?? Photo(null),
+          isPremium: isPremium ?? false,
           itemTitleName: itemTitleName ?? Name('Title'),
           itemSubtitleName: itemSubtitleName ?? Name('Subtitle'),
           itemDescriptionName: itemDescriptionName ?? Name('Description'),

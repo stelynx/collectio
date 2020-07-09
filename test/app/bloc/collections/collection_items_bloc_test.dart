@@ -32,7 +32,7 @@ void main() {
     subtitle: 'subtitle',
     description: 'description',
     imageUrl: 'imageUrl',
-    raiting: 10,
+    rating: 10,
     imageMetadata: null,
   );
   final CollectionItem collectionItem2 = CollectionItem(
@@ -43,7 +43,7 @@ void main() {
     subtitle: 'subtitle',
     description: 'description',
     imageUrl: 'imageUrl',
-    raiting: 10,
+    rating: 10,
     imageMetadata: null,
   );
 

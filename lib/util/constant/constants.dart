@@ -10,8 +10,6 @@ class Constants {
   static const String googleMapsGeocodingApiUrl =
       'https://maps.googleapis.com/maps/api/geocode';
 
-  static const String pathCollectioIcon = 'assets/images/collectio_icon.png';
-
   // FirebaseAuth errors
   static const String emailAlreadyInUseError = 'ERROR_EMAIL_ALREADY_IN_USE';
   static const String wrongPasswordError = 'ERROR_WRONG_PASSWORD';
@@ -30,4 +28,8 @@ class Constants {
   static const String loadingConfiguration = 'One app to rule them all ...';
 
   static const int minCharsForAutocomplete = 2;
+
+  // Assets
+  static const String loginCollectioIcon = 'assets/images/collectio_icon.png';
+  static const String premiumIcon = 'assets/images/premium.png';
 }

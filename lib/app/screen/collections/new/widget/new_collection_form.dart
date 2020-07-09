@@ -16,6 +16,7 @@ import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_section_title.dart';
 import '../../../../widgets/collectio_text_field.dart';
+import '../../../../widgets/collectio_toggle.dart';
 import '../../../../widgets/failure_text.dart';
 
 class NewCollectionForm extends StatelessWidget {
@@ -112,6 +113,20 @@ class NewCollectionForm extends StatelessWidget {
                 onChanged: (String value) => context
                     .bloc<NewCollectionBloc>()
                     .add(DescriptionChangedNewCollectionEvent(value)),
+              ),
+
+              CollectioStyle.itemSplitter,
+
+              // Is premium?
+              CollectioToggle(
+                description: AppLocalizations.of(context)
+                    .translate(Translation.collectionPremium),
+                onToggled: () => context
+                    .bloc<NewCollectionBloc>()
+                    .add(IsPremiumChangedNewCollectionEvent()),
+                initialValue: state.isPremium,
+                activeBackgroundColor: CollectioStyle.goldColor,
+                activeHandleColor: CollectioStyle.goldColor,
               ),
 
               CollectioSectionTitle(

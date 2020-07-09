@@ -10,10 +10,11 @@
   "password": "Password",
   "username": "Nome utente",
 
-  "raiting": "Raiting",
-  "collectionTitle": "Title",
+  "rating": "Valutazione",
+  "collectionTitle": "Titoli",
   "collectionSubtitle": "Sottotitoli",
   "collectionDescription": "Descrizione",
+  "collectionPremium": "Premium",
   "fieldNamesSectionTitle": "Nomi dei campi",
   "fieldNamesSectionDescription": "Scegli i nomi dei campi che desideri che i tuoi articoli abbiano.",
   "fieldNameTitle": "Nome titolo",

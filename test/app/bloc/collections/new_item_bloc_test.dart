@@ -101,14 +101,14 @@ void main() {
   );
 
   blocTest(
-    'should set raiting on raiting changed event',
+    'should set rating on rating changed event',
     build: () async => NewItemBloc(
         mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
         collectionsFacade: mockedCollectionsFacade),
-    act: (NewItemBloc bloc) async => bloc.add(RaitingChangedNewItemEvent(6)),
+    act: (NewItemBloc bloc) async => bloc.add(RatingChangedNewItemEvent(6)),
     expect: [
-      GeneralNewItemState(raiting: 6),
+      GeneralNewItemState(rating: 6),
     ],
   );
 
@@ -136,7 +136,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
@@ -161,14 +161,14 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
       ),
       GeneralNewItemState(
         collection: null,
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
@@ -176,7 +176,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
@@ -193,7 +193,7 @@ void main() {
       ..add(InitializeNewItemEvent(collection))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
@@ -211,20 +211,20 @@ void main() {
         collection: collection,
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
       ),
       GeneralNewItemState(
         collection: collection,
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         collection: collection,
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
@@ -241,7 +241,7 @@ void main() {
       ..add(InitializeNewItemEvent(collection))
       ..add(TitleChangedNewItemEvent('title'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
@@ -261,20 +261,20 @@ void main() {
         collection: collection,
         title: Title('title'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
       ),
       GeneralNewItemState(
         collection: collection,
         title: Title('title'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         collection: collection,
         title: Title('title'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
@@ -291,7 +291,7 @@ void main() {
       ..add(InitializeNewItemEvent(collection))
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
@@ -311,20 +311,20 @@ void main() {
         collection: collection,
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
-        raiting: 5,
+        rating: 5,
       ),
       GeneralNewItemState(
         collection: collection,
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
         collection: collection,
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         showErrorMessages: true,
       ),
@@ -332,7 +332,7 @@ void main() {
   );
 
   blocTest(
-    'should start showing error messages on submit if bad raiting',
+    'should start showing error messages on submit if bad rating',
     build: () async => NewItemBloc(
         mapsFacade: mockedMapsFacade,
         collectionItemsBloc: mockedCollectionItemsBloc,
@@ -392,7 +392,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(6))
+      ..add(RatingChangedNewItemEvent(6))
       ..add(SubmitNewItemEvent()),
     expect: [
       GeneralNewItemState(
@@ -418,14 +418,14 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 6,
+        rating: 6,
       ),
       GeneralNewItemState(
         collection: collection,
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 6,
+        rating: 6,
         showErrorMessages: true,
       ),
     ],
@@ -449,7 +449,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     verify: (_) async => verify(mockedCollectionsFacade.addItemToCollection(
@@ -461,7 +461,7 @@ void main() {
           subtitle: 'subtitle',
           description: 'description',
           imageUrl: null, // imageUrl is not in the props
-          raiting: 5,
+          rating: 5,
           imageMetadata: null,
         ))).called(1),
   );
@@ -489,7 +489,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     verify: (_) async => verify(mockedCollectionItemsBloc.add(
@@ -520,7 +520,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
@@ -545,14 +545,14 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
       ),
       GeneralNewItemState(
         collection: collection,
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
@@ -560,7 +560,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         isSubmitting: true,
       ),
@@ -569,7 +569,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         isSubmitting: false,
         showErrorMessages: true,
@@ -601,7 +601,7 @@ void main() {
       ..add(TitleChangedNewItemEvent('title'))
       ..add(SubtitleChangedNewItemEvent('subtitle'))
       ..add(DescriptionChangedNewItemEvent('description'))
-      ..add(RaitingChangedNewItemEvent(5))
+      ..add(RatingChangedNewItemEvent(5))
       ..add(ImageChangedNewItemEvent(image: mockedFile, metadata: null))
       ..add(SubmitNewItemEvent()),
     expect: [
@@ -628,14 +628,14 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
       ),
       GeneralNewItemState(
         collection: collection,
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
       ),
       GeneralNewItemState(
@@ -643,7 +643,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         isSubmitting: true,
       ),
@@ -652,7 +652,7 @@ void main() {
         title: Title('title'),
         subtitle: Subtitle('subtitle'),
         description: model.Description('description'),
-        raiting: 5,
+        rating: 5,
         localImage: Photo(mockedFile),
         isSubmitting: false,
         showErrorMessages: true,

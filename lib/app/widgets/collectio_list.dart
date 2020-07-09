@@ -53,6 +53,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                     title: items[index].title,
                     subtitle: items[index].subtitle,
                     image: items[index].thumbnail,
+                    isPremium: items[index].isPremium,
                     onTap: () => onTap(items[index]),
                   );
                 }
@@ -94,6 +95,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                     title: items[index].title,
                     subtitle: items[index].subtitle,
                     image: items[index].thumbnail,
+                    isPremium: items[index].isPremium,
                     onTap: () => onTap(items[index]),
                   ),
                 );
@@ -103,17 +105,34 @@ class CollectioList<T extends Listable> extends StatelessWidget {
   }
 }
 
-class CollectioListTile extends ListTile {
+class CollectioListTile extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String image;
+  final bool isPremium;
+  final VoidCallback onTap;
+
   CollectioListTile({
-    @required String title,
-    @required String subtitle,
-    @required String image,
-    @required VoidCallback onTap,
-  }) : super(
-          title: Text(title),
-          subtitle: Text(subtitle),
-          leading: CircularNetworkImage(image, radius: 25),
-          trailing: Icon(Icons.chevron_right),
-          onTap: onTap,
-        );
+    @required this.title,
+    @required this.subtitle,
+    @required this.image,
+    @required this.isPremium,
+    @required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(subtitle),
+      leading: CircularNetworkImage(
+        image,
+        radius: 25,
+        showPremium: isPremium,
+        premiumBackgroundColor: Theme.of(context).backgroundColor,
+      ),
+      trailing: Icon(Icons.chevron_right),
+      onTap: onTap,
+    );
+  }
 }

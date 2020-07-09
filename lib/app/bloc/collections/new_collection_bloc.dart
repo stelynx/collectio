@@ -10,6 +10,7 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
+import '../../../model/interface/listable.dart';
 import '../../../model/value_object/description.dart';
 import '../../../model/value_object/name.dart';
 import '../../../model/value_object/photo.dart';
@@ -73,6 +74,12 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         dataFailure: null,
         overrideDataFailure: true,
       );
+    } else if (event is IsPremiumChangedNewCollectionEvent) {
+      yield state.copyWith(
+        isPremium: !state.isPremium,
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
     } else if (event is ItemTitleNameChangedNewCollectionEvent) {
       yield state.copyWith(
         itemTitleName: Name(event.itemTitleName),
@@ -105,17 +112,21 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         final LoadedCollectionsState loadedCollectionsState =
             _collectionsBloc.state as LoadedCollectionsState;
 
-        if (ListableFinder.findById(
-                loadedCollectionsState.collections, state.id) ==
-            null) {
+        final Listable existingCollectionWithSameId = ListableFinder.findById(
+          loadedCollectionsState.collections,
+          state.id,
+        );
+
+        if (existingCollectionWithSameId == null) {
           final String fileExtension = state.thumbnail
               .get()
               .path
               .substring(state.thumbnail.get().path.lastIndexOf('.') + 1);
           final String imageUrl = getCollectionThumbnailName(
-              completeProfileState.userProfile.username,
-              state.id,
-              fileExtension);
+            completeProfileState.userProfile.username,
+            state.id,
+            fileExtension,
+          );
 
           final Collection newCollection = Collection(
             id: state.id,
@@ -124,6 +135,7 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
             subtitle: state.subtitle.get(),
             description: state.description.get(),
             thumbnail: imageUrl,
+            isPremium: state.isPremium,
             itemTitleName: state.itemTitleName.get(),
             itemSubtitleName: state.itemSubtitleName.get(),
             itemDescriptionName: state.itemDescriptionName.get(),

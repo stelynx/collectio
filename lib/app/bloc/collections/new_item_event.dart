@@ -28,10 +28,10 @@ class DescriptionChangedNewItemEvent extends NewItemEvent {
   const DescriptionChangedNewItemEvent(this.description);
 }
 
-class RaitingChangedNewItemEvent extends NewItemEvent {
-  final int raiting;
+class RatingChangedNewItemEvent extends NewItemEvent {
+  final int rating;
 
-  const RaitingChangedNewItemEvent(this.raiting);
+  const RatingChangedNewItemEvent(this.rating);
 }
 
 class ImageChangedNewItemEvent extends NewItemEvent {
