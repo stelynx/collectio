@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../util/constant/constants.dart';
-import '../theme/style.dart';
+import 'collectio_premium_icon.dart';
 
 class CircularNetworkImage extends StatelessWidget {
   final String _url;
   final double _radius;
   final bool _showPremium;
+  final Color _premiumBackgroundColor;
 
   const CircularNetworkImage(
     this._url, {
     double radius = 40.0,
     bool showPremium = false,
-  })  : _radius = radius,
-        _showPremium = showPremium;
+    Color premiumBackgroundColor,
+  })  : assert(!showPremium || premiumBackgroundColor != null),
+        _radius = radius,
+        _showPremium = showPremium,
+        _premiumBackgroundColor = premiumBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +31,9 @@ class CircularNetworkImage extends StatelessWidget {
         ),
         if (_showPremium) ...[
           Positioned(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Theme.of(context).cardColor),
-                borderRadius: CollectioStyle.borderRadius,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Image.asset(
-                  Constants.premiumIcon,
-                  width: _radius / 2,
-                  height: _radius / 2,
-                ),
-              ),
+            child: CollectioPremiumIcon(
+              backgroundColor: _premiumBackgroundColor,
+              size: _radius / 2,
             ),
             bottom: 0,
             right: 0,

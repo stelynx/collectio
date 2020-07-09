@@ -23,6 +23,7 @@ class CollectionDetailsView extends StatelessWidget {
             CircularNetworkImage(
               _collection.thumbnail,
               showPremium: _collection.isPremium,
+              premiumBackgroundColor: Theme.of(context).cardColor,
             ),
             SizedBox(width: 20),
             Expanded(
