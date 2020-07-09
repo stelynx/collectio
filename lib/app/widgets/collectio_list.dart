@@ -115,21 +115,12 @@ class CollectioListTile extends ListTile {
   }) : super(
           title: Text(title),
           subtitle: Text(subtitle),
-          leading: CircularNetworkImage(image, radius: 25),
-          trailing: Row(
-            // mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              // if (isPremium) ...[
-              //   Image.asset(
-              //     'assets/images/premium.png',
-              //     height: 10.0,
-              //     width: 10.0,
-              //   ),
-              // ],
-              Icon(Icons.chevron_right),
-            ],
+          leading: CircularNetworkImage(
+            image,
+            radius: 25,
+            showPremium: isPremium,
           ),
+          trailing: Icon(Icons.chevron_right),
           onTap: onTap,
         );
 }

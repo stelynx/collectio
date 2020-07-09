@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../util/constant/constants.dart';
 import '../../../../util/constant/translation.dart';
 import '../../../../util/error/auth_failure.dart';
 import '../../../../util/error/validation_failure.dart';
@@ -37,7 +38,7 @@ class SignInForm extends StatelessWidget {
             children: <Widget>[
               // Logo
               Image.asset(
-                'assets/images/collectio_icon.png',
+                Constants.loginCollectioIcon,
                 height: min(200, MediaQuery.of(context).size.width / 2),
                 width: min(200, MediaQuery.of(context).size.height / 2),
               ),

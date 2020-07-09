@@ -20,7 +20,10 @@ class CollectionDetailsView extends StatelessWidget {
         padding: CollectioStyle.screenPadding,
         child: Row(
           children: <Widget>[
-            CircularNetworkImage(_collection.thumbnail),
+            CircularNetworkImage(
+              _collection.thumbnail,
+              showPremium: _collection.isPremium,
+            ),
             SizedBox(width: 20),
             Expanded(
               child: Table(
