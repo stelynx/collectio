@@ -6,7 +6,7 @@ abstract class NewItemState extends Equatable {
   final Title title;
   final Subtitle subtitle;
   final Description description;
-  final int raiting;
+  final int rating;
   final String imageUrl;
   final Photo localImage;
   final ImageMetadata imageMetadata;
@@ -20,7 +20,7 @@ abstract class NewItemState extends Equatable {
     @required this.title,
     @required this.subtitle,
     @required this.description,
-    @required this.raiting,
+    @required this.rating,
     @required this.imageUrl,
     @required this.localImage,
     @required this.imageMetadata,
@@ -35,7 +35,7 @@ abstract class NewItemState extends Equatable {
     Title title,
     Subtitle subtitle,
     Description description,
-    int raiting,
+    int rating,
     String imageUrl,
     Photo localImage,
     ImageMetadata imageMetadata,
@@ -51,7 +51,7 @@ abstract class NewItemState extends Equatable {
         title: title ?? this.title,
         subtitle: subtitle ?? this.subtitle,
         description: description ?? this.description,
-        raiting: raiting ?? this.raiting,
+        rating: rating ?? this.rating,
         imageUrl: imageUrl ?? this.imageUrl,
         localImage: localImage ?? this.localImage,
         imageMetadata: (imageMetadata != null || overrideImageMetadata)
@@ -71,7 +71,7 @@ abstract class NewItemState extends Equatable {
         title,
         subtitle,
         description,
-        raiting,
+        rating,
         imageUrl,
         localImage,
         imageMetadata,
@@ -89,7 +89,7 @@ class InitialNewItemState extends NewItemState {
             title: Title(''),
             subtitle: Subtitle(''),
             description: Description(''),
-            raiting: null,
+            rating: null,
             imageUrl: '',
             localImage: Photo(null),
             imageMetadata: null,
@@ -105,7 +105,7 @@ class GeneralNewItemState extends NewItemState {
     Title title,
     Subtitle subtitle,
     Description description,
-    int raiting,
+    int rating,
     String imageUrl,
     Photo localImage,
     ImageMetadata imageMetadata,
@@ -118,7 +118,7 @@ class GeneralNewItemState extends NewItemState {
           title: title ?? Title(''),
           subtitle: subtitle ?? Subtitle(''),
           description: description ?? Description(''),
-          raiting: raiting ?? null,
+          rating: rating ?? null,
           imageUrl: imageUrl ?? '',
           localImage: localImage ?? Photo(null),
           imageMetadata: imageMetadata ?? null,

@@ -111,12 +111,12 @@ class ItemDetailsScreen extends StatelessWidget {
 
                 CollectioStyle.itemSplitter,
 
-                // Raiting
+                // rating
                 CollectioDropdown<int>(
-                  value: item.raiting,
+                  value: item.rating,
                   items: List<int>.generate(10, (int i) => i + 1),
                   hint: AppLocalizations.of(context)
-                      .translate(Translation.raiting),
+                      .translate(Translation.rating),
                   icon: Icons.star,
                 ),
 

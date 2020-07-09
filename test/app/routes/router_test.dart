@@ -100,7 +100,7 @@ void main() {
           description: 'description',
           imageUrl: '',
           added: null,
-          raiting: 10,
+          rating: 10,
           imageMetadata: null,
         );
         final RouteSettings routeSettings = RouteSettings(

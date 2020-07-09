@@ -68,9 +68,9 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
         dataFailure: null,
         overrideDataFailure: true,
       );
-    } else if (event is RaitingChangedNewItemEvent) {
+    } else if (event is RatingChangedNewItemEvent) {
       yield state.copyWith(
-        raiting: event.raiting,
+        rating: event.rating,
         dataFailure: null,
         overrideDataFailure: true,
       );
@@ -99,7 +99,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           state.title.isValid() &&
           state.subtitle.isValid() &&
           state.description.isValid() &&
-          state.raiting != null &&
+          state.rating != null &&
           state.localImage.isValid()) {
         yield state.copyWith(isSubmitting: true);
 
@@ -122,7 +122,7 @@ class NewItemBloc extends Bloc<NewItemEvent, NewItemState> {
           subtitle: state.subtitle.get(),
           description: state.description.get(),
           imageUrl: imageUrl,
-          raiting: state.raiting,
+          rating: state.rating,
           geoData: state.geoData,
           imageMetadata: state.imageMetadata,
         );

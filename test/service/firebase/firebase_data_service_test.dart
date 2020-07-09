@@ -134,7 +134,7 @@ void main() {
         'title': 'title',
         'subtitle': 'subtitle',
         'image': 'imageUrl',
-        'raiting': 10,
+        'rating': 10,
         'added': Timestamp.fromMillisecondsSinceEpoch(
             DateTime.now().millisecondsSinceEpoch),
       };

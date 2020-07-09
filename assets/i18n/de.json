@@ -10,10 +10,10 @@
   "password": "Passwort",
   "username": "Benutzername",
 
-  "raiting": "raiting",
-  "collectionTitle": "Title",
+  "rating": "Bewertung",
+  "collectionTitle": "Titel",
   "collectionSubtitle": "Untertitel",
-  "collectionDescription": "Description",
+  "collectionDescription": "Beschreibung",
   "collectionPremium": "Premium",
   "fieldNamesSectionTitle": "Feldnamen",
   "fieldNamesSectionDescription": "Wählen Sie die Namen der Felder aus, die Ihre Artikel haben sollen.",

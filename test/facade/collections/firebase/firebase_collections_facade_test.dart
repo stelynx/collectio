@@ -311,7 +311,7 @@ void main() {
       subtitle: 'subtitle',
       description: 'description',
       imageUrl: 'imageUrl',
-      raiting: 10,
+      rating: 10,
       imageMetadata: null,
     );
 
@@ -401,7 +401,7 @@ void main() {
         'subtitle': 'subtitle',
         'description': 'description',
         'image': 'imageUrl',
-        'raiting': 10,
+        'rating': 10,
       };
       final CollectionItem collectionItem = CollectionItem(
         parent: collection,
@@ -411,7 +411,7 @@ void main() {
         subtitle: 'subtitle',
         description: 'description',
         imageUrl: 'imageUrl',
-        raiting: 10,
+        rating: 10,
         imageMetadata: null,
       );
       final MockedDocumentSnapshot documentSnapshot =
@@ -442,7 +442,7 @@ void main() {
         'subtitle': 'subtitle',
         'description': 'description',
         'image': 'imageUrl',
-        'raiting': 10,
+        'rating': 10,
       };
       final MockedDocumentSnapshot documentSnapshot =
           MockedDocumentSnapshot('documentID', firestoreCollectionItem);
@@ -473,7 +473,7 @@ void main() {
       title: 'title',
       subtitle: 'subtitle',
       imageUrl: 'imageUrl',
-      raiting: 10,
+      rating: 10,
       added: DateTime.now(),
       imageMetadata: null,
     );

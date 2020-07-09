@@ -10,9 +10,9 @@
   "password": "Mot de passe",
   "username": "Nom d'utilisateur",
 
-  "raiting": "Raiting",
-  "collectionTitle": "Title",
-  "collectionSubtitle": "Subtitle",
+  "rating": "Évaluation",
+  "collectionTitle": "Titre",
+  "collectionSubtitle": "Sous-titre",
   "collectionDescription": "Description",
   "collectionPremium": "Premium",
   "fieldNamesSectionTitle": "Noms de champs",

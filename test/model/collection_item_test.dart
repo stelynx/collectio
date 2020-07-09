@@ -10,7 +10,7 @@ void main() {
       title: 'title',
       subtitle: 'subtitle',
       imageUrl: 'imageUrl',
-      raiting: 10,
+      rating: 10,
       added: added,
       imageMetadata: null,
     );
@@ -19,7 +19,7 @@ void main() {
       'title': 'title',
       'subtitle': 'subtitle',
       'image': 'imageUrl',
-      'raiting': 10,
+      'rating': 10,
       'added': added.millisecondsSinceEpoch,
       'geoData': null,
       'imageMetadata': null,
@@ -38,7 +38,7 @@ void main() {
       title: 'title',
       subtitle: 'subtitle',
       imageUrl: 'imageUrl',
-      raiting: 10,
+      rating: 10,
       added: added,
       imageMetadata: null,
     );
@@ -48,7 +48,7 @@ void main() {
       'title': 'title',
       'subtitle': 'subtitle',
       'image': 'imageUrl',
-      'raiting': 10,
+      'rating': 10,
       'added': added.millisecondsSinceEpoch,
     };
 
@@ -64,7 +64,7 @@ void main() {
       title: 'title',
       subtitle: 'subtitle',
       imageUrl: 'imageUrl',
-      raiting: 10,
+      rating: 10,
       added: null,
       imageMetadata: null,
     );
@@ -82,7 +82,7 @@ void main() {
       subtitle: null,
       description: null,
       imageUrl: null,
-      raiting: null,
+      rating: null,
       imageMetadata: null,
     );
     final CollectionItem collectionItem2 = CollectionItem(
@@ -91,7 +91,7 @@ void main() {
       subtitle: null,
       description: null,
       imageUrl: null,
-      raiting: null,
+      rating: null,
       imageMetadata: null,
     );
     final CollectionItem collectionItem3 = CollectionItem(
@@ -100,7 +100,7 @@ void main() {
       subtitle: null,
       description: null,
       imageUrl: null,
-      raiting: null,
+      rating: null,
       imageMetadata: null,
     );
     final CollectionItem collectionItem4 = CollectionItem(
@@ -109,7 +109,7 @@ void main() {
       subtitle: null,
       description: null,
       imageUrl: null,
-      raiting: null,
+      rating: null,
       imageMetadata: null,
     );
 

@@ -10,7 +10,7 @@ enum Translation {
   password,
   username,
 
-  raiting,
+  rating,
   collectionTitle,
   collectionSubtitle,
   collectionDescription,

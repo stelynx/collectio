@@ -119,16 +119,16 @@ class NewItemForm extends StatelessWidget {
 
               CollectioStyle.itemSplitter,
 
-              // Raiting
+              // rating
               CollectioDropdown<int>(
-                value: state.raiting,
+                value: state.rating,
                 items: List<int>.generate(10, (int i) => i + 1),
                 hint:
-                    AppLocalizations.of(context).translate(Translation.raiting),
+                    AppLocalizations.of(context).translate(Translation.rating),
                 icon: Icons.star,
                 onChanged: (int value) => context
                     .bloc<NewItemBloc>()
-                    .add(RaitingChangedNewItemEvent(value)),
+                    .add(RatingChangedNewItemEvent(value)),
               ),
 
               CollectioStyle.itemSplitter,

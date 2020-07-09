@@ -10,8 +10,8 @@
   "password": "Password",
   "username": "Nome utente",
 
-  "raiting": "Raiting",
-  "collectionTitle": "Title",
+  "rating": "Valutazione",
+  "collectionTitle": "Titoli",
   "collectionSubtitle": "Sottotitoli",
   "collectionDescription": "Descrizione",
   "collectionPremium": "Premium",
