@@ -64,6 +64,7 @@
   "noItems": "There were no items matching this criteria",
   "collectionTitleExists": "A title provided maps to the existing collection",
   "collectionItemsFailure": "An error occured while fetching items, please refresh",
+  "notUpdatedPremiumCollectionCountDataFailure": "Could not update remaining premium collections",
 
   "fillInEmail": "Fill in email",
   "invalidEmail": "Invalid email",

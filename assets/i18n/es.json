@@ -64,6 +64,7 @@
   "noItems": "No hubo elementos que coincidan con este criterio",
   "collectionTitleExists": "Un título proporciona mapas a la colección existente",
   "collectionItemsFailure": "Se produjo un error al recuperar elementos, actualice",
+  "notUpdatedPremiumCollectionCountDataFailure": "No se pudieron actualizar las colecciones premium restantes",
 
   "fillInEmail": "Completar correo electrónico",
   "invalidEmail": "Correo electrónico no válido",

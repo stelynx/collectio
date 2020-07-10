@@ -64,6 +64,7 @@
   "noItems": "Non ci sono elementi che soddisfano questo criterio",
   "collectionTitleExists": "Un titolo fornito è mappato alla raccolta esistente",
   "collectionItemsFailure": "Si è verificato un errore durante il recupero degli elementi, per favore aggiorna",
+  "notUpdatedPremiumCollectionCountDataFailure": "Impossibile aggiornare le raccolte premium rimanenti",
 
   "fillInEmail": "Compila email",
   "invalidEmail": "Email non valida",

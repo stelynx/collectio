@@ -64,6 +64,7 @@
   "noItems": "Vaši poizvedbi ne ustreza noben zadetek",
   "collectionTitleExists": "Željen naslov se preslika v že obstoječo vrednost",
   "collectionItemsFailure": "Prišlo je do napake pri iskanju vnosov zbirke, prosimo poskusite kasneje",
+  "notUpdatePremiumCollectionCountDataFailure": "Števca premium zbirk ni bilo mogoče posodobiti",
 
   "fillInEmail": "Vnesite e-naslov",
   "invalidEmail": "Neveljaven e-naslov",

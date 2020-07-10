@@ -64,6 +64,7 @@
   "noItems": "Es gab keine Elemente, die diesen Kriterien entsprechen",
   "collectionTitleExists": "Ein Titel hat Karten zur vorhandenen Sammlung bereitgestellt",
   "collectionItemsFailure": "Beim Abrufen von Elementen ist ein Fehler aufgetreten. Bitte aktualisieren Sie",
+  "notUpdatedPremiumCollectionCountDataFailure": "Verbleibende Premium-Sammlungen konnten nicht aktualisiert werden",
 
   "fillInEmail": "E-Mail ausfüllen",
   "invalidEmail": "Ungültige E-Mail",

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -78,6 +79,29 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         (_) => CompleteProfileState(event.userProfile),
       );
     }
+  }
+
+  Future<bool> changePremiumCollectionsAvailable({@required int by}) async {
+    if (!canCreatePremiumCollection()) return false;
+    if (!(state is CompleteProfileState)) return false;
+
+    final UserProfile userProfile = (state as CompleteProfileState).userProfile;
+    userProfile.premiumCollectionsAvailable =
+        max(-1, userProfile.premiumCollectionsAvailable + by);
+
+    final Either<DataFailure, void> result =
+        await _profileFacade.addUserProfile(userProfile: userProfile);
+
+    this.add(GetUserProfileEvent());
+
+    return result.isRight();
+  }
+
+  bool canCreatePremiumCollection() {
+    if (!(state is CompleteProfileState)) return false;
+
+    final UserProfile user = (state as CompleteProfileState).userProfile;
+    return user.premiumCollectionsAvailable != 0;
   }
 }
 

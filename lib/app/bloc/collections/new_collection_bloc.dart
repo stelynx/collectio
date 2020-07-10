@@ -75,6 +75,8 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         overrideDataFailure: true,
       );
     } else if (event is IsPremiumChangedNewCollectionEvent) {
+      if (!_profileBloc.canCreatePremiumCollection()) return;
+
       yield state.copyWith(
         isPremium: !state.isPremium,
         dataFailure: null,
@@ -107,6 +109,17 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           state.subtitle.isValid() &&
           state.description.isValid() &&
           state.thumbnail.isValid()) {
+        final bool hasUpdatedPremiumCollectionCount =
+            await _profileBloc.changePremiumCollectionsAvailable(by: -1);
+
+        if (!hasUpdatedPremiumCollectionCount) {
+          yield state.copyWith(
+            isSubmitting: false,
+            dataFailure: Left(NotUpdatedPremiumCollectionCountDataFailure()),
+          );
+          return;
+        }
+
         final CompleteProfileState completeProfileState =
             _profileBloc.state as CompleteProfileState;
         final LoadedCollectionsState loadedCollectionsState =

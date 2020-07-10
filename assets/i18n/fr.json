@@ -64,6 +64,7 @@
   "noItems": "Aucun élément ne correspond à ce critère",
   "collectionTitleExists": "Un titre a fourni des cartes de la collection existante",
   "collectionItemsFailure": "Une erreur s'est produite lors de la récupération des éléments, veuillez actualiser",
+  "notUpdatedPremiumCollectionCountDataFailure": "Impossible de mettre à jour les collections premium restantes",
 
   "fillInEmail": "Remplir l'email",
   "invalidEmail": "E-mail invalide",
