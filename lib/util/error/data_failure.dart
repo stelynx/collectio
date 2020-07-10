@@ -6,3 +6,8 @@ import 'failure.dart';
 class DataFailure extends Failure {
   const DataFailure({Translation message}) : super(message: message);
 }
+
+class NotUpdatedPremiumCollectionCountDataFailure extends DataFailure {
+  const NotUpdatedPremiumCollectionCountDataFailure()
+      : super(message: Translation.notUpdatedPremiumCollectionCountDataFailure);
+}

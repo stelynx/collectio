@@ -64,6 +64,7 @@ enum Translation {
   noItems,
   collectionTitleExists,
   collectionItemsFailure,
+  notUpdatedPremiumCollectionCountDataFailure,
 
   fillInEmail,
   invalidEmail,
