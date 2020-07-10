@@ -109,15 +109,17 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           state.subtitle.isValid() &&
           state.description.isValid() &&
           state.thumbnail.isValid()) {
-        final bool hasUpdatedPremiumCollectionCount =
-            await _profileBloc.changePremiumCollectionsAvailable(by: -1);
+        if (state.isPremium) {
+          final bool hasUpdatedPremiumCollectionCount =
+              await _profileBloc.changePremiumCollectionsAvailable(by: -1);
 
-        if (!hasUpdatedPremiumCollectionCount) {
-          yield state.copyWith(
-            isSubmitting: false,
-            dataFailure: Left(NotUpdatedPremiumCollectionCountDataFailure()),
-          );
-          return;
+          if (!hasUpdatedPremiumCollectionCount) {
+            yield state.copyWith(
+              isSubmitting: false,
+              dataFailure: Left(NotUpdatedPremiumCollectionCountDataFailure()),
+            );
+            return;
+          }
         }
 
         final CompleteProfileState completeProfileState =
@@ -173,6 +175,11 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
             dataFailure: result.isLeft() ? result : uploadResult,
           );
         } else {
+          // If saving the premium collection failed, increase the count back.
+          if (state.isPremium) {
+            await _profileBloc.changePremiumCollectionsAvailable(by: 1);
+          }
+
           yield state.copyWith(
               isSubmitting: false,
               showErrorMessages: true,
