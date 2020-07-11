@@ -127,6 +127,14 @@ class NewCollectionForm extends StatelessWidget {
                 initialValue: state.isPremium,
                 activeBackgroundColor: CollectioStyle.goldColor,
                 activeHandleColor: CollectioStyle.goldColor,
+                icon: Icon(
+                  Icons.info,
+                  size: 25,
+                ),
+                hintTitle: AppLocalizations.of(context)
+                    .translate(Translation.collectionPremium),
+                hintContent: AppLocalizations.of(context)
+                    .translate(Translation.collectionPremiumInfo),
               ),
 
               CollectioSectionTitle(

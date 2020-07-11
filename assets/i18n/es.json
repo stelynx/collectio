@@ -15,6 +15,7 @@
   "collectionSubtitle": "Subtítulo",
   "collectionDescription": "Descripción",
   "collectionPremium": "Premium",
+  "collectionPremiumInfo": "La colección premium le permite almacenar la ubicación del artículo",
   "fieldNamesSectionTitle": "Nombres de campo",
   "fieldNamesSectionDescription": "Elija los nombres de los campos que desea que tengan sus elementos",
   "fieldNameTitle": "Nombre del título",

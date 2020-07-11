@@ -4,15 +4,67 @@ import '../../util/constant/translation.dart';
 import '../config/app_localizations.dart';
 import '../theme/style.dart';
 
-class CollectioDialog extends StatelessWidget {
+class CollectioDeleteDialog extends StatelessWidget {
   final String title;
   final String content;
   final VoidCallback primaryAction;
 
-  CollectioDialog({
+  const CollectioDeleteDialog({
     @required this.title,
     @required this.content,
     @required this.primaryAction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _CollectioDialog(
+      title: title,
+      content: content,
+      actions: [
+        _CollectioDialogAction(
+          text: Translation.cancel,
+          onTap: () => Navigator.of(context).pop(false),
+        ),
+        _CollectioDialogAction(
+          text: Translation.delete,
+          onTap: () {
+            primaryAction();
+            Navigator.of(context).pop(true);
+          },
+          isDanger: true,
+        ),
+      ],
+    );
+  }
+}
+
+class CollectioInfoDialog extends StatelessWidget {
+  final String title;
+  final String content;
+
+  const CollectioInfoDialog({
+    @required this.title,
+    @required this.content,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _CollectioDialog(
+      title: title,
+      content: content,
+    );
+  }
+}
+
+class _CollectioDialog extends StatelessWidget {
+  final String title;
+  final String content;
+  final List<_CollectioDialogAction> actions;
+
+  const _CollectioDialog({
+    @required this.title,
+    @required this.content,
+    this.actions,
   });
 
   @override
@@ -28,34 +80,25 @@ class CollectioDialog extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).dialogTheme.titleTextStyle,
+                textAlign: TextAlign.center,
               ),
               CollectioStyle.itemSplitter,
               CollectioStyle.itemSplitter,
               Text(
                 content,
                 style: Theme.of(context).dialogTheme.contentTextStyle,
+                textAlign: TextAlign.center,
               ),
-              CollectioStyle.itemSplitter,
-              Divider(),
-              CollectioStyle.itemSplitter,
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  _CollectioDialogAction(
-                    text: Translation.cancel,
-                    onTap: () => Navigator.of(context).pop(false),
-                  ),
-                  _CollectioDialogAction(
-                    text: Translation.delete,
-                    onTap: () {
-                      primaryAction();
-                      Navigator.of(context).pop(true);
-                    },
-                    isDanger: true,
-                  ),
-                ],
-              ),
+              if (actions != null) ...[
+                CollectioStyle.itemSplitter,
+                Divider(),
+                CollectioStyle.itemSplitter,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: actions,
+                ),
+              ],
             ],
           ),
         ),

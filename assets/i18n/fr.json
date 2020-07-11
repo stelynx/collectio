@@ -15,6 +15,7 @@
   "collectionSubtitle": "Sous-titre",
   "collectionDescription": "Description",
   "collectionPremium": "Premium",
+  "collectionPremiumInfo": "La collection premium vous donne la possibilité de stocker l'emplacement de l'article.",
   "fieldNamesSectionTitle": "Noms de champs",
   "fieldNamesSectionDescription": "Choisissez les noms des champs que vous souhaitez que vos éléments contiennent.",
   "fieldNameTitle": "Nom du titre",

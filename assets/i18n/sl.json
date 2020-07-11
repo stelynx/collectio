@@ -15,6 +15,7 @@
   "collectionSubtitle": "Podnaslov",
   "collectionDescription": "Opis",
   "collectionPremium": "Premium",
+  "collectionPremiumInfo": "Premium zbirka vam omogoči shranjevanje lokacije vnosov v zbirki.",
   "fieldNamesSectionTitle": "Imena polj vnosov",
   "fieldNamesSectionDescription": "Izberite si imena polj za vnose v vaši zbirki. Ta imena bodo napisana namesto generičnih Naslov, Podnaslov in Opis.",
   "fieldNameTitle": "Ime naslova",
