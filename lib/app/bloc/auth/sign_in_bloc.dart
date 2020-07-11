@@ -48,21 +48,18 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (event is EmailChangedSignInEvent) {
       yield state.copyWith(
         email: Email(event.email),
-        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
     } else if (event is PasswordChangedSignInEvent) {
       yield state.copyWith(
         password: Password(event.password),
-        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
     } else if (event is UsernameChangedSignInEvent) {
       yield state.copyWith(
         username: Username(event.username),
-        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
@@ -70,6 +67,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       yield* _callAuthFacadeWithEmailAndPassword(
           _authFacade.signInWithEmailAndPassword);
     } else if (event is RegisterWithEmailAndPasswordSignInEvent) {
+      yield state.copyWith(showErrorMessages: true);
+
       if (state.username.isValid()) {
         final Either<DataFailure, UserProfile> userProfileOrFailure =
             await _profileFacade.getUserProfileByUsername(
@@ -120,11 +119,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     })
         authFacadeMethod,
   ) async* {
+    yield state.copyWith(showErrorMessages: true);
+
     if (state.email.isValid() &&
         state.password.isValid() &&
         (!state.isRegistering || state.username.isValid())) {
       yield state.copyWith(
         isSubmitting: true,
+        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
@@ -150,6 +152,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
       yield state.copyWith(
         isSubmitting: false,
+        showErrorMessages: true,
         isRegistering: state.isRegistering && result.isLeft(),
         authFailure: result,
       );
@@ -160,10 +163,13 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     Future<Either<AuthFailure, void>> Function(Email email) authFacadeMethod, {
     bool isRegistering = true,
   }) async* {
+    yield state.copyWith(showErrorMessages: true);
+
     if (state.email.isValid() && state.password.isValid()) {
       yield state.copyWith(
         isSubmitting: true,
         isRegistering: isRegistering,
+        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
@@ -174,6 +180,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       yield state.copyWith(
         isSubmitting: false,
         authFailure: result,
+        showErrorMessages: true,
       );
     }
   }
