@@ -71,6 +71,7 @@
   "invalidEmail": "Invalid email",
   "invalidPassword": "Invalid password",
   "usernameTooShort": "Username too short",
+  "usernameContainsStelynx": "Username must not contain \"stelynx\"",
   "invalidUsername": "'Invalid username. Use only alphanumeric values!'",
   "emptyValidationFailure": "Cannot be empty",
   "titleValidationFailure": "Title can contain only alphanumeric values and spaces",

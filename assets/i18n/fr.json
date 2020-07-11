@@ -71,6 +71,7 @@
   "invalidEmail": "E-mail invalide",
   "invalidPassword": "Mot de passe invalide",
   "usernameTooShort": "Nom d'utilisateur trop court",
+  "usernameContainsStelynx": "Nom d'utilisateur ne doit pas contenir \"stelynx\"",
   "invalidUsername": "'Nom d'utilisateur non valide. Utilisez uniquement des valeurs alphanumériques!'",
   "emptyValidationFailure": "Ne peut pas être vide",
   "titleValidationFailure": "Le titre ne peut contenir que des valeurs alphanumériques et des espaces",

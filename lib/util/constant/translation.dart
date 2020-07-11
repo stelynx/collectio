@@ -71,6 +71,7 @@ enum Translation {
   invalidEmail,
   invalidPassword,
   usernameTooShort,
+  usernameContainsStelynx,
   invalidUsername,
   emptyValidationFailure,
   titleValidationFailure,
