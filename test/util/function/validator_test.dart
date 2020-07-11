@@ -58,7 +58,7 @@ void main() {
   });
 
   group('isValidPassword', () {
-    test('should return true on valid password', () {
+    test('should return Right(password) on valid password', () {
       final String password =
           'qwertyuiopasdfghjklzxcvbnm[];\\,./\'`~<>?:"|{}!@#\$%^&*()-=_+1234567890';
 
@@ -68,7 +68,8 @@ void main() {
       expect(result, equals(Right(password)));
     });
 
-    test('should return false on invalid password', () {
+    test('should return Left(PasswordValidationFailure) on invalid password',
+        () {
       final String password = '';
 
       final Either<ValidationFailure, String> result =
@@ -143,18 +144,6 @@ void main() {
             Validator.isValidTitle(title);
 
         expect(result, equals(Left(TitleEmptyValidationFailure())));
-      },
-    );
-
-    test(
-      'should return Left(TitleValidationFailure) when title contains illegal characters',
-      () {
-        final String title = 'ckasd@';
-
-        final Either<ValidationFailure, String> result =
-            Validator.isValidTitle(title);
-
-        expect(result, equals(Left(TitleValidationFailure())));
       },
     );
 

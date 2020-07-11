@@ -10,12 +10,6 @@ void main() {
     expect(result.value, equals(Left(TitleEmptyValidationFailure())));
   });
 
-  test('should have Left(TitleValidationFailure) on invalid title', () {
-    final Title result = Title('aas@');
-
-    expect(result.value, equals(Left(TitleValidationFailure())));
-  });
-
   test('should have Right(title) on valid title', () {
     final Title result = Title('a valid title');
 

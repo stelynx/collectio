@@ -19,11 +19,10 @@ class Validator {
         : Left(EmailValidationFailure());
   }
 
-  /// Password is valid if it contains at least one character.
+  /// Password is valid if it contains at least six characters.
   static Either<ValidationFailure, String> isValidPassword(String password) {
     final String trimmedPassword = password.trim();
-    final RegExp passwordRegex = RegExp(r"^.+$");
-    return passwordRegex.hasMatch(trimmedPassword)
+    return trimmedPassword.length >= 6
         ? Right(trimmedPassword)
         : Left(PasswordValidationFailure());
   }
@@ -50,32 +49,29 @@ class Validator {
         : Left(NameEmptyValidationFailure());
   }
 
-  /// Title is valid if it contains alphanumeric symbols and space.
+  /// Title is valid if it is nonempty.
   static Either<ValidationFailure, String> isValidTitle(String title) {
     final String trimmedTitle = title.trim();
-    if (trimmedTitle == '') return Left(TitleEmptyValidationFailure());
-
-    final RegExp titleRegex = RegExp(r"^[a-zA-Z0-9 ]+$");
-    return titleRegex.hasMatch(trimmedTitle)
-        ? Right(trimmedTitle)
-        : Left(TitleValidationFailure());
+    return trimmedTitle.length == 0
+        ? Left(TitleEmptyValidationFailure())
+        : Right(trimmedTitle);
   }
 
   /// Subtitle is valid if it is nonempty.
   static Either<ValidationFailure, String> isValidSubtitle(String subtitle) {
     final String trimmedSubtitle = subtitle.trim();
-    if (trimmedSubtitle == '') return Left(SubtitleEmptyValidationFailure());
-
-    return Right(trimmedSubtitle);
+    return trimmedSubtitle.length == 0
+        ? Left(SubtitleEmptyValidationFailure())
+        : Right(trimmedSubtitle);
   }
 
   /// Description is valid if it is nonempty.
   static Either<ValidationFailure, String> isValidDescription(
       String description) {
     final String trimmedDescription = description.trim();
-    if (trimmedDescription == '')
-      return Left(DescriptionEmptyValidationFailure());
-    return Right(trimmedDescription);
+    return trimmedDescription.length == 0
+        ? Left(DescriptionEmptyValidationFailure())
+        : Right(trimmedDescription);
   }
 
   /// Photo is valid if it is not null.

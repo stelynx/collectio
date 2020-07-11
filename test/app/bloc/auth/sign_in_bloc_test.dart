@@ -39,7 +39,6 @@ void main() {
     expect: [
       GeneralSignInState(
         email: Email('a'),
-        showErrorMessages: true,
         authFailure: null,
       ),
     ],
@@ -54,11 +53,10 @@ void main() {
       settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async =>
-        bloc..add(PasswordChangedSignInEvent(password: 'a')),
+        bloc..add(PasswordChangedSignInEvent(password: '123456')),
     expect: [
       GeneralSignInState(
-        password: Password('a'),
-        showErrorMessages: true,
+        password: Password('123456'),
         authFailure: null,
       ),
     ],
@@ -77,7 +75,6 @@ void main() {
     expect: [
       GeneralSignInState(
         username: Username('a'),
-        showErrorMessages: true,
         authFailure: null,
       ),
     ],
@@ -91,13 +88,16 @@ void main() {
       settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(SignInWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
-        password: Password('a'),
+        password: Password('123456'),
+      ),
+      GeneralSignInState(
+        password: Password('123456'),
         showErrorMessages: true,
-      )
+      ),
     ],
   );
 
@@ -112,7 +112,11 @@ void main() {
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
       ..add(SignInWithEmailAndPasswordSignInEvent()),
     expect: [
-      GeneralSignInState(email: Email('a@b.c'), showErrorMessages: true),
+      GeneralSignInState(email: Email('a@b.c')),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        showErrorMessages: true,
+      ),
     ],
   );
 
@@ -124,19 +128,22 @@ void main() {
       settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
-      ..add(PasswordChangedSignInEvent(password: 'a'))
-      ..add(UsernameChangedSignInEvent(username: 'aasd'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
+      ..add(UsernameChangedSignInEvent(username: 'username'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
-        password: Password('a'),
-        showErrorMessages: true,
+        password: Password('123456'),
       ),
       GeneralSignInState(
-        password: Password('a'),
-        username: Username('aasd'),
+        password: Password('123456'),
+        username: Username('username'),
+      ),
+      GeneralSignInState(
+        password: Password('123456'),
+        username: Username('username'),
         showErrorMessages: true,
-      )
+      ),
     ],
   );
 
@@ -152,7 +159,11 @@ void main() {
       ..add(UsernameChangedSignInEvent(username: 'aasd'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
-      GeneralSignInState(email: Email('a@b.c'), showErrorMessages: true),
+      GeneralSignInState(email: Email('a@b.c')),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        username: Username('aasd'),
+      ),
       GeneralSignInState(
         email: Email('a@b.c'),
         username: Username('aasd'),
@@ -170,13 +181,17 @@ void main() {
     ),
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
-      GeneralSignInState(email: Email('a@b.c'), showErrorMessages: true),
+      GeneralSignInState(email: Email('a@b.c')),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
         showErrorMessages: true,
       ),
     ],
@@ -196,27 +211,30 @@ void main() {
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(SignInWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
         email: Email('a@b.c'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
         showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
-        showErrorMessages: true,
-      ),
-      GeneralSignInState(
-        email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         showErrorMessages: true,
         isSubmitting: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         showErrorMessages: true,
         isSubmitting: false,
         authFailure: Left(InvalidCombinationFailure()),
@@ -224,7 +242,7 @@ void main() {
     ],
     verify: (_) async => verify(
             mockedFirebaseAuthFacade.signInWithEmailAndPassword(
-                email: Email('a@b.c'), password: Password('a')))
+                email: Email('a@b.c'), password: Password('123456')))
         .called(1),
   );
 
@@ -242,27 +260,30 @@ void main() {
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(SignInWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
         email: Email('a@b.c'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
         showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
-        showErrorMessages: true,
-      ),
-      GeneralSignInState(
-        email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         showErrorMessages: true,
         isSubmitting: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         showErrorMessages: true,
         isSubmitting: false,
         authFailure: Right(null),
@@ -270,7 +291,7 @@ void main() {
     ],
     verify: (_) async => verify(
             mockedFirebaseAuthFacade.signInWithEmailAndPassword(
-                email: Email('a@b.c'), password: Password('a')))
+                email: Email('a@b.c'), password: Password('123456')))
         .called(1),
   );
 
@@ -282,11 +303,14 @@ void main() {
       settingsFacade: mockedFirebaseSettingsFacade,
     ),
     act: (SignInBloc bloc) async => bloc
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(CheckIfEmailExistsSignInEvent()),
     expect: [
       GeneralSignInState(
-        password: Password('a'),
+        password: Password('123456'),
+      ),
+      GeneralSignInState(
+        password: Password('123456'),
         showErrorMessages: true,
       )
     ],
@@ -303,6 +327,7 @@ void main() {
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
       ..add(CheckIfEmailExistsSignInEvent()),
     expect: [
+      GeneralSignInState(email: Email('a@b.c')),
       GeneralSignInState(email: Email('a@b.c'), showErrorMessages: true),
     ],
   );
@@ -320,28 +345,31 @@ void main() {
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(CheckIfEmailExistsSignInEvent()),
     expect: [
       GeneralSignInState(
         email: Email('a@b.c'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
         showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
-        showErrorMessages: true,
-      ),
-      GeneralSignInState(
-        email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
+        isRegistering: true,
         isSubmitting: true,
         showErrorMessages: true,
-        isRegistering: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         isSubmitting: false,
         showErrorMessages: true,
         isRegistering: true,
@@ -370,29 +398,32 @@ void main() {
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.c'))
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(UsernameChangedSignInEvent(username: 'username'))
       ..add(CheckIfEmailExistsSignInEvent())
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
         email: Email('a@b.c'),
-        showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
-        showErrorMessages: true,
+        password: Password('123456'),
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
+        username: Username('username'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.c'),
+        password: Password('123456'),
         username: Username('username'),
         showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         username: Username('username'),
         showErrorMessages: true,
         isRegistering: true,
@@ -400,24 +431,23 @@ void main() {
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         username: Username('username'),
         showErrorMessages: true,
         isRegistering: true,
-        isSubmitting: false,
         authFailure: Right(null),
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         username: Username('username'),
-        isSubmitting: true,
-        isRegistering: true,
         showErrorMessages: true,
+        isRegistering: true,
+        isSubmitting: true,
       ),
       GeneralSignInState(
         email: Email('a@b.c'),
-        password: Password('a'),
+        password: Password('123456'),
         username: Username('username'),
         isSubmitting: false,
         isRegistering: false,
@@ -450,28 +480,31 @@ void main() {
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.com'))
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(UsernameChangedSignInEvent(username: 'username'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
         email: Email('a@b.com'),
-        showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.com'),
-        password: Password('a'),
-        showErrorMessages: true,
+        password: Password('123456'),
       ),
       GeneralSignInState(
         email: Email('a@b.com'),
-        password: Password('a'),
+        password: Password('123456'),
+        username: Username('username'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.com'),
+        password: Password('123456'),
         username: Username('username'),
         showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.com'),
-        password: Password('a'),
+        password: Password('123456'),
         username: Username('username'),
         isRegistering: true,
         showErrorMessages: true,
@@ -480,7 +513,7 @@ void main() {
     ],
     verify: (_) async => verifyNever(
         mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
-            email: Email('a@b.com'), password: Password('a'))),
+            email: Email('a@b.com'), password: Password('123456'))),
   );
 
   blocTest(
@@ -497,28 +530,31 @@ void main() {
     },
     act: (SignInBloc bloc) async => bloc
       ..add(EmailChangedSignInEvent(email: 'a@b.comm'))
-      ..add(PasswordChangedSignInEvent(password: 'a'))
+      ..add(PasswordChangedSignInEvent(password: '123456'))
       ..add(UsernameChangedSignInEvent(username: 'username'))
       ..add(RegisterWithEmailAndPasswordSignInEvent()),
     expect: [
       GeneralSignInState(
         email: Email('a@b.comm'),
-        showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.comm'),
-        password: Password('a'),
-        showErrorMessages: true,
+        password: Password('123456'),
       ),
       GeneralSignInState(
         email: Email('a@b.comm'),
-        password: Password('a'),
+        password: Password('123456'),
+        username: Username('username'),
+      ),
+      GeneralSignInState(
+        email: Email('a@b.comm'),
+        password: Password('123456'),
         username: Username('username'),
         showErrorMessages: true,
       ),
       GeneralSignInState(
         email: Email('a@b.comm'),
-        password: Password('a'),
+        password: Password('123456'),
         username: Username('username'),
         isRegistering: true,
         showErrorMessages: true,
@@ -527,6 +563,6 @@ void main() {
     ],
     verify: (_) async => verifyNever(
         mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
-            email: Email('a@b.com'), password: Password('a'))),
+            email: Email('a@b.com'), password: Password('123456'))),
   );
 }
