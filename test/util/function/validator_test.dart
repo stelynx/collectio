@@ -98,6 +98,14 @@ void main() {
       expect(result, equals(Left(UsernameValidationFailure())));
     });
 
+    test('should return failure on username with stelynx inside', () {
+      final String username = 'd21dStelYnx';
+      final Either<ValidationFailure, String> result =
+          Validator.isValidUsername(username);
+
+      expect(result, equals(Left(UsernameContainsStelynxValidationFailure())));
+    });
+
     test('should return username on valid input', () {
       final String username = 'as3dA4';
 

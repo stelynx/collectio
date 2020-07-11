@@ -105,12 +105,16 @@ class SignInForm extends StatelessWidget {
                   errorText: state.showErrorMessages &&
                           !state.username.isValid()
                       ? state.username.value.fold(
-                          (ValidationFailure failure) =>
-                              failure is UsernameTooShortValidationFailure
-                                  ? AppLocalizations.of(context)
-                                      .translate(Translation.usernameTooShort)
+                          (ValidationFailure failure) => failure
+                                  is UsernameTooShortValidationFailure
+                              ? AppLocalizations.of(context)
+                                  .translate(Translation.usernameTooShort)
+                              : (failure
+                                      is UsernameContainsStelynxValidationFailure
+                                  ? AppLocalizations.of(context).translate(
+                                      Translation.usernameContainsStelynx)
                                   : AppLocalizations.of(context)
-                                      .translate(Translation.invalidUsername),
+                                      .translate(Translation.invalidUsername)),
                           (_) => null)
                       : null,
                 ),

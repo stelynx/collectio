@@ -35,9 +35,13 @@ class Validator {
       return Left(UsernameTooShortValidationFailure());
 
     final RegExp usernameRegex = RegExp(r"^[a-zA-Z0-9]+$");
-    return usernameRegex.hasMatch(trimmedUsername)
-        ? Right(trimmedUsername)
-        : Left(UsernameValidationFailure());
+    if (!usernameRegex.hasMatch(trimmedUsername))
+      return Left(UsernameValidationFailure());
+
+    final RegExp stelynxRegex = RegExp(r".*?stelynx.*?");
+    return stelynxRegex.hasMatch(trimmedUsername.toLowerCase())
+        ? Left(UsernameContainsStelynxValidationFailure())
+        : Right(trimmedUsername);
   }
 
   /// Name is valid if it is nonempty.

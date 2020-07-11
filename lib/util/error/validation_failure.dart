@@ -15,6 +15,8 @@ class PasswordValidationFailure extends ValidationFailure {}
 
 class UsernameTooShortValidationFailure extends ValidationFailure {}
 
+class UsernameContainsStelynxValidationFailure extends ValidationFailure {}
+
 class UsernameValidationFailure extends ValidationFailure {}
 
 class NameEmptyValidationFailure extends ValidationFailure {}

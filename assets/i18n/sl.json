@@ -71,6 +71,7 @@
   "invalidEmail": "Neveljaven e-naslov",
   "invalidPassword": "Neveljavno geslo",
   "usernameTooShort": "Prekratko uporabniško ime",
+  "usernameContainsStelynx": "Uporabniško ime ne sme vsebovati \"stelynx\"",
   "invalidUsername": "Neveljavno uporabniško ime! Dovoljeni so le mali alfanumerični znaki",
   "emptyValidationFailure": "To polje ne sme biti prazno",
   "titleValidationFailure": "Naslov lahko vsebuje samo alfanumerične znake in presledke",
