@@ -14,7 +14,6 @@ import '../../../../config/app_localizations.dart';
 import '../../../../theme/style.dart';
 import '../../../../widgets/collectio_button.dart';
 import '../../../../widgets/collectio_image_picker.dart';
-import '../../../../widgets/collectio_premium_icon.dart';
 import '../../../../widgets/collectio_section_title.dart';
 import '../../../../widgets/collectio_text_field.dart';
 import '../../../../widgets/collectio_toggle.dart';
