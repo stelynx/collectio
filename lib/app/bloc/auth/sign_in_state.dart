@@ -19,11 +19,6 @@ abstract class SignInState extends Equatable {
     @required this.authFailure,
   });
 
-  @override
-  String toString() {
-    return props.toString();
-  }
-
   SignInState copyWith({
     Email email,
     Password password,
