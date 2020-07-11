@@ -15,6 +15,7 @@
   "collectionSubtitle": "Subtitle",
   "collectionDescription": "Description",
   "collectionPremium": "Premium",
+  "collectionPremiumInfo": "Premium collection gives you an ability to store location of the item.",
   "fieldNamesSectionTitle": "Field names",
   "fieldNamesSectionDescription": "Pick the names of fields you would like your items to have.",
   "fieldNameTitle": "Title name",

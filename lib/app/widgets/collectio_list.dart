@@ -62,7 +62,7 @@ class CollectioList<T extends Listable> extends StatelessWidget {
                   key: UniqueKey(),
                   direction: DismissDirection.endToStart,
                   confirmDismiss: (_) async {
-                    final CollectioDialog dialog = CollectioDialog(
+                    final CollectioDeleteDialog dialog = CollectioDeleteDialog(
                       title: items[index].title,
                       content:
                           AppLocalizations.of(context).translate(dialogText),
