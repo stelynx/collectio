@@ -109,19 +109,6 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           state.subtitle.isValid() &&
           state.description.isValid() &&
           state.thumbnail.isValid()) {
-        if (state.isPremium) {
-          final bool hasUpdatedPremiumCollectionCount =
-              await _profileBloc.changePremiumCollectionsAvailable(by: -1);
-
-          if (!hasUpdatedPremiumCollectionCount) {
-            yield state.copyWith(
-              isSubmitting: false,
-              dataFailure: Left(NotUpdatedPremiumCollectionCountDataFailure()),
-            );
-            return;
-          }
-        }
-
         final CompleteProfileState completeProfileState =
             _profileBloc.state as CompleteProfileState;
         final LoadedCollectionsState loadedCollectionsState =
@@ -133,6 +120,21 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         );
 
         if (existingCollectionWithSameId == null) {
+          if (state.isPremium) {
+            final bool hasUpdatedPremiumCollectionCount =
+                await _profileBloc.changePremiumCollectionsAvailable(by: -1);
+
+            if (!hasUpdatedPremiumCollectionCount) {
+              yield state.copyWith(
+                isSubmitting: false,
+                showErrorMessages: true,
+                dataFailure:
+                    Left(NotUpdatedPremiumCollectionCountDataFailure()),
+              );
+              return;
+            }
+          }
+
           final String fileExtension = state.thumbnail
               .get()
               .path
@@ -167,6 +169,11 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
             if (uploadResult.isRight())
               _collectionsBloc.add(GetCollectionsEvent(
                   username: completeProfileState.userProfile.username));
+          } else {
+            // If saving the premium collection failed, increase the count back.
+            if (state.isPremium) {
+              await _profileBloc.changePremiumCollectionsAvailable(by: 1);
+            }
           }
 
           yield state.copyWith(
@@ -175,11 +182,6 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
             dataFailure: result.isLeft() ? result : uploadResult,
           );
         } else {
-          // If saving the premium collection failed, increase the count back.
-          if (state.isPremium) {
-            await _profileBloc.changePremiumCollectionsAvailable(by: 1);
-          }
-
           yield state.copyWith(
               isSubmitting: false,
               showErrorMessages: true,

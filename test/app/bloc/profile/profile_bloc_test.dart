@@ -112,4 +112,18 @@ void main() {
       expect: [EmptyProfileState()],
     );
   });
+
+  group('changePremiumCollectionsAvailable', () {
+    test('should return false if cannot create premium collection', () async {
+      final ProfileBloc profileBloc = ProfileBloc(
+          profileFacade: mockedProfileFacade, authBloc: mockedAuthBloc);
+
+      final bool result =
+          await profileBloc.changePremiumCollectionsAvailable(by: 1);
+
+      expect(result, isFalse);
+
+      profileBloc.close();
+    });
+  });
 }

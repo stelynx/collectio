@@ -83,7 +83,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<bool> changePremiumCollectionsAvailable({@required int by}) async {
     if (!canCreatePremiumCollection()) return false;
-    if (!(state is CompleteProfileState)) return false;
 
     final UserProfile userProfile = (state as CompleteProfileState).userProfile;
     userProfile.premiumCollectionsAvailable =
