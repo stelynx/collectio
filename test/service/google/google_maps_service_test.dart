@@ -23,8 +23,8 @@ void main() {
     when(mockedHttpClient.get(any)).thenAnswer(
         (_) async => http.Response(json.encode(googleGeocodeResponse), 200));
 
-    final http.Response result =
-        await googleMapsService.getLocationsForLatLng(1.0, 1.0);
+    final http.Response result = await googleMapsService
+        .getLocationsForLatLng(1.0, 1.0, languageCode: 'en');
 
     expect(result, isA<http.Response>());
   });
@@ -33,13 +33,17 @@ void main() {
     when(mockedHttpClient.get(any)).thenAnswer((_) async =>
         http.Response(json.encode(googleAutocompleteResponse), 200));
 
-    final http.Response result =
-        await googleMapsService.getSuggestionsFor('ljubljana');
+    final http.Response result = await googleMapsService.getSuggestionsFor(
+      'ljubljana',
+      languageCode: 'sl',
+      latitude: 1.0,
+      longitude: 2.0,
+    );
 
     expect(result, isA<http.Response>());
   });
 
-  test('should return response to getPlaceDetails', () async {
+  test('should return response to getPlaceDetails if given place id', () async {
     when(mockedHttpClient.get(any)).thenAnswer((_) async =>
         http.Response(json.encode(googlePlaceDetailsResponse), 200));
 
@@ -48,4 +52,15 @@ void main() {
 
     expect(result, isA<http.Response>());
   });
+
+  test(
+    'should throw ArgumentError to getPlaceDetails if given place id is null',
+    () async {
+      when(mockedHttpClient.get(any)).thenAnswer((_) async =>
+          http.Response(json.encode(googlePlaceDetailsResponse), 200));
+
+      expect(googleMapsService.getPlaceDetails(null),
+          throwsA(isA<ArgumentError>()));
+    },
+  );
 }
