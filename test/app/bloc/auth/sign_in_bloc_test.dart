@@ -565,4 +565,15 @@ void main() {
         mockedFirebaseAuthFacade.signUpWithEmailAndPassword(
             email: Email('a@b.com'), password: Password('123456'))),
   );
+
+  blocTest(
+    'should set isRegistering to false on CancelRegistration',
+    build: () async => SignInBloc(
+      authFacade: mockedFirebaseAuthFacade,
+      profileFacade: mockedFirebaseProfileFacade,
+      settingsFacade: mockedFirebaseSettingsFacade,
+    ),
+    act: (SignInBloc bloc) async => bloc.add(CancelRegistrationSignInEvent()),
+    expect: [GeneralSignInState(isRegistering: false)],
+  );
 }

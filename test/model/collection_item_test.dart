@@ -1,4 +1,5 @@
 import 'package:collectio/model/collection_item.dart';
+import 'package:collectio/model/image_metadata.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -32,6 +33,8 @@ void main() {
 
   test('should get correct CollectionItem from CollectionItem.fromJson()', () {
     final DateTime added = DateTime.now();
+    final ImageMetadata imageMetadata =
+        ImageMetadata(created: null, latitude: null, longitude: null);
     final CollectionItem collectionItem = CollectionItem(
       id: 'title',
       description: 'description',
@@ -40,7 +43,7 @@ void main() {
       imageUrl: 'imageUrl',
       rating: 10,
       added: added,
-      imageMetadata: null,
+      imageMetadata: imageMetadata,
     );
     final Map<String, dynamic> collectionItemJson = <String, dynamic>{
       'id': 'title',
@@ -50,6 +53,7 @@ void main() {
       'image': 'imageUrl',
       'rating': 10,
       'added': added.millisecondsSinceEpoch,
+      'imageMetadata': imageMetadata.toJson(),
     };
 
     final CollectionItem result = CollectionItem.fromJson(collectionItemJson);
@@ -130,5 +134,17 @@ void main() {
       ..sort(CollectionItem.compare);
 
     expect(result, equals(sortedItems));
+  });
+
+  test('should always return false to isPremium call', () {
+    final CollectionItem item = CollectionItem(
+        added: null,
+        title: null,
+        subtitle: null,
+        description: null,
+        imageUrl: null,
+        rating: null);
+
+    expect(item.isPremium, isFalse);
   });
 }

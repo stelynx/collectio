@@ -25,7 +25,7 @@ void main() {
     expect(result.backgroundColor, equals(Dark.backgroundColor));
   });
 
-  test('should be able to get theme based on system', () {
+  test('should be able to get light theme based on system', () {
     when(CollectioThemeManager.systemInformation.getBrightness())
         .thenReturn(Brightness.light);
 
@@ -33,6 +33,16 @@ void main() {
         CollectioThemeManager.getTheme(CollectioTheme.SYSTEM);
 
     expect(result.backgroundColor, equals(Light.backgroundColor));
+  });
+
+  test('should be able to get dark theme based on system', () {
+    when(CollectioThemeManager.systemInformation.getBrightness())
+        .thenReturn(Brightness.dark);
+
+    final ThemeData result =
+        CollectioThemeManager.getTheme(CollectioTheme.SYSTEM);
+
+    expect(result.backgroundColor, equals(Dark.backgroundColor));
   });
 
   test('should throw exception on unknown theme', () {

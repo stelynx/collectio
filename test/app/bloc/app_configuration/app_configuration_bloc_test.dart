@@ -86,4 +86,25 @@ void main() {
       themeBloc.close();
     },
   );
+
+  blocTest(
+    'should set initial state on Reset',
+    build: () async {
+      when(settingsBloc.state).thenReturn(EmptySettingsState());
+      return AppConfigurationBloc(settingsBloc: settingsBloc);
+    },
+    act: (AppConfigurationBloc bloc) async => bloc
+      ..add(ChangeAppConfigurationEvent(Settings(
+        theme: CollectioTheme.LIGHT,
+        language: Language.de,
+      )))
+      ..add(ResetAppConfigurationEvent()),
+    expect: [
+      AppConfigurationState(
+        theme: CollectioTheme.LIGHT,
+        language: Language.de,
+      ),
+      InitialAppConfigurationState(),
+    ],
+  );
 }

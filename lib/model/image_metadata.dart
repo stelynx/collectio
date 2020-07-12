@@ -1,9 +1,10 @@
 import 'dart:math';
 
+import 'package:equatable/equatable.dart';
 import 'package:exif/exif.dart';
 import 'package:meta/meta.dart';
 
-class ImageMetadata {
+class ImageMetadata extends Equatable {
   final DateTime created;
   final double latitude;
   final double longitude;
@@ -69,7 +70,6 @@ class ImageMetadata {
   }
 
   @override
-  String toString() {
-    return 'ImageMetadata(created = $created, latitude = $latitude, longitude = $longitude)';
-  }
+  List<Object> get props =>
+      [created.toString().substring(0, 19), latitude, longitude];
 }

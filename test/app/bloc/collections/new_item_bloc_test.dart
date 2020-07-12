@@ -7,6 +7,7 @@ import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/facade/maps/maps_facade.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
+import 'package:collectio/model/geo_data.dart';
 import 'package:collectio/model/value_object/description.dart' as model;
 import 'package:collectio/model/value_object/photo.dart';
 import 'package:collectio/model/value_object/subtitle.dart';
@@ -15,7 +16,7 @@ import 'package:collectio/util/error/data_failure.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:injectable/injectable.dart';
+import 'package:injectable/injectable.dart' show Environment;
 import 'package:mockito/mockito.dart';
 
 import '../../../mocks.dart';
@@ -123,6 +124,63 @@ void main() {
     expect: [
       GeneralNewItemState(localImage: Photo(mockedFile)),
     ],
+  );
+
+  blocTest(
+    'should update location on location changed and obtain latitude and longitude when missing',
+    build: () async {
+      when(mockedMapsFacade.getPlaceDetails(any)).thenAnswer((_) async =>
+          GeoData(id: 'id', location: 'location', latitude: 1, longitude: 1));
+      return NewItemBloc(
+        mapsFacade: mockedMapsFacade,
+        collectionsFacade: mockedCollectionsFacade,
+        collectionItemsBloc: mockedCollectionItemsBloc,
+      );
+    },
+    act: (NewItemBloc bloc) async => bloc.add(
+        LocationChangedNewItemEvent(GeoData(id: 'id', location: 'location'))),
+    verify: (_) async =>
+        verify(mockedMapsFacade.getPlaceDetails('id')).called(1),
+    expect: [
+      GeneralNewItemState(
+          geoData: GeoData(
+              id: 'id', location: 'location', latitude: 1, longitude: 1)),
+    ],
+  );
+
+  blocTest(
+    'should update location on location changed and not obtain latitude and longitude when not missing',
+    build: () async {
+      return NewItemBloc(
+        mapsFacade: mockedMapsFacade,
+        collectionsFacade: mockedCollectionsFacade,
+        collectionItemsBloc: mockedCollectionItemsBloc,
+      );
+    },
+    act: (NewItemBloc bloc) async => bloc.add(LocationChangedNewItemEvent(
+        GeoData(id: 'id', location: 'location', latitude: 1, longitude: 1))),
+    verify: (_) async => verifyNever(mockedMapsFacade.getPlaceDetails('id')),
+    expect: [
+      GeneralNewItemState(
+          geoData: GeoData(
+              id: 'id', location: 'location', latitude: 1, longitude: 1)),
+    ],
+  );
+
+  blocTest(
+    'should do nothing on location changed when event.geoData is null',
+    build: () async {
+      when(mockedMapsFacade.getPlaceDetails(any)).thenAnswer((_) async =>
+          GeoData(id: 'id', location: 'location', latitude: 1, longitude: 1));
+      return NewItemBloc(
+        mapsFacade: mockedMapsFacade,
+        collectionsFacade: mockedCollectionsFacade,
+        collectionItemsBloc: mockedCollectionItemsBloc,
+      );
+    },
+    act: (NewItemBloc bloc) async =>
+        bloc.add(LocationChangedNewItemEvent(null)),
+    expect: [],
   );
 
   blocTest(
@@ -660,4 +718,37 @@ void main() {
       ),
     ],
   );
+
+  group('getLocationSuggestions', () {
+    test('should forward call to mapsFacade', () async {
+      final String searchQuery = 'ljubljana';
+      final NewItemBloc newItemBloc = NewItemBloc(
+        mapsFacade: mockedMapsFacade,
+        collectionsFacade: mockedCollectionsFacade,
+        collectionItemsBloc: mockedCollectionItemsBloc,
+      );
+
+      await newItemBloc.getLocationSuggestions(searchQuery);
+
+      verify(mockedMapsFacade.getSuggestionsFor(searchQuery)).called(1);
+
+      newItemBloc.close();
+    });
+  });
+
+  group('getInitialSuggestions', () {
+    test('should forward call to mapsFacade', () async {
+      final NewItemBloc newItemBloc = NewItemBloc(
+        mapsFacade: mockedMapsFacade,
+        collectionsFacade: mockedCollectionsFacade,
+        collectionItemsBloc: mockedCollectionItemsBloc,
+      );
+
+      await newItemBloc.getInitialSuggestions();
+
+      verify(mockedMapsFacade.getLocationsForLatLng(null, null)).called(1);
+
+      newItemBloc.close();
+    });
+  });
 }

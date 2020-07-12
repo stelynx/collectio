@@ -428,6 +428,122 @@ void main() {
     );
 
     blocTest(
+      'should update premium collection count on valid premium collection submission',
+      build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
+        when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
+        when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
+          UserProfile(
+            email: 'email',
+            userUid: 'userUid',
+            username: 'username',
+            firstName: 'firstName',
+            lastName: 'lastName',
+          ),
+        ));
+        when(mockedCollectionsFacade.uploadCollectionThumbnail(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsFacade.addCollection(any))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsBloc.state)
+            .thenReturn(LoadedCollectionsState(collections: []));
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async => bloc
+        ..add(TitleChangedNewCollectionEvent('title'))
+        ..add(SubtitleChangedNewCollectionEvent('subtitle'))
+        ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
+        ..add(IsPremiumChangedNewCollectionEvent())
+        ..add(SubmitNewCollectionEvent()),
+      verify: (_) async =>
+          verify(mockedProfileBloc.changePremiumCollectionsAvailable(by: -1))
+              .called(1),
+    );
+
+    blocTest(
+      'should have Left(NotUpdatedPremiumCollectionCount) when failed to update premium collection count',
+      build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
+        when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
+        when(mockedProfileBloc.changePremiumCollectionsAvailable(
+                by: anyNamed('by')))
+            .thenAnswer((_) async => false);
+        when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
+          UserProfile(
+            email: 'email',
+            userUid: 'userUid',
+            username: 'username',
+            firstName: 'firstName',
+            lastName: 'lastName',
+          ),
+        ));
+        when(mockedCollectionsFacade.uploadCollectionThumbnail(
+                image: anyNamed('image'),
+                destinationName: anyNamed('destinationName')))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsFacade.addCollection(any))
+            .thenAnswer((_) async => Right(null));
+        when(mockedCollectionsBloc.state)
+            .thenReturn(LoadedCollectionsState(collections: []));
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async => bloc
+        ..add(TitleChangedNewCollectionEvent('title'))
+        ..add(SubtitleChangedNewCollectionEvent('subtitle'))
+        ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
+        ..add(IsPremiumChangedNewCollectionEvent())
+        ..add(SubmitNewCollectionEvent()),
+      expect: [
+        GeneralNewCollectionState(title: Title('title')),
+        GeneralNewCollectionState(
+            title: Title('title'), subtitle: Subtitle('subtitle')),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description')),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: Photo(mockedFile)),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: Photo(mockedFile),
+            isPremium: true),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: Photo(mockedFile),
+            isPremium: true,
+            isSubmitting: true),
+        GeneralNewCollectionState(
+            title: Title('title'),
+            subtitle: Subtitle('subtitle'),
+            description: model.Description('description'),
+            thumbnail: Photo(mockedFile),
+            isPremium: true,
+            isSubmitting: false,
+            showErrorMessages: true,
+            dataFailure: Left(NotUpdatedPremiumCollectionCountDataFailure())),
+      ],
+    );
+
+    blocTest(
       'should have state.dataFailure as Right on success',
       build: () async {
         when(mockedFile.path).thenReturn('thumnail.jpg');
@@ -618,6 +734,45 @@ void main() {
     );
 
     blocTest(
+      'should update back premium collection count on failed item save',
+      build: () async {
+        when(mockedFile.path).thenReturn('thumnail.jpg');
+        when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
+        when(mockedProfileBloc.changePremiumCollectionsAvailable(
+                by: anyNamed('by')))
+            .thenAnswer((_) async => true);
+        when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
+          UserProfile(
+            email: 'email',
+            userUid: 'userUid',
+            username: 'username',
+            firstName: 'firstName',
+            lastName: 'lastName',
+          ),
+        ));
+        when(mockedCollectionsFacade.addCollection(any))
+            .thenAnswer((_) async => Left(DataFailure()));
+        when(mockedCollectionsBloc.state)
+            .thenReturn(LoadedCollectionsState(collections: []));
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async => bloc
+        ..add(TitleChangedNewCollectionEvent('title'))
+        ..add(SubtitleChangedNewCollectionEvent('subtitle'))
+        ..add(DescriptionChangedNewCollectionEvent('description'))
+        ..add(ImageChangedNewCollectionEvent(mockedFile))
+        ..add(IsPremiumChangedNewCollectionEvent())
+        ..add(SubmitNewCollectionEvent()),
+      verify: (_) async =>
+          verify(mockedProfileBloc.changePremiumCollectionsAvailable(by: 1))
+              .called(1),
+    );
+
+    blocTest(
       'should have state.dataFailure as Left on failed thumbnail upload',
       build: () async {
         when(mockedFile.path).thenReturn('thumnail.jpg');
@@ -677,6 +832,42 @@ void main() {
             isSubmitting: false,
             showErrorMessages: true,
             dataFailure: Left(DataFailure())),
+      ],
+    );
+  });
+
+  group('IsPremiumChanged', () {
+    blocTest(
+      'should yield nothing if cannot create premium collection',
+      build: () async {
+        when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(false);
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async =>
+          bloc.add(IsPremiumChangedNewCollectionEvent()),
+      expect: [],
+    );
+
+    blocTest(
+      'should yield state with switched premium if can create premium collection',
+      build: () async {
+        when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
+        return NewCollectionBloc(
+          collectionsFacade: mockedCollectionsFacade,
+          profileBloc: mockedProfileBloc,
+          collectionsBloc: mockedCollectionsBloc,
+        );
+      },
+      act: (NewCollectionBloc bloc) async => bloc
+        ..add(IsPremiumChangedNewCollectionEvent())
+        ..add(IsPremiumChangedNewCollectionEvent()),
+      expect: [
+        GeneralNewCollectionState(isPremium: true),
+        GeneralNewCollectionState(isPremium: false),
       ],
     );
   });
