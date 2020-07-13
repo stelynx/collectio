@@ -33,6 +33,8 @@ This was the plan for user interface for version one, when the most effort went 
 
 ![](misc/collectio_v1.png)
 
+### Version 2
+
 ## Future plans
 
 The application has a lot of potential, therefore it is far from being finished. There is so much one can still learn from implementing it, from complex user interface, to additional functionality, personlized preferences and themes, etc.
@@ -48,3 +50,4 @@ Since this is an open-source project, everyone is welcomed to contribute, by ope
 Special thanks go to
 
 - [@felangel](https://github.com/felangel) for helping me with testing BLoC.
+- [@Liisjak](https://github.com/Liisjak) for opening _exif world_ to me and suggesting using location.
