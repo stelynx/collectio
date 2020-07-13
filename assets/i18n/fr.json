@@ -48,7 +48,7 @@
   "signIn": "Se connecter",
   "register": "S'inscrire",
   "delete": "Supprimer",
-  "reset": "Reset",
+  "reset": "Réinitialiser",
   "cancel": "Annuler",
 
   "unknownRouteMessage": "Route inconnue",
@@ -68,7 +68,7 @@
   "notUpdatedPremiumCollectionCountDataFailure": "Impossible de mettre à jour les collections premium restantes",
 
   "fillInEmail": "Remplir l'email",
-  "invalidEmail": "E-mail invalide",
+  "invalidEmail": "Email invalide",
   "invalidPassword": "Mot de passe invalide",
   "usernameTooShort": "Nom d'utilisateur trop court",
   "usernameContainsStelynx": "Nom d'utilisateur ne doit pas contenir \"stelynx\"",
