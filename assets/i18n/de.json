@@ -6,7 +6,7 @@
   "titleEditProfile": "Profil bearbeiten",
   "titleSettings": "Einstellungen",
 
-  "email": "Email",
+  "email": "E-Mail",
   "password": "Passwort",
   "username": "Benutzername",
 
@@ -48,7 +48,7 @@
   "signIn": "Anmelden",
   "register": "registrieren",
   "delete": "Löschen",
-  "reset": "Reset",
+  "reset": "Zurücksetzen",
   "cancel": "Abbrechen",
 
   "unknownRouteMessage": "Unbekannte Route",
