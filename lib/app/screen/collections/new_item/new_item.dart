@@ -18,10 +18,10 @@ class NewItemScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${AppLocalizations.of(context).translate(Translation.titleAddItem)} ${collection.id}',
+          '${AppLocalizations.of(context).translate(Translation.titleAddItem)} "${collection.title}"',
           maxLines: 2,
           overflow: TextOverflow.fade,
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 16),
         ),
       ),
       body: BlocProvider(
