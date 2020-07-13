@@ -1,6 +1,6 @@
 # Collectio changelog
 
-## Content
+## Contents
 
 - [Version 1 - Minimum valuable product](#version-1---minimum-valuable-product)
 - [Version 2 - App Personalization](#version-2---app-personalization)
