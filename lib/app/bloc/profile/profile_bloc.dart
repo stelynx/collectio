@@ -1,20 +1,24 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
-import 'package:collectio/app/bloc/auth/auth_bloc.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:mockito/mockito.dart';
 
 import '../../../facade/profile/profile_facade.dart';
 import '../../../model/user_profile.dart';
 import '../../../util/error/data_failure.dart';
+import '../auth/auth_bloc.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 
+/// Bloc used to hold profile data of current user.
+/// Another bloc should be created for getting profile
+/// data of other users in upcoming version.
 @prod
 @lazySingleton
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -30,6 +34,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     _authBlocStreamSubscription = _authBloc.listen((AuthState state) {
       if (state is AuthenticatedAuthState) {
         this.add(GetUserProfileEvent(userUid: state.userUid));
+      } else if (state is UnauthenticatedAuthState) {
+        this.add(ResetUserProfileEvent());
       }
     });
   }
@@ -47,11 +53,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> mapEventToState(
     ProfileEvent event,
   ) async* {
+    if (event is ResetUserProfileEvent) {
+      yield EmptyProfileState();
+      return;
+    }
+
     yield LoadingProfileState();
 
     if (event is GetUserProfileEvent) {
-      Either<DataFailure, UserProfile> profileOrFailure =
-          await _profileFacade.getUserProfileByUserUid(userUid: event.userUid);
+      final Either<DataFailure, UserProfile> profileOrFailure =
+          await _profileFacade.getUserProfileByUserUid(
+              userUid: event.userUid ??
+                  (_authBloc.state as AuthenticatedAuthState).userUid);
 
       yield profileOrFailure.fold(
         (DataFailure failure) => ErrorProfileState(failure),
@@ -67,9 +80,32 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
     }
   }
+
+  Future<bool> changePremiumCollectionsAvailable({@required int by}) async {
+    if (!canCreatePremiumCollection()) return false;
+
+    final UserProfile userProfile = (state as CompleteProfileState).userProfile;
+    userProfile.premiumCollectionsAvailable =
+        max(-1, userProfile.premiumCollectionsAvailable + by);
+
+    final Either<DataFailure, void> result =
+        await _profileFacade.addUserProfile(userProfile: userProfile);
+
+    this.add(GetUserProfileEvent());
+
+    return result.isRight();
+  }
+
+  bool canCreatePremiumCollection() {
+    if (!(state is CompleteProfileState)) return false;
+
+    final UserProfile user = (state as CompleteProfileState).userProfile;
+    return user.premiumCollectionsAvailable != 0;
+  }
 }
 
 @test
 @lazySingleton
 @RegisterAs(ProfileBloc)
-class MockedProfileBloc extends Mock implements ProfileBloc {}
+class MockedProfileBloc extends MockBloc<ProfileEvent, ProfileState>
+    implements ProfileBloc {}

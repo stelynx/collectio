@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:collectio/util/function/image_name_generator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -11,12 +10,16 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
+import '../../../model/interface/listable.dart';
 import '../../../model/value_object/description.dart';
+import '../../../model/value_object/name.dart';
+import '../../../model/value_object/photo.dart';
 import '../../../model/value_object/subtitle.dart';
 import '../../../model/value_object/title.dart';
-import '../../../util/constant/constants.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/data_failure.dart';
 import '../../../util/function/id_generator.dart';
+import '../../../util/function/image_name_generator.dart';
 import '../../../util/function/listable_finder.dart';
 import '../profile/profile_bloc.dart';
 import 'collections_bloc.dart';
@@ -24,6 +27,7 @@ import 'collections_bloc.dart';
 part 'new_collection_event.dart';
 part 'new_collection_state.dart';
 
+/// Bloc used for new collection form.
 @prod
 @injectable
 class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
@@ -66,7 +70,33 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
       );
     } else if (event is ImageChangedNewCollectionEvent) {
       yield state.copyWith(
-        thumbnail: event.image,
+        thumbnail: Photo(event.image),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is IsPremiumChangedNewCollectionEvent) {
+      if (!_profileBloc.canCreatePremiumCollection()) return;
+
+      yield state.copyWith(
+        isPremium: !state.isPremium,
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ItemTitleNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemTitleName: Name(event.itemTitleName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ItemSubtitleNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemSubtitleName: Name(event.itemSubtitleName),
+        dataFailure: null,
+        overrideDataFailure: true,
+      );
+    } else if (event is ItemDescriptionNameChangedNewCollectionEvent) {
+      yield state.copyWith(
+        itemDescriptionName: Name(event.itemDescriptionName),
         dataFailure: null,
         overrideDataFailure: true,
       );
@@ -78,21 +108,42 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           state.title.isValid() &&
           state.subtitle.isValid() &&
           state.description.isValid() &&
-          state.thumbnail != null) {
+          state.thumbnail.isValid()) {
         final CompleteProfileState completeProfileState =
             _profileBloc.state as CompleteProfileState;
         final LoadedCollectionsState loadedCollectionsState =
             _collectionsBloc.state as LoadedCollectionsState;
 
-        if (ListableFinder.findById(
-                loadedCollectionsState.collections, state.id) ==
-            null) {
-          final String fileExtension = state.thumbnail.path
-              .substring(state.thumbnail.path.lastIndexOf('.') + 1);
+        final Listable existingCollectionWithSameId = ListableFinder.findById(
+          loadedCollectionsState.collections,
+          state.id,
+        );
+
+        if (existingCollectionWithSameId == null) {
+          if (state.isPremium) {
+            final bool hasUpdatedPremiumCollectionCount =
+                await _profileBloc.changePremiumCollectionsAvailable(by: -1);
+
+            if (!hasUpdatedPremiumCollectionCount) {
+              yield state.copyWith(
+                isSubmitting: false,
+                showErrorMessages: true,
+                dataFailure:
+                    Left(NotUpdatedPremiumCollectionCountDataFailure()),
+              );
+              return;
+            }
+          }
+
+          final String fileExtension = state.thumbnail
+              .get()
+              .path
+              .substring(state.thumbnail.get().path.lastIndexOf('.') + 1);
           final String imageUrl = getCollectionThumbnailName(
-              completeProfileState.userProfile.username,
-              state.id,
-              fileExtension);
+            completeProfileState.userProfile.username,
+            state.id,
+            fileExtension,
+          );
 
           final Collection newCollection = Collection(
             id: state.id,
@@ -101,6 +152,10 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
             subtitle: state.subtitle.get(),
             description: state.description.get(),
             thumbnail: imageUrl,
+            isPremium: state.isPremium,
+            itemTitleName: state.itemTitleName.get(),
+            itemSubtitleName: state.itemSubtitleName.get(),
+            itemDescriptionName: state.itemDescriptionName.get(),
           );
 
           final Either<DataFailure, void> result =
@@ -109,11 +164,16 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           Either<DataFailure, void> uploadResult;
           if (result.isRight()) {
             uploadResult = await _collectionsFacade.uploadCollectionThumbnail(
-                image: state.thumbnail, destinationName: imageUrl);
+                image: state.thumbnail.get(), destinationName: imageUrl);
 
             if (uploadResult.isRight())
               _collectionsBloc.add(GetCollectionsEvent(
                   username: completeProfileState.userProfile.username));
+          } else {
+            // If saving the premium collection failed, increase the count back.
+            if (state.isPremium) {
+              await _profileBloc.changePremiumCollectionsAvailable(by: 1);
+            }
           }
 
           yield state.copyWith(
@@ -125,8 +185,8 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
           yield state.copyWith(
               isSubmitting: false,
               showErrorMessages: true,
-              dataFailure:
-                  Left(DataFailure(message: Constants.collectionTitleExists)));
+              dataFailure: Left(
+                  DataFailure(message: Translation.collectionTitleExists)));
         }
       } else {
         yield state.copyWith(isSubmitting: false, showErrorMessages: true);

@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 
+import '../../../util/constant/translation.dart';
+import '../../config/app_localizations.dart';
+import '../../theme/style.dart';
+
 class ErrorScreen extends StatelessWidget {
-  final String _errorMessage;
+  final Translation _errorMessage;
 
-  const ErrorScreen({@required String message}) : _errorMessage = message;
+  const ErrorScreen({@required Translation message}) : _errorMessage = message;
 
-  String get errorMessage => _errorMessage;
+  Translation get errorMessage => _errorMessage;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: CollectioStyle.screenPadding,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Icon(
+              Icon(
                 Icons.error,
-                size: 80,
-                color: Colors.red,
+                size: CollectioStyle.bigIconSize,
+                color: Theme.of(context).errorColor,
               ),
-              const SizedBox(height: 10),
-              Text(_errorMessage),
+              CollectioStyle.itemSplitter,
+              Text(AppLocalizations.of(context).translate(_errorMessage)),
             ],
           ),
         ),

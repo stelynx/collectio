@@ -9,12 +9,15 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/collections/collections_facade.dart';
 import '../../../model/collection.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/data_failure.dart';
+import '../../widgets/collectio_toast.dart';
 import '../profile/profile_bloc.dart';
 
 part 'collections_event.dart';
 part 'collections_state.dart';
 
+/// Bloc used for displaying collections of user.
 @prod
 @lazySingleton
 class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
@@ -30,6 +33,8 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     _profileBlocStreamSubscription = _profileBloc.listen((ProfileState state) {
       if (state is CompleteProfileState) {
         this.add(GetCollectionsEvent(username: state.userProfile.username));
+      } else if (state is EmptyProfileState) {
+        this.add(ResetCollectionsEvent());
       }
     });
   }
@@ -55,9 +60,60 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
 
       yield collectionsOrFailure.fold<CollectionsState>(
         (_) => ErrorCollectionsState(),
-        (List<Collection> collections) =>
-            LoadedCollectionsState(collections: collections),
+        (List<Collection> collections) => LoadedCollectionsState(
+            collections: collections..sort(Collection.compare)),
       );
+    } else if (event is DeleteCollectionCollectionsEvent) {
+      if (state is LoadedCollectionsState) {
+        final List<Collection> collections =
+            (state as LoadedCollectionsState).collections;
+        final int collectionIndex = collections.indexOf(event.collection);
+        collections.removeAt(collectionIndex);
+
+        yield LoadedCollectionsState(collections: collections);
+
+        final Either<DataFailure, void> result =
+            await _collectionsFacade.deleteCollection(event.collection);
+
+        if (result.isRight()) {
+          yield LoadedCollectionsState(
+            collections: collections,
+            toastMessage: Translation.collectionDeleted,
+            toastType: ToastType.success,
+          );
+        } else {
+          collections.insert(collectionIndex, event.collection);
+          yield LoadedCollectionsState(
+            collections: (state as LoadedCollectionsState).collections,
+            toastMessage: Translation.collectionDeletionFailed,
+            toastType: ToastType.error,
+          );
+        }
+      }
+    } else if (event is ResetCollectionsEvent) {
+      yield EmptyCollectionsState();
+    } else if (event is ToggleSearchCollectionsEvent) {
+      if (state is LoadedCollectionsState) {
+        yield LoadedCollectionsState(
+          collections: (state as LoadedCollectionsState).collections,
+          isSearching: !(state as LoadedCollectionsState).isSearching,
+        );
+      }
+    } else if (event is SearchQueryChangedCollectionsEvent) {
+      if (state is LoadedCollectionsState) {
+        final List<Collection> collections =
+            (state as LoadedCollectionsState).collections;
+
+        yield LoadedCollectionsState(
+          collections: collections,
+          displayedCollections: collections
+              .where((Collection collection) => collection.title
+                  .toLowerCase()
+                  .contains(event.searchQuery.toLowerCase()))
+              .toList(),
+          isSearching: true,
+        );
+      }
     }
   }
 }

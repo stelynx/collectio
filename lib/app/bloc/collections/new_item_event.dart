@@ -5,11 +5,9 @@ abstract class NewItemEvent {
 }
 
 class InitializeNewItemEvent extends NewItemEvent {
-  final String owner;
-  final String collection;
+  final Collection collection;
 
-  const InitializeNewItemEvent(
-      {@required this.owner, @required this.collection});
+  const InitializeNewItemEvent(this.collection);
 }
 
 class TitleChangedNewItemEvent extends NewItemEvent {
@@ -30,16 +28,26 @@ class DescriptionChangedNewItemEvent extends NewItemEvent {
   const DescriptionChangedNewItemEvent(this.description);
 }
 
-class RaitingChangedNewItemEvent extends NewItemEvent {
-  final int raiting;
+class RatingChangedNewItemEvent extends NewItemEvent {
+  final int rating;
 
-  const RaitingChangedNewItemEvent(this.raiting);
+  const RatingChangedNewItemEvent(this.rating);
 }
 
 class ImageChangedNewItemEvent extends NewItemEvent {
   final File image;
+  final ImageMetadata metadata;
 
-  const ImageChangedNewItemEvent(this.image);
+  const ImageChangedNewItemEvent({
+    @required this.image,
+    @required this.metadata,
+  });
+}
+
+class LocationChangedNewItemEvent extends NewItemEvent {
+  final GeoData geoData;
+
+  const LocationChangedNewItemEvent(this.geoData);
 }
 
 class SubmitNewItemEvent extends NewItemEvent {}

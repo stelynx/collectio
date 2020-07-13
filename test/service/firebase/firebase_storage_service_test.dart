@@ -68,6 +68,26 @@ void main() {
     );
   });
 
+  group('uploadProfileImage', () {
+    test(
+      'should call child and putFile on FirebaseStorage with correct arguments',
+      () {
+        when(storage.ref()).thenReturn(mockedStorageReference);
+        when(mockedStorageReference.child(any))
+            .thenReturn(mockedStorageReference);
+        when(mockedStorageReference.putFile(any))
+            .thenReturn(mockedStorageUploadTask);
+
+        storageService.uploadProfileImage(
+            image: mockedFile, destinationName: imageTitle);
+
+        verify(mockedStorageReference.child('profileImg/$imageTitle'))
+            .called(1);
+        verify(mockedStorageReference.putFile(mockedFile)).called(1);
+      },
+    );
+  });
+
   group('getItemImageUrl', () {
     test(
       'should call getDownloadURL',
@@ -93,6 +113,36 @@ void main() {
 
       final String result =
           await storageService.getItemImageUrl(imageName: imageTitle);
+
+      expect(result, equals(imageUrl));
+    });
+  });
+
+  group('getProfileImageUrl', () {
+    test(
+      'should call getDownloadURL',
+      () async {
+        when(storage.ref()).thenReturn(mockedStorageReference);
+        when(mockedStorageReference.child(any))
+            .thenReturn(mockedStorageReference);
+
+        await storageService.getProfileImageUrl(imageName: imageTitle);
+
+        verify(mockedStorageReference.child('profileImg/$imageTitle'))
+            .called(1);
+        verify(mockedStorageReference.getDownloadURL()).called(1);
+      },
+    );
+
+    test('should return appropriate download URL', () async {
+      when(storage.ref()).thenReturn(mockedStorageReference);
+      when(mockedStorageReference.child(any))
+          .thenReturn(mockedStorageReference);
+      when(mockedStorageReference.getDownloadURL())
+          .thenAnswer((_) async => imageUrl);
+
+      final String result =
+          await storageService.getProfileImageUrl(imageName: imageTitle);
 
       expect(result, equals(imageUrl));
     });

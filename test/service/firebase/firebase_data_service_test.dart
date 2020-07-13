@@ -134,7 +134,7 @@ void main() {
         'title': 'title',
         'subtitle': 'subtitle',
         'image': 'imageUrl',
-        'raiting': 10,
+        'rating': 10,
         'added': Timestamp.fromMillisecondsSinceEpoch(
             DateTime.now().millisecondsSinceEpoch),
       };
@@ -175,5 +175,59 @@ void main() {
         verify(mockedDocumentReference.setData(userProfileJson)).called(1);
       },
     );
+  });
+
+  group('updateUserProfile', () {
+    test('should call setData on correct document', () async {
+      final Map<String, dynamic> userProfileJson = UserProfile(
+        email: 'email',
+        userUid: userUid,
+        username: username,
+      ).toJson();
+
+      when(firebaseDataService.firestore.collection(any))
+          .thenReturn(mockedCollectionReference);
+      when(mockedCollectionReference.document(any))
+          .thenReturn(mockedDocumentReference);
+      when(mockedDocumentReference.setData(any)).thenAnswer((_) async => null);
+
+      await firebaseDataService.updateUserProfile(
+          id: userUid, userProfile: userProfileJson);
+
+      verify(mockedCollectionReference.document(userUid)).called(1);
+      verify(mockedDocumentReference.setData(userProfileJson)).called(1);
+    });
+  });
+
+  group('deleteCollection', () {
+    test('should call delete on correct collection', () async {
+      when(firebaseDataService.firestore.document(any))
+          .thenReturn(mockedDocumentReference);
+      when(mockedDocumentReference.delete()).thenAnswer((_) async => null);
+
+      await firebaseDataService.deleteCollection(
+          owner: 'owner', collectionName: 'collectionName');
+
+      verify(firebaseDataService.firestore
+              .document('owner_collection/collectionName'))
+          .called(1);
+      verify(mockedDocumentReference.delete()).called(1);
+    });
+  });
+
+  group('deleteItemInCollection', () {
+    test('should call delete on correct item', () async {
+      when(firebaseDataService.firestore.document(any))
+          .thenReturn(mockedDocumentReference);
+      when(mockedDocumentReference.delete()).thenAnswer((_) async => null);
+
+      await firebaseDataService.deleteItemInCollection(
+          owner: 'owner', collectionName: 'collectionName', itemId: 'itemId');
+
+      verify(firebaseDataService.firestore
+              .document('owner_collection/collectionName/items/itemId'))
+          .called(1);
+      verify(mockedDocumentReference.delete()).called(1);
+    });
   });
 }

@@ -2,7 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../model/image_metadata.dart';
 import '../../platform/image_selector.dart';
+import '../../util/constant/translation.dart';
+import '../config/app_localizations.dart';
+import '../theme/style.dart';
 
 class CollectioImagePicker extends StatelessWidget {
   final ImageSelector _imageSelector;
@@ -10,26 +14,40 @@ class CollectioImagePicker extends StatelessWidget {
   final BuildContext parentContext;
   final double aspectRatio;
   final File thumbnail;
-  final void Function(File) croppedImageHandler;
+  final void Function({File image, ImageMetadata metadata}) croppedImageHandler;
+  final bool isImageLocal;
+  final String url;
+  final bool showError;
 
   const CollectioImagePicker({
     @required ImageSelector imageSelector,
     @required this.parentContext,
     @required this.aspectRatio,
-    @required this.thumbnail,
     @required this.croppedImageHandler,
+    this.thumbnail,
+    this.isImageLocal = true,
+    this.url,
+    this.showError = false,
   })  : assert(aspectRatio == 1 / 1 || aspectRatio == 16 / 9),
+        assert(isImageLocal || url != null),
         _imageSelector = imageSelector;
 
   void _getImage(Future<File> Function() imageGetter) async {
     final File image = await imageGetter();
+
+    if (image == null) return;
+
+    final ImageMetadata imageMetadata =
+        await _imageSelector.getImageMetadata(image);
 
     File croppedImage;
     if (aspectRatio == 1 / 1)
       croppedImage = await _imageSelector.cropThumbnailImage(image.path);
     else if (aspectRatio == 16 / 9)
       croppedImage = await _imageSelector.cropItemImage(image.path);
-    croppedImageHandler(croppedImage);
+
+    if (croppedImage != null)
+      croppedImageHandler(image: croppedImage, metadata: imageMetadata);
   }
 
   @override
@@ -45,7 +63,8 @@ class CollectioImagePicker extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   trailing: Icon(Icons.photo_camera),
-                  title: Text('Camera'),
+                  title: Text(AppLocalizations.of(context)
+                      .translate(Translation.camera)),
                   onTap: () {
                     Navigator.pop(context);
                     _getImage(_imageSelector.takeImageWithCamera);
@@ -53,7 +72,8 @@ class CollectioImagePicker extends StatelessWidget {
                 ),
                 ListTile(
                   trailing: Icon(Icons.photo_library),
-                  title: Text('Photo library'),
+                  title: Text(AppLocalizations.of(context)
+                      .translate(Translation.photoLibrary)),
                   onTap: () {
                     Navigator.pop(context);
                     _getImage(_imageSelector.getImageFromPhotos);
@@ -63,18 +83,50 @@ class CollectioImagePicker extends StatelessWidget {
             ),
           ),
         ),
-        child: thumbnail == null
-            ? Container(
-                decoration: BoxDecoration(border: Border.all()),
-                child: Center(
-                  child: Icon(
-                    Icons.add_a_photo,
-                    size: 50,
-                    color: Colors.grey,
-                  ),
-                ),
+        child: thumbnail != null
+            ? ClipRRect(
+                borderRadius: CollectioStyle.borderRadius,
+                child: Image.file(thumbnail),
               )
-            : Image.file(thumbnail),
+            : (!isImageLocal
+                ? ClipRRect(
+                    borderRadius: CollectioStyle.borderRadius,
+                    child: Image.network(url),
+                  )
+                : Container(
+                    decoration: showError
+                        ? BoxDecoration(
+                            border:
+                                Border.all(color: Theme.of(context).errorColor),
+                            borderRadius: CollectioStyle.borderRadius,
+                          )
+                        : BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: CollectioStyle.borderRadius,
+                          ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.add_a_photo,
+                            size: 50,
+                            color: showError
+                                ? Theme.of(context).errorColor
+                                : Theme.of(context).iconTheme.color,
+                          ),
+                          if (showError) ...[
+                            Text(
+                              AppLocalizations.of(context).translate(
+                                  Translation.photoValidationFailure),
+                              style: TextStyle(
+                                  color: Theme.of(context).errorColor),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  )),
       ),
     );
   }

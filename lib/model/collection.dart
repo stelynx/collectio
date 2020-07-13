@@ -11,6 +11,11 @@ class Collection extends Equatable implements Listable {
   final String subtitle;
   final String description;
   final String thumbnail;
+  final bool isPremium;
+
+  final String itemTitleName;
+  final String itemSubtitleName;
+  final String itemDescriptionName;
 
   Collection({
     @required this.id,
@@ -19,6 +24,10 @@ class Collection extends Equatable implements Listable {
     @required this.subtitle,
     @required this.description,
     @required this.thumbnail,
+    this.isPremium = false,
+    this.itemTitleName = 'Title',
+    this.itemSubtitleName = 'Subtitle',
+    this.itemDescriptionName = 'Description',
   });
 
   factory Collection.fromJson(Map<String, dynamic> json) {
@@ -29,6 +38,10 @@ class Collection extends Equatable implements Listable {
       subtitle: json['subtitle'],
       description: json['description'],
       thumbnail: json['thumbnail'],
+      isPremium: json['isPremium'],
+      itemTitleName: json['itemTitleName'] ?? 'Title',
+      itemSubtitleName: json['itemSubtitleName'] ?? 'Subtitle',
+      itemDescriptionName: json['itemDescriptionName'] ?? 'Description',
     );
   }
 
@@ -39,9 +52,26 @@ class Collection extends Equatable implements Listable {
       'subtitle': subtitle,
       'description': description,
       'thumbnail': thumbnail,
+      'isPremium': isPremium,
+      'itemTitleName': itemTitleName,
+      'itemSubtitleName': itemSubtitleName,
+      'itemDescriptionName': itemDescriptionName,
     };
   }
 
+  static int compare(Collection c1, Collection c2) =>
+      c1.title.compareTo(c2.title);
+
   @override
-  List<Object> get props => [id, owner, title, subtitle, description];
+  List<Object> get props => [
+        id,
+        owner,
+        title,
+        subtitle,
+        description,
+        isPremium,
+        itemTitleName,
+        itemSubtitleName,
+        itemDescriptionName,
+      ];
 }

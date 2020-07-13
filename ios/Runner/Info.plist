@@ -25,7 +25,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>We need to access your camera so you can take an awesome image of your precious item.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We do not really need a microphone, since you cannot upload a video</string>
+	<string>We do not really need a microphone, since you cannot upload a video.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need to access your photo library so you can pick an awesome image of your precious item.</string>
 	<key>UILaunchStoryboardName</key>
@@ -43,5 +43,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 </dict>
 </plist>

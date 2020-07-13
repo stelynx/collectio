@@ -10,7 +10,7 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => getIt<SignInBloc>(),
+        create: (BuildContext context) => getIt<SignInBloc>(),
         child: SignInForm(),
       ),
     );

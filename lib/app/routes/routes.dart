@@ -6,5 +6,8 @@ abstract class Routes {
   static const String collection = '/collection';
   static const String item = '/item';
   static const String newItem = '/new-item';
+  static const String profile = '/profile';
+  static const String editProfile = '/edit-profile';
+  static const String settings = '/settings';
   static const String error = '/error';
 }

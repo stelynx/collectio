@@ -246,15 +246,136 @@ void main() {
     });
   });
 
+  group('deleteCollection', () {
+    final Collection collection = Collection(
+      id: 'title',
+      owner: 'owner',
+      title: 'title',
+      subtitle: 'subtitle',
+      description: 'description',
+      thumbnail: 'thumbnail',
+    );
+
+    test('should call DataService.deleteCollection', () async {
+      when(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.deleteCollection(collection);
+
+      verify(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: collection.owner, collectionName: collection.id))
+          .called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      when(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName')))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.deleteCollection(collection);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any failure', () async {
+      when(firebaseCollectionsFacade.dataService.deleteCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName')))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result =
+          await firebaseCollectionsFacade.deleteCollection(collection);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
+  group('deleteItemInCollection', () {
+    final Collection collection = Collection(
+      id: 'title',
+      owner: 'owner',
+      title: 'title',
+      subtitle: 'subtitle',
+      description: 'description',
+      thumbnail: 'thumbnail',
+    );
+    final CollectionItem item = CollectionItem(
+      id: 'id',
+      parent: collection,
+      added: null,
+      title: 'title',
+      subtitle: 'subtitle',
+      description: 'description',
+      imageUrl: 'imageUrl',
+      rating: 10,
+      imageMetadata: null,
+    );
+
+    test('should call DataService.deleteItemInCollection', () async {
+      when(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName'),
+              itemId: 'id'))
+          .thenAnswer((_) async => null);
+
+      await firebaseCollectionsFacade.deleteItemInCollection(
+          collectionItem: item);
+
+      verify(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+        owner: item.parent.owner,
+        collectionName: item.parent.id,
+        itemId: item.id,
+      )).called(1);
+    });
+
+    test('should return Right(null) on success', () async {
+      when(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName'),
+              itemId: 'id'))
+          .thenAnswer((_) async => null);
+
+      final Either<DataFailure, void> result = await firebaseCollectionsFacade
+          .deleteItemInCollection(collectionItem: item);
+
+      expect(result, equals(Right(null)));
+    });
+
+    test('should return Left(DataFailure) on any failure', () async {
+      when(firebaseCollectionsFacade.dataService.deleteItemInCollection(
+              owner: anyNamed('owner'),
+              collectionName: anyNamed('collectionName'),
+              itemId: 'id'))
+          .thenThrow(Exception());
+
+      final Either<DataFailure, void> result = await firebaseCollectionsFacade
+          .deleteItemInCollection(collectionItem: item);
+
+      expect(result, equals(Left(DataFailure())));
+    });
+  });
+
   group('getItemsInCollection', () {
+    final Collection collection = Collection(
+      id: 'collectionId',
+      owner: 'owner',
+      title: 'collectionId',
+      subtitle: 'subtitle',
+      description: 'description',
+      thumbnail: 'thumbnail',
+    );
+
     test('should call FirebaseDataService.getItemsInCollection', () async {
       when(firebaseCollectionsFacade.dataService.getItemsInCollection(
               username: anyNamed('username'),
               collectionName: anyNamed('collectionName')))
           .thenAnswer((_) async => null);
 
-      await firebaseCollectionsFacade.getItemsInCollection(
-          'owner', 'collectionId');
+      await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       verify(firebaseCollectionsFacade.dataService.getItemsInCollection(
               username: 'owner', collectionName: 'collectionId'))
@@ -268,8 +389,7 @@ void main() {
           .thenThrow(Exception());
 
       final Either<DataFailure, List<CollectionItem>> result =
-          await firebaseCollectionsFacade.getItemsInCollection(
-              'owner', 'collectionId');
+          await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       expect(result, equals(Left(DataFailure())));
     });
@@ -281,16 +401,18 @@ void main() {
         'subtitle': 'subtitle',
         'description': 'description',
         'image': 'imageUrl',
-        'raiting': 10,
+        'rating': 10,
       };
       final CollectionItem collectionItem = CollectionItem(
+        parent: collection,
         id: 'documentId',
         added: DateTime.fromMillisecondsSinceEpoch(10000),
         title: 'title',
         subtitle: 'subtitle',
         description: 'description',
         imageUrl: 'imageUrl',
-        raiting: 10,
+        rating: 10,
+        imageMetadata: null,
       );
       final MockedDocumentSnapshot documentSnapshot =
           MockedDocumentSnapshot('documentID', firestoreCollectionItem);
@@ -307,8 +429,7 @@ void main() {
           .thenAnswer((_) async => 'imageUrl');
 
       final Either<DataFailure, List<CollectionItem>> result =
-          await firebaseCollectionsFacade.getItemsInCollection(
-              'owner', 'collectionId');
+          await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       expect(result.isRight(), isTrue);
       expect(result.getOrElse(null)[0], equals(collectionItem));
@@ -321,7 +442,7 @@ void main() {
         'subtitle': 'subtitle',
         'description': 'description',
         'image': 'imageUrl',
-        'raiting': 10,
+        'rating': 10,
       };
       final MockedDocumentSnapshot documentSnapshot =
           MockedDocumentSnapshot('documentID', firestoreCollectionItem);
@@ -338,8 +459,7 @@ void main() {
           .thenThrow(Exception());
 
       final Either<DataFailure, List<CollectionItem>> result =
-          await firebaseCollectionsFacade.getItemsInCollection(
-              'owner', 'collectionId');
+          await firebaseCollectionsFacade.getItemsInCollection(collection);
 
       expect(result.isRight(), isTrue);
       expect(result.getOrElse(null)[0].thumbnail, isNull);
@@ -353,8 +473,9 @@ void main() {
       title: 'title',
       subtitle: 'subtitle',
       imageUrl: 'imageUrl',
-      raiting: 10,
+      rating: 10,
       added: DateTime.now(),
+      imageMetadata: null,
     );
 
     final Map<String, dynamic> itemJson = item.toJson();

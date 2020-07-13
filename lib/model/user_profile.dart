@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 import '../util/constant/country.dart';
@@ -11,6 +12,9 @@ class UserProfile {
   String profileImg;
   String userUid;
   String username;
+  int premiumCollectionsAvailable;
+
+  String get id => username;
 
   UserProfile({
     @required this.email,
@@ -20,6 +24,7 @@ class UserProfile {
     this.profileImg,
     @required this.userUid,
     @required this.username,
+    this.premiumCollectionsAvailable = -1, // -1 marks infinite
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
@@ -27,19 +32,21 @@ class UserProfile {
         firstName: json['firstName'],
         lastName: json['lastName'],
         country: enumFromString<Country>(json['country'], Country.values),
-        profileImg: json['profileImg'],
+        profileImg: json['profileImg'] != '' ? json['profileImg'] : null,
         userUid: json['userUid'],
         username: json['username'],
+        premiumCollectionsAvailable: json['premiumCollectionsAvailable'],
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'email': email,
         'firstName': firstName ?? '',
         'lastName': lastName ?? '',
-        'country': country != null ? enumToString(country) : '',
+        'country': country != null ? describeEnum(country) : '',
         'profileImg': profileImg ?? '',
         'userUid': userUid,
         'username': username,
+        'premiumCollectionsAvailable': premiumCollectionsAvailable,
       };
 
   @override

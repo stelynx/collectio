@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:collectio/util/error/validation_failure.dart';
 import 'package:collectio/util/function/validator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../mocks.dart';
 
 void main() {
   group('isValidEmail', () {
@@ -54,7 +58,7 @@ void main() {
   });
 
   group('isValidPassword', () {
-    test('should return true on valid password', () {
+    test('should return Right(password) on valid password', () {
       final String password =
           'qwertyuiopasdfghjklzxcvbnm[];\\,./\'`~<>?:"|{}!@#\$%^&*()-=_+1234567890';
 
@@ -64,7 +68,8 @@ void main() {
       expect(result, equals(Right(password)));
     });
 
-    test('should return false on invalid password', () {
+    test('should return Left(PasswordValidationFailure) on invalid password',
+        () {
       final String password = '';
 
       final Either<ValidationFailure, String> result =
@@ -93,6 +98,14 @@ void main() {
       expect(result, equals(Left(UsernameValidationFailure())));
     });
 
+    test('should return failure on username with stelynx inside', () {
+      final String username = 'd21dStelYnx';
+      final Either<ValidationFailure, String> result =
+          Validator.isValidUsername(username);
+
+      expect(result, equals(Left(UsernameContainsStelynxValidationFailure())));
+    });
+
     test('should return username on valid input', () {
       final String username = 'as3dA4';
 
@@ -101,6 +114,32 @@ void main() {
 
       expect(result, equals(Right(username)));
     });
+  });
+
+  group('isValidName', () {
+    test(
+      'should return Left(NameEmptyValidationFailure) when name is empty',
+      () {
+        final String name = ' ';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidName(name);
+
+        expect(result, equals(Left(NameEmptyValidationFailure())));
+      },
+    );
+
+    test(
+      'should return Right(name) when name is ok',
+      () {
+        final String name = 'First name';
+
+        final Either<ValidationFailure, String> result =
+            Validator.isValidName(name);
+
+        expect(result, equals(Right(name)));
+      },
+    );
   });
 
   group('isValidTitle', () {
@@ -113,18 +152,6 @@ void main() {
             Validator.isValidTitle(title);
 
         expect(result, equals(Left(TitleEmptyValidationFailure())));
-      },
-    );
-
-    test(
-      'should return Left(TitleValidationFailure) when title contains illegal characters',
-      () {
-        final String title = 'ckasd@';
-
-        final Either<ValidationFailure, String> result =
-            Validator.isValidTitle(title);
-
-        expect(result, equals(Left(TitleValidationFailure())));
       },
     );
 
@@ -151,18 +178,6 @@ void main() {
             Validator.isValidSubtitle(subtitle);
 
         expect(result, equals(Left(SubtitleEmptyValidationFailure())));
-      },
-    );
-
-    test(
-      'should return Left(SubtitleValidationFailure) when subtitle contains illegal characters',
-      () {
-        final String subtitle = 'ckasd@';
-
-        final Either<ValidationFailure, String> result =
-            Validator.isValidSubtitle(subtitle);
-
-        expect(result, equals(Left(SubtitleValidationFailure())));
       },
     );
 
@@ -203,5 +218,25 @@ void main() {
         expect(result, equals(Right(description)));
       },
     );
+  });
+
+  group('isValidPhoto', () {
+    test('should return Right(photo) when photo is ok', () {
+      final File file = MockedFile();
+
+      final Either<ValidationFailure, File> result =
+          Validator.isValidPhoto(file);
+
+      expect(result, equals(Right(file)));
+    });
+
+    test(
+        'should return Left(NoPhotoValidationFailure) when photo is not present',
+        () {
+      final Either<ValidationFailure, File> result =
+          Validator.isValidPhoto(null);
+
+      expect(result, equals(Left(NoPhotoValidationFailure())));
+    });
   });
 }

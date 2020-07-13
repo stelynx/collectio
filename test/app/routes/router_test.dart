@@ -7,10 +7,14 @@ import 'package:collectio/app/screen/collections/new/new_collection_screen.dart'
 import 'package:collectio/app/screen/collections/new_item/new_item.dart';
 import 'package:collectio/app/screen/collections/one/collection.dart';
 import 'package:collectio/app/screen/initial.dart';
+import 'package:collectio/app/screen/profile/edit_profile/edit_profile_screen.dart';
+import 'package:collectio/app/screen/profile/view_profile/view_profile_screen.dart';
+import 'package:collectio/app/screen/settings/edit_settings_screen.dart';
 import 'package:collectio/app/screen/shared/error.dart';
 import 'package:collectio/model/collection.dart';
 import 'package:collectio/model/collection_item.dart';
-import 'package:collectio/util/constant/constants.dart';
+import 'package:collectio/model/user_profile.dart';
+import 'package:collectio/util/constant/translation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -82,16 +86,31 @@ void main() {
       () {
         final String path = Routes.item;
         final CollectionItem item = CollectionItem(
+          parent: Collection(
+            id: 'title',
+            owner: 'owner',
+            title: 'title',
+            subtitle: 'subtitle',
+            description: 'description',
+            thumbnail: null,
+          ),
           id: 'title',
           title: 'title',
           subtitle: 'subtitle',
           description: 'description',
           imageUrl: '',
           added: null,
-          raiting: 10,
+          rating: 10,
+          imageMetadata: null,
         );
-        final RouteSettings routeSettings =
-            RouteSettings(name: path, arguments: item);
+        final RouteSettings routeSettings = RouteSettings(
+          name: path,
+          arguments: <String, dynamic>{
+            'item': item,
+            'itemNumber': 1,
+            'numberOfItems': 1,
+          },
+        );
 
         final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
 
@@ -102,10 +121,14 @@ void main() {
     test('should map Routes.newItem to NewItemScreen with correct arguments',
         () {
       final String path = Routes.newItem;
-      final Map<String, dynamic> arguments = <String, dynamic>{
-        'owner': 'owner',
-        'collectionName': 'collectionName',
-      };
+      final Collection arguments = Collection(
+        id: 'title',
+        owner: 'owner',
+        title: 'title',
+        subtitle: 'subtitle',
+        description: 'description',
+        thumbnail: 'thumbnail',
+      );
       final RouteSettings routeSettings =
           RouteSettings(name: path, arguments: arguments);
 
@@ -115,13 +138,52 @@ void main() {
       expect(screen, isA<NewItemScreen>());
 
       NewItemScreen newItemScreen = screen as NewItemScreen;
-      expect(newItemScreen.owner, arguments['owner']);
-      expect(newItemScreen.collectionName, arguments['collectionName']);
+      expect(newItemScreen.collection, arguments);
+    });
+
+    test('should map Routes.profile to ViewProfileScreen with correct argument',
+        () {
+      final String path = Routes.profile;
+      final UserProfile argument = UserProfile(
+        email: 'email@b.c',
+        userUid: 'userUid',
+        username: 'username',
+      );
+      final RouteSettings routeSettings =
+          RouteSettings(name: path, arguments: argument);
+
+      final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+      final Widget screen = result.builder(null);
+
+      expect(screen, isA<ViewProfileScreen>());
+
+      ViewProfileScreen viewProfileScreen = screen as ViewProfileScreen;
+      expect(viewProfileScreen.profile, argument);
+    });
+
+    test('should map Routes.editProfile to EditProfileScreen', () {
+      final String path = Routes.editProfile;
+      final RouteSettings routeSettings = RouteSettings(name: path);
+
+      final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+      final Widget screen = result.builder(null);
+
+      expect(screen, isA<EditProfileScreen>());
+    });
+
+    test('should map Routes.settings to EditSettingsScreen', () {
+      final String path = Routes.settings;
+      final RouteSettings routeSettings = RouteSettings(name: path);
+
+      final MaterialPageRoute result = Router.onGenerateRoute(routeSettings);
+      final Widget screen = result.builder(null);
+
+      expect(screen, isA<EditSettingsScreen>());
     });
 
     test('should map Routes.error to ErrorScreen with appropriate message', () {
       final String path = Routes.error;
-      final String errorMessage = 'Error message';
+      final Translation errorMessage = Translation.cancel;
       final RouteSettings routeSettings =
           RouteSettings(name: path, arguments: errorMessage);
 
@@ -144,7 +206,7 @@ void main() {
       expect(screen, isA<ErrorScreen>());
 
       ErrorScreen errorScreen = screen as ErrorScreen;
-      expect(errorScreen.errorMessage, equals(Constants.unknownRouteMessage));
+      expect(errorScreen.errorMessage, equals(Translation.unknownRouteMessage));
     });
   });
 }

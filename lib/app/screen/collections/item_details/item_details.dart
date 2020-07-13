@@ -1,74 +1,152 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../model/collection_item.dart';
+import '../../../../util/constant/translation.dart';
+import '../../../config/app_localizations.dart';
+import '../../../theme/style.dart';
 import '../../../widgets/collectio_dropdown.dart';
 import '../../../widgets/collectio_text_field.dart';
 
 class ItemDetailsScreen extends StatelessWidget {
   final CollectionItem item;
+  final int itemNumber;
+  final int numberOfItems;
+  final CameraPosition _cameraPosition;
 
-  const ItemDetailsScreen(this.item);
+  ItemDetailsScreen({
+    @required this.item,
+    @required this.itemNumber,
+    @required this.numberOfItems,
+  }) : _cameraPosition = !item.parent.isPremium
+            ? null
+            : (item.geoData != null &&
+                    item.geoData.latitude != null &&
+                    item.geoData.longitude != null
+                ? CameraPosition(
+                    target: LatLng(
+                      item.geoData.latitude,
+                      item.geoData.longitude,
+                    ),
+                    zoom: 8,
+                  )
+                : (item.imageMetadata != null &&
+                        item.imageMetadata.latitude != null &&
+                        item.imageMetadata.longitude != null
+                    ? CameraPosition(
+                        target: LatLng(
+                          item.imageMetadata.latitude,
+                          item.imageMetadata.longitude,
+                        ),
+                        zoom: 8,
+                      )
+                    : null));
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key('item_details_screen_key'),
-      direction: DismissDirection.down,
-      onDismissed: (_) => Navigator.pop(context),
-      child: Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: <Widget>[
-                  //Image
-                  AspectRatio(
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Column(
+          children: <Widget>[
+            Text(
+              item.title,
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              '# $itemNumber / $numberOfItems',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        bottom: false,
+        child: Center(
+          child: Padding(
+            padding: CollectioStyle.screenPadding,
+            child: ListView(
+              children: <Widget>[
+                // Image
+                ClipRRect(
+                  borderRadius: CollectioStyle.borderRadius,
+                  child: AspectRatio(
                     aspectRatio: 16 / 9,
                     child: Image.network(item.imageUrl),
                   ),
+                ),
 
-                  SizedBox(height: 20),
+                CollectioStyle.itemSplitter,
+                CollectioStyle.itemSplitter,
 
-                  // Title
-                  CollectioTextField(
-                    labelText: 'Title',
-                    enabled: false,
-                    maxLines: null,
-                    initialValue: item.title,
-                  ),
+                // Title
+                CollectioTextField(
+                  labelText: item.parent.itemTitleName,
+                  enabled: false,
+                  maxLines: null,
+                  initialValue: item.title,
+                ),
 
-                  SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
 
-                  // Subtitle
-                  CollectioTextField(
-                    labelText: 'Subtitle',
-                    maxLines: null,
-                    enabled: false,
-                    initialValue: item.subtitle,
-                  ),
+                // Subtitle
+                CollectioTextField(
+                  labelText: item.parent.itemSubtitleName,
+                  maxLines: null,
+                  enabled: false,
+                  initialValue: item.subtitle,
+                ),
 
-                  SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
 
-                  // Description
-                  CollectioTextField(
-                    maxLines: null,
-                    labelText: 'Description',
-                    enabled: false,
-                    initialValue: item.description,
-                  ),
+                // Description
+                CollectioTextField(
+                  maxLines: null,
+                  labelText: item.parent.itemDescriptionName,
+                  enabled: false,
+                  initialValue: item.description,
+                ),
 
-                  SizedBox(height: 10),
+                CollectioStyle.itemSplitter,
 
-                  // Raiting
-                  CollectioDropdown<int>(
-                    value: item.raiting,
-                    items: List<int>.generate(10, (int i) => i + 1),
-                    hint: 'Raiting',
-                    icon: Icon(Icons.star),
+                // rating
+                CollectioDropdown<int>(
+                  value: item.rating,
+                  items: List<int>.generate(10, (int i) => i + 1),
+                  hint: AppLocalizations.of(context)
+                      .translate(Translation.rating),
+                  icon: Icons.star,
+                ),
+
+                if (_cameraPosition != null) ...[
+                  CollectioStyle.itemSplitter,
+                  Container(
+                    height: 300,
+                    child: ClipRRect(
+                      borderRadius: CollectioStyle.borderRadius,
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        initialCameraPosition: _cameraPosition,
+                        markers: <Marker>{
+                          Marker(
+                            markerId: MarkerId('originalMarker'),
+                            position: _cameraPosition.target,
+                            icon: BitmapDescriptor.defaultMarker,
+                          ),
+                        },
+                        gestureRecognizers: <
+                            Factory<OneSequenceGestureRecognizer>>{
+                          Factory<OneSequenceGestureRecognizer>(
+                            () => new EagerGestureRecognizer(),
+                          ),
+                        },
+                      ),
+                    ),
                   ),
                 ],
-              ),
+              ],
             ),
           ),
         ),

@@ -22,6 +22,7 @@ jobs:
           ignore: "*_event.dart, *_state.dart"
       - run: flutter pub get
       - run: flutter packages pub run build_runner build
+      - run: sed -i'.bak' -e 's@package:http/src/client.dart@package:http/http.dart@g' lib/util/injection/injection.iconfig.dart
       - run: flutter analyze
       - run: flutter test --coverage .
       - uses: codecov/codecov-action@v1.0.2

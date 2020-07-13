@@ -3,11 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../model/collection.dart';
 import '../../../../model/collection_item.dart';
-import '../../../../util/constant/constants.dart';
+import '../../../../util/constant/translation.dart';
 import '../../../../util/injection/injection.dart';
 import '../../../bloc/collections/collection_items_bloc.dart';
+import '../../../config/app_localizations.dart';
 import '../../../routes/routes.dart';
+import '../../../theme/style.dart';
 import '../../../widgets/collectio_list.dart';
+import '../../../widgets/collectio_text_field.dart';
+import '../../../widgets/collectio_toast.dart';
 import 'widgets/collection_details_view.dart';
 
 class CollectionScreen extends StatelessWidget {
@@ -35,26 +39,93 @@ class CollectionScreen extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          CollectionDetailsView(_collection),
-          Divider(
-            color: ThemeData.light().accentColor,
-            indent: 20,
-            endIndent: 20,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: CollectionDetailsView(_collection),
           ),
           BlocBuilder<CollectionItemsBloc, CollectionItemsState>(
             bloc: getIt<CollectionItemsBloc>()
-              ..add(GetCollectionItemsEvent(
-                  collectionOwner: _collection.owner,
-                  collectionName: _collection.id)),
+              ..add(GetCollectionItemsEvent(_collection)),
             builder: (BuildContext context, CollectionItemsState state) {
-              if (state is LoadedCollectionItemsState)
+              if (state is LoadedCollectionItemsState) {
+                final LoadedCollectionItemsState loadedCollectionItemsState =
+                    state;
+                if (loadedCollectionItemsState.toastMessage != null) {
+                  final SnackBar snackBar = CollectioToast(
+                    message: AppLocalizations.of(context)
+                        .translate(loadedCollectionItemsState.toastMessage),
+                    toastType: loadedCollectionItemsState.toastType,
+                  );
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => Scaffold.of(context).showSnackBar(snackBar));
+                }
                 return Expanded(
-                  child: CollectioList(
-                    items: state.collectionItems,
-                    onTap: (CollectionItem item) => Navigator.of(context)
-                        .pushNamed(Routes.item, arguments: item),
+                  child: Column(
+                    children: <Widget>[
+                      if (state.collectionItems.length > 0) ...[
+                        if (!state.isSearching) ...[
+                          Container(
+                            height: 50,
+                            child: GestureDetector(
+                              onTap: () => getIt<CollectionItemsBloc>()
+                                  .add(ToggleSearchCollectionItemsEvent()),
+                              child: Icon(Icons.search),
+                            ),
+                          ),
+                        ] else ...[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 20),
+                            child: Container(
+                              height: 50,
+                              child: Row(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () => getIt<CollectionItemsBloc>()
+                                        .add(
+                                            ToggleSearchCollectionItemsEvent()),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Icon(Icons.close),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: CollectioTextField(
+                                      labelText: null,
+                                      onChanged: (String value) =>
+                                          getIt<CollectionItemsBloc>().add(
+                                              SearchQueryChangedCollectionItemsEvent(
+                                                  value)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                      Expanded(
+                        child: CollectioList(
+                          items: state.displayedCollectionItems,
+                          onTap: (CollectionItem item) =>
+                              Navigator.of(context).pushNamed(
+                            Routes.item,
+                            arguments: <String, dynamic>{
+                              'item': item,
+                              'itemNumber': state.collectionItems.length -
+                                  state.collectionItems.indexOf(item),
+                              'numberOfItems': state.collectionItems.length,
+                            },
+                          ),
+                          onDismiss: (CollectionItem item) =>
+                              getIt<CollectionItemsBloc>()
+                                  .add(DeleteItemCollectionItemsEvent(item)),
+                          dialogText: Translation.deleteCollectionItemNotice,
+                        ),
+                      ),
+                    ],
                   ),
                 );
+              }
 
               if (state is ErrorCollectionItemsState)
                 return Center(
@@ -62,15 +133,18 @@ class CollectionScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: 30),
+                        CollectioStyle.itemSplitter,
+                        CollectioStyle.itemSplitter,
+                        CollectioStyle.itemSplitter,
                         Icon(
                           Icons.error,
-                          size: 80,
-                          color: Colors.red,
+                          size: CollectioStyle.bigIconSize,
+                          color: Theme.of(context).errorColor,
                         ),
-                        SizedBox(height: 10),
+                        CollectioStyle.itemSplitter,
                         Text(
-                          Constants.collectionItemsFailure,
+                          AppLocalizations.of(context)
+                              .translate(Translation.collectionItemsFailure),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -90,13 +164,9 @@ class CollectionScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed(
           Routes.newItem,
-          arguments: {
-            'owner': _collection.owner,
-            'collectionName': _collection.id,
-          },
+          arguments: _collection,
         ),
         child: Icon(Icons.add),
-        backgroundColor: Colors.green,
       ),
     );
   }

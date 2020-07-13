@@ -9,28 +9,34 @@ import 'package:meta/meta.dart';
 
 import '../../../facade/auth/auth_facade.dart';
 import '../../../facade/profile/profile_facade.dart';
+import '../../../facade/settings/settings_facade.dart';
+import '../../../model/settings.dart';
 import '../../../model/user_profile.dart';
 import '../../../model/value_object/email.dart';
 import '../../../model/value_object/password.dart';
 import '../../../model/value_object/username.dart';
-import '../../../util/constant/constants.dart';
+import '../../../util/constant/translation.dart';
 import '../../../util/error/auth_failure.dart';
 import '../../../util/error/data_failure.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
+/// Bloc used for sign in / register form.
 @prod
-@lazySingleton
+@injectable
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final AuthFacade _authFacade;
   final ProfileFacade _profileFacade;
+  final SettingsFacade _settingsFacade;
 
   SignInBloc({
     @required AuthFacade authFacade,
     @required ProfileFacade profileFacade,
+    @required SettingsFacade settingsFacade,
   })  : _authFacade = authFacade,
-        _profileFacade = profileFacade;
+        _profileFacade = profileFacade,
+        _settingsFacade = settingsFacade;
 
   @override
   SignInState get initialState => InitialSignInState();
@@ -42,21 +48,18 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (event is EmailChangedSignInEvent) {
       yield state.copyWith(
         email: Email(event.email),
-        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
     } else if (event is PasswordChangedSignInEvent) {
       yield state.copyWith(
         password: Password(event.password),
-        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
     } else if (event is UsernameChangedSignInEvent) {
       yield state.copyWith(
         username: Username(event.username),
-        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
@@ -64,6 +67,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       yield* _callAuthFacadeWithEmailAndPassword(
           _authFacade.signInWithEmailAndPassword);
     } else if (event is RegisterWithEmailAndPasswordSignInEvent) {
+      yield state.copyWith(showErrorMessages: true);
+
       if (state.username.isValid()) {
         final Either<DataFailure, UserProfile> userProfileOrFailure =
             await _profileFacade.getUserProfileByUsername(
@@ -74,7 +79,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
         userProfileOrFailure.fold(
           (DataFailure failure) {
-            if (failure.message == Constants.notExactlyOneObjectFound) {
+            if (failure.message == Translation.notExactlyOneObjectFound) {
               isUsernameInUse = false;
             } else {
               authFailure = Left(ServerFailure());
@@ -98,6 +103,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       }
     } else if (event is CheckIfEmailExistsSignInEvent) {
       yield* _callAuthFacadeWithEmail(_authFacade.emailNotExists);
+    } else if (event is CancelRegistrationSignInEvent) {
+      yield state.copyWith(
+        isRegistering: false,
+        authFailure: null,
+        overrideAuthFailure: true,
+      );
     }
   }
 
@@ -108,11 +119,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     })
         authFacadeMethod,
   ) async* {
+    yield state.copyWith(showErrorMessages: true);
+
     if (state.email.isValid() &&
         state.password.isValid() &&
         (!state.isRegistering || state.username.isValid())) {
       yield state.copyWith(
         isSubmitting: true,
+        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
@@ -122,7 +136,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         password: state.password,
       );
 
-      // Create user profile upon successful registration.
+      // Create user profile and settings upon successful registration.
       if (state.isRegistering && result.isRight()) {
         final String userUid = await _authFacade.getCurrentUser();
         final UserProfile newUserProfile = UserProfile(
@@ -130,10 +144,15 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
             userUid: userUid,
             username: state.username.get());
         await _profileFacade.addUserProfile(userProfile: newUserProfile);
+        await _settingsFacade.updateSettings(
+          username: state.username.get(),
+          settings: Settings.defaults(),
+        );
       }
 
       yield state.copyWith(
         isSubmitting: false,
+        showErrorMessages: true,
         isRegistering: state.isRegistering && result.isLeft(),
         authFailure: result,
       );
@@ -144,10 +163,13 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     Future<Either<AuthFailure, void>> Function(Email email) authFacadeMethod, {
     bool isRegistering = true,
   }) async* {
+    yield state.copyWith(showErrorMessages: true);
+
     if (state.email.isValid() && state.password.isValid()) {
       yield state.copyWith(
         isSubmitting: true,
         isRegistering: isRegistering,
+        showErrorMessages: true,
         authFailure: null,
         overrideAuthFailure: true,
       );
@@ -158,13 +180,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       yield state.copyWith(
         isSubmitting: false,
         authFailure: result,
+        showErrorMessages: true,
       );
     }
   }
 }
 
 @test
-@lazySingleton
+@injectable
 @RegisterAs(SignInBloc)
 class MockedSignInBloc extends MockBloc<SignInEvent, SignInState>
     implements SignInBloc {}

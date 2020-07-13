@@ -27,3 +27,5 @@ class SignInWithEmailAndPasswordSignInEvent extends SignInEvent {}
 class RegisterWithEmailAndPasswordSignInEvent extends SignInEvent {}
 
 class CheckIfEmailExistsSignInEvent extends SignInEvent {}
+
+class CancelRegistrationSignInEvent extends SignInEvent {}

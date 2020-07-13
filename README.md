@@ -1,4 +1,4 @@
-![](misc/collectio_banner.png)
+![Collectio banner](misc/collectio_banner.png)
 
 # Stelynx Collectio
 
@@ -31,7 +31,11 @@ This was the plan for user interface for version one, when the most effort went 
 
 ### Version 1
 
-![](misc/collectio_v1.png)
+![Version 1 showcase](misc/collectio_v1.png)
+
+### Version 2
+
+![Version 2 showcase](misc/collectio_v2.png)
 
 ## Future plans
 
@@ -48,3 +52,4 @@ Since this is an open-source project, everyone is welcomed to contribute, by ope
 Special thanks go to
 
 - [@felangel](https://github.com/felangel) for helping me with testing BLoC.
+- [@Liisjak](https://github.com/Liisjak) for opening _exif world_ to me and suggesting using location.

@@ -1,6 +1,14 @@
+/// Defines all constants used throughout the app.
+/// Always prefer defining constants to using
+/// "magic strings" in the code.
 class Constants {
   static const String firebaseStorageBucket =
       'gs://stelynx-collectio.appspot.com';
+  static const String googleApiKey = 'GOOGLE_API_KEY';
+  static const String googleMapsPlaceApiUrl =
+      'https://maps.googleapis.com/maps/api/place';
+  static const String googleMapsGeocodingApiUrl =
+      'https://maps.googleapis.com/maps/api/geocode';
 
   // FirebaseAuth errors
   static const String emailAlreadyInUseError = 'ERROR_EMAIL_ALREADY_IN_USE';
@@ -8,35 +16,20 @@ class Constants {
   static const String userNotFoundError = 'ERROR_USER_NOT_FOUND';
   static const String emailMalformedError = 'ERROR_INVALID_CREDENTIAL';
 
-  // Messages for ErrorScreen
-  static const String unknownRouteMessage = 'Unknown route';
-  static const String unknownStateMessage = 'Your app is in unknown state!';
-
   // Firestore
   static const String userCollection = 'stelynx_user';
   static const String userUidField = 'userUid';
   static const String usernameField = 'username';
+  static const String settingsCollection = 'stelynx_settings';
 
-  // AuthFailure messages
-  static const String invalidCombination = 'Invalid username and password';
-  static const String cannotSignout = 'Cannot sign out right now';
-  static const String emailInUse = 'Email already in use';
-  static const String usernameInUse = 'Username already in use';
-  static const String serverFailure = 'Server error, please try again';
+  // This constant is not translated because it is shown until
+  // the app knows what language to use. It could be translated
+  // and app locale picked up, but it is completely useless.
+  static const String loadingConfiguration = 'One app to rule them all ...';
 
-  // DataFailure messages
-  static const String notExactlyOneObjectFound =
-      'Zero or too many objects found';
-  static const String noItems = 'There were no items matching this criteria';
-  static const String collectionTitleExists =
-      'A title provided maps to the existing collection';
+  static const int minCharsForAutocomplete = 2;
 
-  static const String collectionItemsFailure =
-      'An error occured while fetching items, please refresh';
-  // ValidationFailure messages
-  static const String emptyValidationFailure = 'Cannot be empty';
-  static const String titleValidationFailure =
-      'Title can contain only alphanumeric values and spaces';
-  static const String subtitleValidationFailure = 'Invalid subtitle';
-  static const String descriptionValidationFailure = 'Invalid description';
+  // Assets
+  static const String loginCollectioIcon = 'assets/images/collectio_icon.png';
+  static const String premiumIcon = 'assets/images/premium.png';
 }

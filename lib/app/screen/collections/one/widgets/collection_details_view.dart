@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../model/collection.dart';
+import '../../../../../util/constant/translation.dart';
+import '../../../../config/app_localizations.dart';
+import '../../../../theme/style.dart';
 import '../../../../widgets/circular_network_image.dart';
 
 class CollectionDetailsView extends StatelessWidget {
@@ -10,41 +13,56 @@ class CollectionDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
-      child: Row(
-        children: <Widget>[
-          CircularNetworkImage(_collection.thumbnail),
-          SizedBox(width: 20),
-          Expanded(
-            child: Table(
-              columnWidths: {0: FixedColumnWidth(80)},
-              children: <TableRow>[
-                TableRow(
-                  children: <TableCell>[
-                    _buildFirstColumnCell('Title'),
-                    _buildSecondColumnCell(_collection.title),
-                  ],
-                ),
-                TableRow(
-                  children: <TableCell>[
-                    _buildFirstColumnCell('Subtitle', center: true),
-                    _buildSecondColumnCell(_collection.subtitle),
-                  ],
-                ),
-                TableRow(
-                  children: <TableCell>[
-                    _buildFirstColumnCell('Description', center: true),
-                    _buildSecondColumnCell(
-                      _collection.description,
-                      maxLines: 5,
-                    ),
-                  ],
-                ),
-              ],
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: CollectioStyle.borderRadius),
+      elevation: CollectioStyle.elevation,
+      child: Padding(
+        padding: CollectioStyle.screenPadding,
+        child: Row(
+          children: <Widget>[
+            CircularNetworkImage(
+              _collection.thumbnail,
+              showPremium: _collection.isPremium,
+              premiumBackgroundColor: Theme.of(context).cardColor,
             ),
-          ),
-        ],
+            SizedBox(width: 20),
+            Expanded(
+              child: Table(
+                columnWidths: {0: FixedColumnWidth(80)},
+                children: <TableRow>[
+                  TableRow(
+                    children: <TableCell>[
+                      _buildFirstColumnCell(AppLocalizations.of(context)
+                          .translate(Translation.collectionTitle)),
+                      _buildSecondColumnCell(_collection.title),
+                    ],
+                  ),
+                  TableRow(
+                    children: <TableCell>[
+                      _buildFirstColumnCell(
+                          AppLocalizations.of(context)
+                              .translate(Translation.collectionSubtitle),
+                          center: true),
+                      _buildSecondColumnCell(_collection.subtitle),
+                    ],
+                  ),
+                  TableRow(
+                    children: <TableCell>[
+                      _buildFirstColumnCell(
+                          AppLocalizations.of(context)
+                              .translate(Translation.collectionDescription),
+                          center: true),
+                      _buildSecondColumnCell(
+                        _collection.description,
+                        maxLines: 5,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

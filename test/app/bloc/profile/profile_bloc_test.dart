@@ -97,4 +97,33 @@ void main() {
       expect: [LoadingProfileState(), ErrorProfileState(DataFailure())],
     );
   });
+
+  group('resetProfile', () {
+    blocTest(
+      'should yield Empty on reset',
+      build: () async {
+        when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        return ProfileBloc(
+          profileFacade: mockedProfileFacade,
+          authBloc: mockedAuthBloc,
+        );
+      },
+      act: (ProfileBloc bloc) async => bloc.add(ResetUserProfileEvent()),
+      expect: [EmptyProfileState()],
+    );
+  });
+
+  group('changePremiumCollectionsAvailable', () {
+    test('should return false if cannot create premium collection', () async {
+      final ProfileBloc profileBloc = ProfileBloc(
+          profileFacade: mockedProfileFacade, authBloc: mockedAuthBloc);
+
+      final bool result =
+          await profileBloc.changePremiumCollectionsAvailable(by: 1);
+
+      expect(result, isFalse);
+
+      profileBloc.close();
+    });
+  });
 }

@@ -74,13 +74,42 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
   }
 
   @override
+  Future<Either<DataFailure, void>> deleteCollection(
+      Collection collection) async {
+    try {
+      await _dataService.deleteCollection(
+        owner: collection.owner,
+        collectionName: collection.id,
+      );
+      return Right(null);
+    } catch (_) {
+      return Left(DataFailure());
+    }
+  }
+
+  @override
+  Future<Either<DataFailure, void>> deleteItemInCollection({
+    @required CollectionItem collectionItem,
+  }) async {
+    try {
+      await _dataService.deleteItemInCollection(
+        owner: collectionItem.parent.owner,
+        collectionName: collectionItem.parent.id,
+        itemId: collectionItem.id,
+      );
+      return Right(null);
+    } catch (_) {
+      return Left(DataFailure());
+    }
+  }
+
+  @override
   Future<Either<DataFailure, List<CollectionItem>>> getItemsInCollection(
-    String owner,
-    String collectionId,
+    Collection collection,
   ) async {
     try {
       final QuerySnapshot items = await _dataService.getItemsInCollection(
-          username: owner, collectionName: collectionId);
+          username: collection.owner, collectionName: collection.id);
 
       final List<CollectionItem> collectionItems = [];
       for (DocumentSnapshot document in items.documents) {
@@ -95,7 +124,10 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
           json['image'] = null;
         }
 
-        collectionItems.add(CollectionItem.fromJson(json));
+        final CollectionItem item =
+            CollectionItem.fromJson(json, parent: collection);
+
+        collectionItems.add(item);
       }
 
       return Right(collectionItems);
@@ -112,6 +144,7 @@ class FirebaseCollectionsFacade extends CollectionsFacade {
   }) async {
     try {
       final Map<String, dynamic> itemJson = item.toJson();
+
       itemJson['added'] =
           Timestamp.fromMillisecondsSinceEpoch(itemJson['added']);
 
