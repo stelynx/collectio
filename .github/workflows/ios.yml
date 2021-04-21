@@ -22,6 +22,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
+      - run: cd flutter && git checkout 1.17.5 && flutter doctor
       - run: sed -i'.bak' -e 's/GOOGLE_API_KEY_IOS/${{ secrets.GOOGLE_API_KEY_IOS }}/g' ios/Runner/AppDelegate.swift
       - run: sed -i'.bak' -e 's/GOOGLE_API_KEY/${{ secrets.GOOGLE_API_KEY }}/g' lib/util/constant/constants.dart
       - run: echo "${{ secrets.FIREBASE_CONFIG_FILE_IOS }}" | base64 --decode > ios/Runner/GoogleService-Info.plist
