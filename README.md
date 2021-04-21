@@ -2,7 +2,7 @@
 
 # Stelynx Collectio
 
-_Application for passionate collectors and people that want to keep track of certain things like myself. Written in Flutter and available on iOS and Android._
+_Application for passionate collectors and people that want to keep track of certain things like myself. Written in Flutter (v1.17.5) and available on iOS and Android._
 
 ![Lint & Test](https://github.com/stelynx/collectio/workflows/Lint%20&%20Test/badge.svg)
 ![Build iOS](https://github.com/stelynx/collectio/workflows/Build%20iOS/badge.svg)
