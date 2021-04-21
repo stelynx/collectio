@@ -16,11 +16,11 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
-      - uses: stelynx/dart-full-coverage@v1.0.3
+          flutter-version: "1.17.5"
+      - uses: stelynx/dart-full-coverage@v1.0.5
         with:
           package: collectio
           ignore: "*_event.dart, *_state.dart"
-          flutter-version: "1.17.5"
       - run: flutter pub get
       - run: flutter packages pub run build_runner build
       - run: sed -i'.bak' -e 's@package:http/src/client.dart@package:http/http.dart@g' lib/util/injection/injection.iconfig.dart
