@@ -20,7 +20,7 @@ jobs:
         with:
           package: collectio
           ignore: "*_event.dart, *_state.dart"
-      - run: cd flutter && git checkout 1.17.5 && flutter doctor
+          flutter-version: "1.17.5"
       - run: flutter pub get
       - run: flutter packages pub run build_runner build
       - run: sed -i'.bak' -e 's@package:http/src/client.dart@package:http/http.dart@g' lib/util/injection/injection.iconfig.dart
