@@ -101,4 +101,11 @@ void main() {
 
     expect(result, equals(userProfile));
   });
+
+  test('should give 0 premium collections by default', () {
+    final UserProfile userProfile =
+        UserProfile(email: 'a@b.co', userUid: '123456', username: 'username');
+
+    expect(userProfile.premiumCollectionsAvailable, equals(0));
+  });
 }
