@@ -17,7 +17,7 @@ jobs:
         with:
           path: ios/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore_keys: |
+          restore-keys: |
             ${{ runner.os }}-pods-
       - uses: subosito/flutter-action@v1
         with:
