@@ -2,7 +2,12 @@
 
 ## Information Collected
 
-_Collectio_ app does **not** collect any personal information or app usage metrics.
+_Collectio_ app collects the following information of possibly private nature about the user:
+
+- **Email address** used purely for authentication.
+- **Username** as unique public identifier, keeping email address private.
+
+The aforementioned sensitive data is handled according to industry standards.
 
 ## Changes to This Policy
 
