@@ -24,7 +24,7 @@ class UserProfile {
     this.profileImg,
     @required this.userUid,
     @required this.username,
-    this.premiumCollectionsAvailable = -1, // -1 marks infinite
+    this.premiumCollectionsAvailable = 0, // -1 marks infinite
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
