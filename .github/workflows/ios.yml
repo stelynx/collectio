@@ -17,11 +17,12 @@ jobs:
         with:
           path: ios/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore_keys: |
+          restore-keys: |
             ${{ runner.os }}-pods-
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
+          flutter-version: "1.17.5"
       - run: sed -i'.bak' -e 's/GOOGLE_API_KEY_IOS/${{ secrets.GOOGLE_API_KEY_IOS }}/g' ios/Runner/AppDelegate.swift
       - run: sed -i'.bak' -e 's/GOOGLE_API_KEY/${{ secrets.GOOGLE_API_KEY }}/g' lib/util/constant/constants.dart
       - run: echo "${{ secrets.FIREBASE_CONFIG_FILE_IOS }}" | base64 --decode > ios/Runner/GoogleService-Info.plist

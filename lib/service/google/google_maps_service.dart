@@ -81,7 +81,6 @@ class GoogleMapsService extends MapsService {
     params
         .forEach((String key, String value) => url += '&' + key + '=' + value);
 
-    print(url);
     return await _httpClient.get(url);
   }
 }
