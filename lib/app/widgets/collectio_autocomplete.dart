@@ -85,18 +85,12 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
           child: SizedBox(
             width: 40.0,
             height: 40.0,
-            child: Column(
-              children: <Widget>[
-                Image.asset(CollectioThemeManager.poweredByGoogleImagePath),
-                CollectioStyle.itemSplitter,
-                FloatingActionButton(
-                  onPressed: () => Navigator.of(context).pop<T>(),
-                  child: Icon(
-                    Icons.close,
-                    color: Theme.of(context).errorColor,
-                  ),
-                ),
-              ],
+            child: FloatingActionButton(
+              onPressed: () => Navigator.of(context).pop<T>(),
+              child: Icon(
+                Icons.close,
+                color: Theme.of(context).errorColor,
+              ),
             ),
           ),
         ),
@@ -115,6 +109,14 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
                       .bloc<AutocompleteBloc>()
                       .add(QueryChangedAutocompleteEvent(value)),
                 ),
+              ),
+
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width / 2,
+                ),
+                child:
+                    Image.asset(CollectioThemeManager.poweredByGoogleImagePath),
               ),
 
               // Results

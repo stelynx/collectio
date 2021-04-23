@@ -53,7 +53,12 @@ class _CollectioTextFieldState extends State<CollectioTextField> {
           controller: widget.initialValue == null
               ? null
               : TextEditingController.fromValue(
-                  TextEditingValue(text: widget.initialValue)),
+                  TextEditingValue(
+                    text: widget.initialValue,
+                    selection: TextSelection.collapsed(
+                        offset: widget.initialValue.length),
+                  ),
+                ),
           decoration: CollectioStyle.textFieldDecoration(
             context: context,
             labelText: widget.labelText,
