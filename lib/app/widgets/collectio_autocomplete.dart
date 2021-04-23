@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collectio/app/theme/theme.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,12 +85,18 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
           child: SizedBox(
             width: 40.0,
             height: 40.0,
-            child: FloatingActionButton(
-              onPressed: () => Navigator.of(context).pop<T>(),
-              child: Icon(
-                Icons.close,
-                color: Theme.of(context).errorColor,
-              ),
+            child: Column(
+              children: <Widget>[
+                CollectioThemeManager.poweredByGoogleImage(context),
+                CollectioStyle.itemSplitter,
+                FloatingActionButton(
+                  onPressed: () => Navigator.of(context).pop<T>(),
+                  child: Icon(
+                    Icons.close,
+                    color: Theme.of(context).errorColor,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
