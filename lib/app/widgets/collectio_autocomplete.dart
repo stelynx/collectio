@@ -87,7 +87,7 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
             height: 40.0,
             child: Column(
               children: <Widget>[
-                CollectioThemeManager.poweredByGoogleImage(context),
+                Image.asset(CollectioThemeManager.poweredByGoogleImagePath),
                 CollectioStyle.itemSplitter,
                 FloatingActionButton(
                   onPressed: () => Navigator.of(context).pop<T>(),

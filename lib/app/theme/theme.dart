@@ -134,9 +134,8 @@ class CollectioThemeManager {
     );
   }
 
-  static Widget poweredByGoogleImage(BuildContext context) {
-    return Image.asset(systemInformation.getBrightness() == Brightness.light
-        ? Constants.poweredByGoogleLight
-        : Constants.poweredByGoogleDark);
-  }
+  static String get poweredByGoogleImagePath =>
+      systemInformation.getBrightness() == Brightness.light
+          ? Constants.poweredByGoogleLight
+          : Constants.poweredByGoogleDark;
 }

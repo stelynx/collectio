@@ -2,6 +2,7 @@ import 'package:collectio/app/theme/dark.dart' as Dark;
 import 'package:collectio/app/theme/light.dart' as Light;
 import 'package:collectio/app/theme/theme.dart';
 import 'package:collectio/util/constant/collectio_theme.dart';
+import 'package:collectio/util/constant/constants.dart';
 import 'package:collectio/util/injection/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -50,5 +51,25 @@ void main() {
       () => CollectioThemeManager.getTheme(null),
       throwsA(isInstanceOf<Exception>()),
     );
+  });
+
+  group('poweredByGoogleImage', () {
+    test('should return light image when light theme', () {
+      when(CollectioThemeManager.systemInformation.getBrightness())
+          .thenReturn(Brightness.light);
+
+      final String imagePath = CollectioThemeManager.poweredByGoogleImagePath;
+
+      expect(imagePath, equals(Constants.poweredByGoogleLight));
+    });
+
+    test('should return light image when dark theme', () {
+      when(CollectioThemeManager.systemInformation.getBrightness())
+          .thenReturn(Brightness.dark);
+
+      final String imagePath = CollectioThemeManager.poweredByGoogleImagePath;
+
+      expect(imagePath, equals(Constants.poweredByGoogleDark));
+    });
   });
 }
