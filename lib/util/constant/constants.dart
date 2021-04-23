@@ -32,4 +32,6 @@ class Constants {
   // Assets
   static const String loginCollectioIcon = 'assets/images/collectio_icon.png';
   static const String premiumIcon = 'assets/images/premium.png';
+  static const String poweredByGoogleLight = 'assets/images/pbg_light.png';
+  static const String poweredByGoogleDark = 'assets/images/pbg_dark.png';
 }

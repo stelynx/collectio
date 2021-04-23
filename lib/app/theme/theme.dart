@@ -1,3 +1,4 @@
+import 'package:collectio/util/constant/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../platform/system_information.dart';
@@ -132,4 +133,9 @@ class CollectioThemeManager {
       highlightColor: Colors.transparent,
     );
   }
+
+  static String get poweredByGoogleImagePath =>
+      systemInformation.getBrightness() == Brightness.light
+          ? Constants.poweredByGoogleLight
+          : Constants.poweredByGoogleDark;
 }

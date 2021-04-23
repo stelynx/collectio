@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collectio/app/theme/theme.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,6 +109,14 @@ class CollectioAutocompleteScreen<T> extends StatelessWidget {
                       .bloc<AutocompleteBloc>()
                       .add(QueryChangedAutocompleteEvent(value)),
                 ),
+              ),
+
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width / 2,
+                ),
+                child:
+                    Image.asset(CollectioThemeManager.poweredByGoogleImagePath),
               ),
 
               // Results
