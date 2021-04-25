@@ -29,6 +29,7 @@ enum Translation {
   collections,
   loadingCollections,
   loadingProfile,
+  buyPremiumCollection,
   logout,
   camera,
   photoLibrary,

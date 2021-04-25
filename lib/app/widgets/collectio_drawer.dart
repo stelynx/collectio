@@ -74,6 +74,15 @@ class CollectioDrawer extends StatelessWidget {
             ),
             ListTile(
               dense: true,
+              title: Text(AppLocalizations.of(context)
+                  .translate(Translation.buyPremiumCollection)),
+              trailing: Icon(Icons.attach_money),
+              onTap: () {
+                // context.bloc<InAppPurchaseBloc>().add(PurchaseInAppPurchaseEvent());
+              },
+            ),
+            ListTile(
+              dense: true,
               title: Text(
                   AppLocalizations.of(context).translate(Translation.logout)),
               trailing: Icon(Icons.exit_to_app),
