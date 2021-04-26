@@ -13,9 +13,9 @@ part 'in_app_purchase_state.dart';
 @singleton
 class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
   static const Set<String> _ids = <String>{
-    'collectioPremiumCollection1',
-    'collectioPremiumCollection5',
-    'collectioPremiumCollection10',
+    'collectiopremiumcollection1',
+    'collectiopremiumcollection5',
+    'collectiopremiumcollection10',
   };
 
   StreamSubscription<List<PurchaseDetails>> _subscription;

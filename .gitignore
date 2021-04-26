@@ -45,3 +45,6 @@ test/coverage_test.dart
 # Firebase configuration files
 ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
+
+# Release config
+/android/key.properties
