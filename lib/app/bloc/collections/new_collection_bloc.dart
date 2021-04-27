@@ -55,6 +55,12 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
   }
 
   @override
+  Future<void> close() {
+    _iapBlocStreamSubscription.cancel();
+    return super.close();
+  }
+
+  @override
   NewCollectionState get initialState => InitialNewCollectionState();
 
   @override
