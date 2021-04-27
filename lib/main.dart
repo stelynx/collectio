@@ -16,6 +16,7 @@ import 'app/theme/theme.dart';
 import 'util/injection/injection.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   configureInjection(Environment.prod);
   InAppPurchaseConnection.enablePendingPurchases();
   runApp(CollectioApp());

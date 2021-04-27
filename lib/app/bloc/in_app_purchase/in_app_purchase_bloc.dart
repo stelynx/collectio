@@ -18,9 +18,11 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
   static Set<String> _ids =
       CollectioIAPId.values.map<String>((iapId) => describeEnum(iapId)).toSet();
 
+  final InAppPurchaseConnection _iapConnection;
+
   StreamSubscription<List<PurchaseDetails>> _subscription;
 
-  InAppPurchaseBloc() : super() {
+  InAppPurchaseBloc(this._iapConnection) : super() {
     this.add(InitializeInAppPurchaseEvent());
   }
 
@@ -38,16 +40,14 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
     InAppPurchaseEvent event,
   ) async* {
     if (event is InitializeInAppPurchaseEvent) {
-      final bool available =
-          await InAppPurchaseConnection.instance.isAvailable();
+      final bool available = await _iapConnection.isAvailable();
       if (!available) {
         print('not available');
         yield state.copyWith(isAvailable: false, isReady: true);
         return;
       }
 
-      final Stream purchaseUpdated =
-          InAppPurchaseConnection.instance.purchaseUpdatedStream;
+      final Stream purchaseUpdated = _iapConnection.purchaseUpdatedStream;
       _subscription = purchaseUpdated.listen((purchaseDetailsList) {
         _listenToPurchaseUpdated(purchaseDetailsList);
       }, onDone: () {
@@ -57,7 +57,7 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
       });
 
       final ProductDetailsResponse response =
-          await InAppPurchaseConnection.instance.queryProductDetails(_ids);
+          await _iapConnection.queryProductDetails(_ids);
       print(response.productDetails);
       print(response.notFoundIDs);
       if (response.notFoundIDs.isNotEmpty) {
@@ -73,7 +73,7 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
     } else if (event is PurchaseInAppPurchaseEvent) {
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: event.productDetails);
-      InAppPurchaseConnection.instance.buyConsumable(
+      _iapConnection.buyConsumable(
         purchaseParam: purchaseParam,
         autoConsume: true,
       );
@@ -98,8 +98,7 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
           break;
         case PurchaseStatus.error:
           if (Platform.isIOS || purchaseDetails.pendingCompletePurchase) {
-            await InAppPurchaseConnection.instance
-                .completePurchase(purchaseDetails);
+            await _iapConnection.completePurchase(purchaseDetails);
           }
           this.add(ErrorInAppPurchaseEvent(purchaseDetails));
           break;
@@ -107,11 +106,9 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
           final CollectioIAPProduct product =
               CollectioIAPProduct.fromStringId(purchaseDetails.productID);
 
-          await InAppPurchaseConnection.instance
-              .completePurchase(purchaseDetails);
+          await _iapConnection.completePurchase(purchaseDetails);
           if (Platform.isAndroid) {
-            await InAppPurchaseConnection.instance
-                .consumePurchase(purchaseDetails);
+            await _iapConnection.consumePurchase(purchaseDetails);
           }
 
           this.add(PurchasedInAppPurchaseEvent(product));

@@ -49,12 +49,16 @@ void main() {
 
   blocTest(
     'should change title on TitleChanged',
-    build: () async => NewCollectionBloc(
-      collectionsFacade: mockedCollectionsFacade,
-      profileBloc: mockedProfileBloc,
-      collectionsBloc: mockedCollectionsBloc,
-      inAppPurchaseBloc: mockedInAppPurchaseBloc,
-    ),
+    build: () async {
+      when(mockedInAppPurchaseBloc.listen(any))
+          .thenReturn(MockedStreamSubscription());
+      return NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
+    },
     act: (NewCollectionBloc bloc) async =>
         bloc.add(TitleChangedNewCollectionEvent('t')),
     expect: [
@@ -64,12 +68,16 @@ void main() {
 
   blocTest(
     'should change subtitle on SubtitleChanged',
-    build: () async => NewCollectionBloc(
-      collectionsFacade: mockedCollectionsFacade,
-      profileBloc: mockedProfileBloc,
-      collectionsBloc: mockedCollectionsBloc,
-      inAppPurchaseBloc: mockedInAppPurchaseBloc,
-    ),
+    build: () async {
+      when(mockedInAppPurchaseBloc.listen(any))
+          .thenReturn(MockedStreamSubscription());
+      return NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
+    },
     act: (NewCollectionBloc bloc) async =>
         bloc.add(SubtitleChangedNewCollectionEvent('t')),
     expect: [
@@ -79,12 +87,16 @@ void main() {
 
   blocTest(
     'should change description on DescriptionChanged',
-    build: () async => NewCollectionBloc(
-      collectionsFacade: mockedCollectionsFacade,
-      profileBloc: mockedProfileBloc,
-      collectionsBloc: mockedCollectionsBloc,
-      inAppPurchaseBloc: mockedInAppPurchaseBloc,
-    ),
+    build: () async {
+      when(mockedInAppPurchaseBloc.listen(any))
+          .thenReturn(MockedStreamSubscription());
+      return NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
+    },
     act: (NewCollectionBloc bloc) async =>
         bloc.add(DescriptionChangedNewCollectionEvent('t')),
     expect: [
@@ -94,12 +106,16 @@ void main() {
 
   blocTest(
     'should change image on ImageChanged',
-    build: () async => NewCollectionBloc(
-      collectionsFacade: mockedCollectionsFacade,
-      profileBloc: mockedProfileBloc,
-      collectionsBloc: mockedCollectionsBloc,
-      inAppPurchaseBloc: mockedInAppPurchaseBloc,
-    ),
+    build: () async {
+      when(mockedInAppPurchaseBloc.listen(any))
+          .thenReturn(MockedStreamSubscription());
+      return NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
+    },
     act: (NewCollectionBloc bloc) async =>
         bloc.add(ImageChangedNewCollectionEvent(mockedFile)),
     expect: [
@@ -109,12 +125,16 @@ void main() {
 
   blocTest(
     'should change image on ItemTitleNameChanged',
-    build: () async => NewCollectionBloc(
-      collectionsFacade: mockedCollectionsFacade,
-      profileBloc: mockedProfileBloc,
-      collectionsBloc: mockedCollectionsBloc,
-      inAppPurchaseBloc: mockedInAppPurchaseBloc,
-    ),
+    build: () async {
+      when(mockedInAppPurchaseBloc.listen(any))
+          .thenReturn(MockedStreamSubscription());
+      return NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
+    },
     act: (NewCollectionBloc bloc) async =>
         bloc.add(ItemTitleNameChangedNewCollectionEvent('Title123')),
     expect: [
@@ -124,12 +144,16 @@ void main() {
 
   blocTest(
     'should change image on ItemSubtitleNameChanged',
-    build: () async => NewCollectionBloc(
-      collectionsFacade: mockedCollectionsFacade,
-      profileBloc: mockedProfileBloc,
-      collectionsBloc: mockedCollectionsBloc,
-      inAppPurchaseBloc: mockedInAppPurchaseBloc,
-    ),
+    build: () async {
+      when(mockedInAppPurchaseBloc.listen(any))
+          .thenReturn(MockedStreamSubscription());
+      return NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
+    },
     act: (NewCollectionBloc bloc) async =>
         bloc.add(ItemSubtitleNameChangedNewCollectionEvent('Subtitle123')),
     expect: [
@@ -139,12 +163,16 @@ void main() {
 
   blocTest(
     'should change image on ItemDescriptionNameChanged',
-    build: () async => NewCollectionBloc(
-      collectionsFacade: mockedCollectionsFacade,
-      profileBloc: mockedProfileBloc,
-      collectionsBloc: mockedCollectionsBloc,
-      inAppPurchaseBloc: mockedInAppPurchaseBloc,
-    ),
+    build: () async {
+      when(mockedInAppPurchaseBloc.listen(any))
+          .thenReturn(MockedStreamSubscription());
+      return NewCollectionBloc(
+        collectionsFacade: mockedCollectionsFacade,
+        profileBloc: mockedProfileBloc,
+        collectionsBloc: mockedCollectionsBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
+    },
     act: (NewCollectionBloc bloc) async => bloc
         .add(ItemDescriptionNameChangedNewCollectionEvent('Description123')),
     expect: [
@@ -156,6 +184,8 @@ void main() {
     blocTest(
       'should do nothing if ProfileBloc.state is not Complete',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileBloc.state).thenReturn(InitialProfileState());
         when(mockedCollectionsBloc.state)
             .thenReturn(LoadedCollectionsState(collections: []));
@@ -196,6 +226,8 @@ void main() {
     blocTest(
       'should do nothing if CollectionsBloc.state is not Loaded',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(null));
         when(mockedCollectionsBloc.state).thenReturn(InitialCollectionsState());
         return NewCollectionBloc(
@@ -235,6 +267,8 @@ void main() {
     blocTest(
       'should do nothing if title is not valid',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(null));
         when(mockedCollectionsBloc.state)
             .thenReturn(LoadedCollectionsState(collections: []));
@@ -269,6 +303,8 @@ void main() {
     blocTest(
       'should do nothing if subtitle is not valid',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(null));
         when(mockedCollectionsBloc.state)
             .thenReturn(LoadedCollectionsState(collections: []));
@@ -303,6 +339,8 @@ void main() {
     blocTest(
       'should do nothing if description is not valid',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(null));
         when(mockedCollectionsBloc.state)
             .thenReturn(LoadedCollectionsState(collections: []));
@@ -336,6 +374,8 @@ void main() {
     blocTest(
       'should call CollectionsFacade if collection does not exist',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
@@ -375,6 +415,8 @@ void main() {
     blocTest(
       'should upload image on successful item adding',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
@@ -414,6 +456,8 @@ void main() {
     blocTest(
       'should refresh collections list on successfully added item and uploaded image',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
@@ -453,6 +497,8 @@ void main() {
     blocTest(
       'should update premium collection count on valid premium collection submission',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
@@ -494,6 +540,8 @@ void main() {
     blocTest(
       'should have Left(NotUpdatedPremiumCollectionCount) when failed to update premium collection count',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
         when(mockedProfileBloc.changePremiumCollectionsAvailable(
@@ -571,6 +619,8 @@ void main() {
     blocTest(
       'should have state.dataFailure as Right on success',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
@@ -635,6 +685,8 @@ void main() {
     blocTest(
       'should have message about collection exists in DataFailure if collection exists',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
@@ -704,6 +756,8 @@ void main() {
     blocTest(
       'should have state.dataFailure as Left on failed item save',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
@@ -764,6 +818,8 @@ void main() {
     blocTest(
       'should update back premium collection count on failed item save',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
         when(mockedProfileBloc.changePremiumCollectionsAvailable(
@@ -804,6 +860,8 @@ void main() {
     blocTest(
       'should have state.dataFailure as Left on failed thumbnail upload',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedFile.path).thenReturn('thumnail.jpg');
         when(mockedProfileBloc.state).thenReturn(CompleteProfileState(
           UserProfile(
@@ -870,6 +928,8 @@ void main() {
     blocTest(
       'should yield nothing if cannot create premium collection',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(false);
         return NewCollectionBloc(
           collectionsFacade: mockedCollectionsFacade,
@@ -886,6 +946,8 @@ void main() {
     blocTest(
       'should yield state with switched premium if can create premium collection',
       build: () async {
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileBloc.canCreatePremiumCollection()).thenReturn(true);
         return NewCollectionBloc(
           collectionsFacade: mockedCollectionsFacade,
