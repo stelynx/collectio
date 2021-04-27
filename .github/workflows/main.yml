@@ -24,6 +24,7 @@ jobs:
       - run: flutter pub get
       - run: flutter packages pub run build_runner build
       - run: sed -i'.bak' -e 's@package:http/src/client.dart@package:http/http.dart@g' lib/util/injection/injection.iconfig.dart
+      - run: sed -i'.bak' -e 's@package:in_app_purchase/src/in_app_purchase/in_app_purchase_connection.dart@package:in_app_purchase/in_app_purchase.dart@g' lib/util/injection/injection.iconfig.dart
       - run: flutter analyze
       - run: flutter test --coverage .
       - uses: codecov/codecov-action@v1.0.2
