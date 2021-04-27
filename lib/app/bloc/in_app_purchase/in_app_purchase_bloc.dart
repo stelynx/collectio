@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -6,17 +7,16 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../model/iap_product.dart';
+
 part 'in_app_purchase_event.dart';
 part 'in_app_purchase_state.dart';
 
 @prod
 @singleton
 class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
-  static const Set<String> _ids = <String>{
-    'collectiopremiumcollection1',
-    'collectiopremiumcollection5',
-    'collectiopremiumcollection10',
-  };
+  static Set<String> _ids =
+      CollectioIAPId.values.map<String>((iapId) => describeEnum(iapId)).toSet();
 
   StreamSubscription<List<PurchaseDetails>> _subscription;
 
@@ -38,7 +38,6 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
     InAppPurchaseEvent event,
   ) async* {
     if (event is InitializeInAppPurchaseEvent) {
-      print('here');
       final bool available =
           await InAppPurchaseConnection.instance.isAvailable();
       if (!available) {
@@ -65,7 +64,7 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
         yield state.copyWith(isAvailable: false, isReady: true);
         return;
       }
-      print(response.productDetails);
+
       yield state.copyWith(
         isAvailable: true,
         isReady: true,
@@ -83,7 +82,11 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
     } else if (event is ErrorInAppPurchaseEvent) {
       yield state.copyWith(purchaseState: InAppPurchasePurchaseState.error);
     } else if (event is PurchasedInAppPurchaseEvent) {
-      yield state.copyWith(purchaseState: InAppPurchasePurchaseState.success);
+      yield state.copyWith(
+        purchaseState: InAppPurchasePurchaseState.success,
+        purchasedProduct: event.purchasedProduct,
+      );
+      yield state.copyWith(purchaseState: InAppPurchasePurchaseState.idle);
     }
   }
 
@@ -94,18 +97,24 @@ class InAppPurchaseBloc extends Bloc<InAppPurchaseEvent, InAppPurchaseState> {
           this.add(PendingInAppPurchaseEvent());
           break;
         case PurchaseStatus.error:
-          this.add(ErrorInAppPurchaseEvent(purchaseDetails));
-          if (purchaseDetails.pendingCompletePurchase) {
+          if (Platform.isIOS || purchaseDetails.pendingCompletePurchase) {
             await InAppPurchaseConnection.instance
                 .completePurchase(purchaseDetails);
           }
+          this.add(ErrorInAppPurchaseEvent(purchaseDetails));
           break;
         case PurchaseStatus.purchased:
-          this.add(PurchasedInAppPurchaseEvent(purchaseDetails));
-          if (purchaseDetails.pendingCompletePurchase) {
+          final CollectioIAPProduct product =
+              CollectioIAPProduct.fromStringId(purchaseDetails.productID);
+
+          await InAppPurchaseConnection.instance
+              .completePurchase(purchaseDetails);
+          if (Platform.isAndroid) {
             await InAppPurchaseConnection.instance
-                .completePurchase(purchaseDetails);
+                .consumePurchase(purchaseDetails);
           }
+
+          this.add(PurchasedInAppPurchaseEvent(product));
           break;
       }
     });

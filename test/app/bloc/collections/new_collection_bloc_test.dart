@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/collections/collections_bloc.dart';
 import 'package:collectio/app/bloc/collections/new_collection_bloc.dart';
+import 'package:collectio/app/bloc/in_app_purchase/in_app_purchase_bloc.dart';
 import 'package:collectio/app/bloc/profile/profile_bloc.dart';
 import 'package:collectio/facade/collections/collections_facade.dart';
 import 'package:collectio/model/collection.dart';
@@ -31,16 +32,19 @@ void main() {
   CollectionsFacade mockedCollectionsFacade;
   ProfileBloc mockedProfileBloc;
   CollectionsBloc mockedCollectionsBloc;
+  InAppPurchaseBloc mockedInAppPurchaseBloc;
 
   setUp(() {
     mockedCollectionsFacade = getIt<CollectionsFacade>();
     mockedProfileBloc = getIt<ProfileBloc>();
     mockedCollectionsBloc = getIt<CollectionsBloc>();
+    mockedInAppPurchaseBloc = getIt<InAppPurchaseBloc>();
   });
 
   tearDown(() {
     mockedProfileBloc.close();
     mockedCollectionsBloc.close();
+    mockedInAppPurchaseBloc.close();
   });
 
   blocTest(
@@ -49,6 +53,7 @@ void main() {
       collectionsFacade: mockedCollectionsFacade,
       profileBloc: mockedProfileBloc,
       collectionsBloc: mockedCollectionsBloc,
+      inAppPurchaseBloc: mockedInAppPurchaseBloc,
     ),
     act: (NewCollectionBloc bloc) async =>
         bloc.add(TitleChangedNewCollectionEvent('t')),
@@ -63,6 +68,7 @@ void main() {
       collectionsFacade: mockedCollectionsFacade,
       profileBloc: mockedProfileBloc,
       collectionsBloc: mockedCollectionsBloc,
+      inAppPurchaseBloc: mockedInAppPurchaseBloc,
     ),
     act: (NewCollectionBloc bloc) async =>
         bloc.add(SubtitleChangedNewCollectionEvent('t')),
@@ -77,6 +83,7 @@ void main() {
       collectionsFacade: mockedCollectionsFacade,
       profileBloc: mockedProfileBloc,
       collectionsBloc: mockedCollectionsBloc,
+      inAppPurchaseBloc: mockedInAppPurchaseBloc,
     ),
     act: (NewCollectionBloc bloc) async =>
         bloc.add(DescriptionChangedNewCollectionEvent('t')),
@@ -88,9 +95,11 @@ void main() {
   blocTest(
     'should change image on ImageChanged',
     build: () async => NewCollectionBloc(
-        collectionsFacade: mockedCollectionsFacade,
-        profileBloc: mockedProfileBloc,
-        collectionsBloc: mockedCollectionsBloc),
+      collectionsFacade: mockedCollectionsFacade,
+      profileBloc: mockedProfileBloc,
+      collectionsBloc: mockedCollectionsBloc,
+      inAppPurchaseBloc: mockedInAppPurchaseBloc,
+    ),
     act: (NewCollectionBloc bloc) async =>
         bloc.add(ImageChangedNewCollectionEvent(mockedFile)),
     expect: [
@@ -101,9 +110,11 @@ void main() {
   blocTest(
     'should change image on ItemTitleNameChanged',
     build: () async => NewCollectionBloc(
-        collectionsFacade: mockedCollectionsFacade,
-        profileBloc: mockedProfileBloc,
-        collectionsBloc: mockedCollectionsBloc),
+      collectionsFacade: mockedCollectionsFacade,
+      profileBloc: mockedProfileBloc,
+      collectionsBloc: mockedCollectionsBloc,
+      inAppPurchaseBloc: mockedInAppPurchaseBloc,
+    ),
     act: (NewCollectionBloc bloc) async =>
         bloc.add(ItemTitleNameChangedNewCollectionEvent('Title123')),
     expect: [
@@ -114,9 +125,11 @@ void main() {
   blocTest(
     'should change image on ItemSubtitleNameChanged',
     build: () async => NewCollectionBloc(
-        collectionsFacade: mockedCollectionsFacade,
-        profileBloc: mockedProfileBloc,
-        collectionsBloc: mockedCollectionsBloc),
+      collectionsFacade: mockedCollectionsFacade,
+      profileBloc: mockedProfileBloc,
+      collectionsBloc: mockedCollectionsBloc,
+      inAppPurchaseBloc: mockedInAppPurchaseBloc,
+    ),
     act: (NewCollectionBloc bloc) async =>
         bloc.add(ItemSubtitleNameChangedNewCollectionEvent('Subtitle123')),
     expect: [
@@ -127,9 +140,11 @@ void main() {
   blocTest(
     'should change image on ItemDescriptionNameChanged',
     build: () async => NewCollectionBloc(
-        collectionsFacade: mockedCollectionsFacade,
-        profileBloc: mockedProfileBloc,
-        collectionsBloc: mockedCollectionsBloc),
+      collectionsFacade: mockedCollectionsFacade,
+      profileBloc: mockedProfileBloc,
+      collectionsBloc: mockedCollectionsBloc,
+      inAppPurchaseBloc: mockedInAppPurchaseBloc,
+    ),
     act: (NewCollectionBloc bloc) async => bloc
         .add(ItemDescriptionNameChangedNewCollectionEvent('Description123')),
     expect: [
@@ -148,6 +163,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -186,6 +202,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -225,6 +242,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -258,6 +276,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -291,6 +310,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -332,6 +352,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -372,6 +393,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -414,6 +436,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -453,6 +476,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -496,6 +520,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -568,6 +593,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -635,6 +661,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -695,6 +722,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -758,6 +786,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -797,6 +826,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc
@@ -845,6 +875,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async =>
@@ -860,6 +891,7 @@ void main() {
           collectionsFacade: mockedCollectionsFacade,
           profileBloc: mockedProfileBloc,
           collectionsBloc: mockedCollectionsBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (NewCollectionBloc bloc) async => bloc

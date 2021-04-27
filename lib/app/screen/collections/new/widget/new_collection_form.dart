@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 import '../../../../../model/image_metadata.dart';
 import '../../../../../platform/image_selector.dart';
@@ -10,12 +11,15 @@ import '../../../../../util/error/data_failure.dart';
 import '../../../../../util/error/failure.dart';
 import '../../../../../util/injection/injection.dart';
 import '../../../../bloc/collections/new_collection_bloc.dart';
+import '../../../../bloc/in_app_purchase/in_app_purchase_bloc.dart';
 import '../../../../config/app_localizations.dart';
 import '../../../../theme/style.dart';
 import '../../../../widgets/collectio_button.dart';
+import '../../../../widgets/collectio_dialog.dart';
 import '../../../../widgets/collectio_image_picker.dart';
 import '../../../../widgets/collectio_section_title.dart';
 import '../../../../widgets/collectio_text_field.dart';
+import '../../../../widgets/collectio_toast.dart';
 import '../../../../widgets/collectio_toggle.dart';
 import '../../../../widgets/failure_text.dart';
 
@@ -118,23 +122,105 @@ class NewCollectionForm extends StatelessWidget {
               CollectioStyle.itemSplitter,
 
               // Is premium?
-              CollectioToggle(
-                description: AppLocalizations.of(context)
-                    .translate(Translation.collectionPremium),
-                onToggled: () => context
-                    .bloc<NewCollectionBloc>()
-                    .add(IsPremiumChangedNewCollectionEvent()),
-                initialValue: state.isPremium,
-                activeBackgroundColor: CollectioStyle.goldColor,
-                activeHandleColor: CollectioStyle.goldColor,
-                icon: Icon(
-                  Icons.info,
-                  size: 25,
-                ),
-                hintTitle: AppLocalizations.of(context)
-                    .translate(Translation.collectionPremium),
-                hintContent: AppLocalizations.of(context)
-                    .translate(Translation.collectionPremiumInfo),
+              BlocConsumer<InAppPurchaseBloc, InAppPurchaseState>(
+                listener: (context, iapState) {
+                  if (iapState.purchaseState ==
+                      InAppPurchasePurchaseState.error) {
+                    final SnackBar snackBar = CollectioToast(
+                      message: AppLocalizations.of(context)
+                          .translate(Translation.inAppPurchaseError),
+                      toastType: ToastType.warning,
+                    );
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => Scaffold.of(context).showSnackBar(snackBar));
+                  } else if (iapState.purchaseState ==
+                      InAppPurchasePurchaseState.success) {
+                    final SnackBar snackBar = CollectioToast(
+                      message: AppLocalizations.of(context)
+                          .translate(Translation.inAppPurchaseSuccessful),
+                      toastType: ToastType.success,
+                    );
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => Scaffold.of(context).showSnackBar(snackBar));
+                  }
+                },
+                builder: (context, iapState) {
+                  if (iapState.purchaseState ==
+                      InAppPurchasePurchaseState.pending) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  return CollectioToggle(
+                    description: AppLocalizations.of(context)
+                        .translate(Translation.collectionPremium),
+                    onToggled: () {
+                      if (!context
+                          .bloc<NewCollectionBloc>()
+                          .canCreatePremiumCollection()) {
+                        if (!iapState.isReady || !iapState.isAvailable) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => CollectioInfoDialog(
+                              title: AppLocalizations.of(context).translate(
+                                  Translation.inAppPurchaseNotAvailable),
+                              content: AppLocalizations.of(context).translate(
+                                  Translation.inAppPurchaseNotAvailableContent),
+                            ),
+                          );
+                          return;
+                        }
+
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            final List<ListTile> iapTiles = iapState
+                                .productDetails
+                                .map<ListTile>((ProductDetails pd) => ListTile(
+                                      title: Text(pd.title),
+                                      subtitle: Text(pd.description),
+                                      trailing: Text(pd.price),
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        context.bloc<InAppPurchaseBloc>().add(
+                                            PurchaseInAppPurchaseEvent(pd));
+                                      },
+                                    ))
+                                .toList();
+                            return Container(
+                              child: ListView(
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Text(
+                                      AppLocalizations.of(context).translate(
+                                          Translation.availableInAppPurchases),
+                                    ),
+                                  ),
+                                  ...iapTiles,
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                        return;
+                      }
+
+                      context
+                          .bloc<NewCollectionBloc>()
+                          .add(IsPremiumChangedNewCollectionEvent());
+                    },
+                    initialValue: state.isPremium,
+                    activeBackgroundColor: CollectioStyle.goldColor,
+                    activeHandleColor: CollectioStyle.goldColor,
+                    icon: Icon(
+                      Icons.info,
+                      size: 25,
+                    ),
+                    hintTitle: AppLocalizations.of(context)
+                        .translate(Translation.collectionPremium),
+                    hintContent: AppLocalizations.of(context)
+                        .translate(Translation.collectionPremiumInfo),
+                  );
+                },
               ),
 
               CollectioSectionTitle(

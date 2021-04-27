@@ -85,4 +85,10 @@ enum Translation {
   collectionItemDeletionFailed,
 
   autocompleteNoText,
+
+  inAppPurchaseNotAvailable,
+  inAppPurchaseNotAvailableContent,
+  availableInAppPurchases,
+  inAppPurchaseSuccessful,
+  inAppPurchaseError,
 }

@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:collectio/app/bloc/auth/auth_bloc.dart';
+import 'package:collectio/app/bloc/in_app_purchase/in_app_purchase_bloc.dart';
 import 'package:collectio/app/bloc/profile/profile_bloc.dart';
 import 'package:collectio/facade/profile/profile_facade.dart';
 import 'package:collectio/model/user_profile.dart';
@@ -17,9 +18,11 @@ void main() {
 
   ProfileFacade mockedProfileFacade = getIt<ProfileFacade>();
   MockedAuthBloc mockedAuthBloc = getIt<AuthBloc>();
+  MockedInAppPurchaseBloc mockedInAppPurchaseBloc = getIt<InAppPurchaseBloc>();
 
   tearDownAll(() {
     mockedAuthBloc.close();
+    mockedInAppPurchaseBloc.close();
   });
 
   final UserProfile userProfile = UserProfile(
@@ -33,12 +36,15 @@ void main() {
       'should yield Loading and Complete on success',
       build: () async {
         when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileFacade.getUserProfileByUserUid(
                 userUid: anyNamed('userUid')))
             .thenAnswer((_) async => Right(userProfile));
         return ProfileBloc(
           profileFacade: mockedProfileFacade,
           authBloc: mockedAuthBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (ProfileBloc bloc) async =>
@@ -50,11 +56,16 @@ void main() {
       'should yield Loading and Error on failure',
       build: () async {
         when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileFacade.getUserProfileByUserUid(
                 userUid: anyNamed('userUid')))
             .thenAnswer((_) async => Left(DataFailure()));
         return ProfileBloc(
-            profileFacade: mockedProfileFacade, authBloc: mockedAuthBloc);
+          profileFacade: mockedProfileFacade,
+          authBloc: mockedAuthBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
+        );
       },
       act: (ProfileBloc bloc) async =>
           bloc.add(GetUserProfileEvent(userUid: userProfile.userUid)),
@@ -67,12 +78,15 @@ void main() {
       'should yield Loading and Complete on success',
       build: () async {
         when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileFacade.addUserProfile(
                 userProfile: anyNamed('userProfile')))
             .thenAnswer((_) async => Right(null));
         return ProfileBloc(
           profileFacade: mockedProfileFacade,
           authBloc: mockedAuthBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (ProfileBloc bloc) async =>
@@ -84,12 +98,15 @@ void main() {
       'should yield Loading and Error on failure',
       build: () async {
         when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         when(mockedProfileFacade.addUserProfile(
                 userProfile: anyNamed('userProfile')))
             .thenAnswer((_) async => Left(DataFailure()));
         return ProfileBloc(
           profileFacade: mockedProfileFacade,
           authBloc: mockedAuthBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (ProfileBloc bloc) async =>
@@ -103,9 +120,12 @@ void main() {
       'should yield Empty on reset',
       build: () async {
         when(mockedAuthBloc.listen(any)).thenReturn(MockedStreamSubscription());
+        when(mockedInAppPurchaseBloc.listen(any))
+            .thenReturn(MockedStreamSubscription());
         return ProfileBloc(
           profileFacade: mockedProfileFacade,
           authBloc: mockedAuthBloc,
+          inAppPurchaseBloc: mockedInAppPurchaseBloc,
         );
       },
       act: (ProfileBloc bloc) async => bloc.add(ResetUserProfileEvent()),
@@ -116,10 +136,13 @@ void main() {
   group('changePremiumCollectionsAvailable', () {
     test('should return false if cannot create premium collection', () async {
       final ProfileBloc profileBloc = ProfileBloc(
-          profileFacade: mockedProfileFacade, authBloc: mockedAuthBloc);
+        profileFacade: mockedProfileFacade,
+        authBloc: mockedAuthBloc,
+        inAppPurchaseBloc: mockedInAppPurchaseBloc,
+      );
 
       final bool result =
-          await profileBloc.changePremiumCollectionsAvailable(by: 1);
+          await profileBloc.changePremiumCollectionsAvailable(by: -1);
 
       expect(result, isFalse);
 

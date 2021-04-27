@@ -25,7 +25,7 @@ class ErrorInAppPurchaseEvent extends InAppPurchaseEvent {
 }
 
 class PurchasedInAppPurchaseEvent extends InAppPurchaseEvent {
-  final PurchaseDetails purchaseDetails;
+  final CollectioIAPProduct purchasedProduct;
 
-  const PurchasedInAppPurchaseEvent(this.purchaseDetails);
+  const PurchasedInAppPurchaseEvent(this.purchasedProduct);
 }

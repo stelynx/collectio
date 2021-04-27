@@ -12,6 +12,7 @@ import '../../../facade/profile/profile_facade.dart';
 import '../../../model/user_profile.dart';
 import '../../../util/error/data_failure.dart';
 import '../auth/auth_bloc.dart';
+import '../in_app_purchase/in_app_purchase_bloc.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -24,13 +25,17 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileFacade _profileFacade;
   final AuthBloc _authBloc;
+  final InAppPurchaseBloc _iapBloc;
   StreamSubscription _authBlocStreamSubscription;
+  StreamSubscription _iapBlocStreamSubscription;
 
   ProfileBloc({
     @required ProfileFacade profileFacade,
     @required AuthBloc authBloc,
+    @required InAppPurchaseBloc inAppPurchaseBloc,
   })  : _profileFacade = profileFacade,
-        _authBloc = authBloc {
+        _authBloc = authBloc,
+        _iapBloc = inAppPurchaseBloc {
     _authBlocStreamSubscription = _authBloc.listen((AuthState state) {
       if (state is AuthenticatedAuthState) {
         this.add(GetUserProfileEvent(userUid: state.userUid));
@@ -38,11 +43,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         this.add(ResetUserProfileEvent());
       }
     });
+    _iapBlocStreamSubscription = _iapBloc.listen((InAppPurchaseState state) {
+      if (state.purchaseState == InAppPurchasePurchaseState.success) {
+        this.changePremiumCollectionsAvailable(
+            by: state.purchasedProduct.value);
+      }
+    });
   }
 
   @override
   Future<void> close() {
     _authBlocStreamSubscription.cancel();
+    _iapBlocStreamSubscription.cancel();
     return super.close();
   }
 
@@ -82,7 +94,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<bool> changePremiumCollectionsAvailable({@required int by}) async {
-    if (!canCreatePremiumCollection()) return false;
+    if (by < 0 && !canCreatePremiumCollection()) return false;
 
     final UserProfile userProfile = (state as CompleteProfileState).userProfile;
     userProfile.premiumCollectionsAvailable =

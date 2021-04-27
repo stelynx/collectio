@@ -21,6 +21,7 @@ import '../../../util/error/data_failure.dart';
 import '../../../util/function/id_generator.dart';
 import '../../../util/function/image_name_generator.dart';
 import '../../../util/function/listable_finder.dart';
+import '../in_app_purchase/in_app_purchase_bloc.dart';
 import '../profile/profile_bloc.dart';
 import 'collections_bloc.dart';
 
@@ -34,14 +35,24 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
   final CollectionsFacade _collectionsFacade;
   final CollectionsBloc _collectionsBloc;
   final ProfileBloc _profileBloc;
+  final InAppPurchaseBloc _iapBloc;
+  StreamSubscription _iapBlocStreamSubscription;
 
   NewCollectionBloc({
     @required CollectionsFacade collectionsFacade,
     @required ProfileBloc profileBloc,
     @required CollectionsBloc collectionsBloc,
+    @required InAppPurchaseBloc inAppPurchaseBloc,
   })  : _collectionsFacade = collectionsFacade,
         _profileBloc = profileBloc,
-        _collectionsBloc = collectionsBloc;
+        _collectionsBloc = collectionsBloc,
+        _iapBloc = inAppPurchaseBloc {
+    _iapBlocStreamSubscription = _iapBloc.listen((InAppPurchaseState state) {
+      if (state.purchaseState == InAppPurchasePurchaseState.success) {
+        this.add(IsPremiumChangedNewCollectionEvent());
+      }
+    });
+  }
 
   @override
   NewCollectionState get initialState => InitialNewCollectionState();
@@ -75,7 +86,7 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
         overrideDataFailure: true,
       );
     } else if (event is IsPremiumChangedNewCollectionEvent) {
-      if (!_profileBloc.canCreatePremiumCollection()) return;
+      if (!canCreatePremiumCollection()) return;
 
       yield state.copyWith(
         isPremium: !state.isPremium,
@@ -193,6 +204,9 @@ class NewCollectionBloc extends Bloc<NewCollectionEvent, NewCollectionState> {
       }
     }
   }
+
+  bool canCreatePremiumCollection() =>
+      _profileBloc.canCreatePremiumCollection();
 }
 
 @test
