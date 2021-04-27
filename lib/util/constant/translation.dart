@@ -29,6 +29,7 @@ enum Translation {
   collections,
   loadingCollections,
   loadingProfile,
+  buyPremiumCollection,
   logout,
   camera,
   photoLibrary,
@@ -84,4 +85,10 @@ enum Translation {
   collectionItemDeletionFailed,
 
   autocompleteNoText,
+
+  inAppPurchaseNotAvailable,
+  inAppPurchaseNotAvailableContent,
+  availableInAppPurchases,
+  inAppPurchaseSuccessful,
+  inAppPurchaseError,
 }

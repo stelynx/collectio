@@ -29,6 +29,7 @@
   "collections": "Collezioni",
   "loadingCollections": "Recupero raccolte ...",
   "loadingProfile": "Recupero dati profilo ...",
+  "buyPremiumCollection": "Acquista collezioni premium",
   "logout": "Disconnettersi",
   "camera": "Camera",
   "photoLibrary": "Fototeca",
@@ -83,5 +84,11 @@
   "collectionDeletionFailed": "Impossibile eliminare la raccolta!",
   "collectionItemDeletionFailed": "L'articolo non può essere cancellato!",
 
-  "autocompleteNoText": "Inizia a digitare ..."
+  "autocompleteNoText": "Inizia a digitare ...",
+  
+  "inAppPurchaseNotAvailable": "Gli acquisti in-app non sono attualmente disponibili",
+  "inAppPurchaseNotAvailableContent": "Gli acquisti in-app non sono attualmente disponibili. Riprova più tardi.",
+  "availableInAppPurchases": "Pacchetti collezione Premium disponibili",
+  "inAppPurchaseSuccessful": "Il tuo acquisto è andato a buon fine!",
+  "inAppPurchaseError": "Il tuo acquisto non è stato completato!"
 }

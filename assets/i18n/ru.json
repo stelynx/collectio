@@ -29,6 +29,7 @@
   "collections": "Коллекции",
   "loadingCollections": "Получение коллекций ...",
   "loadingProfile": "Получение данных профиля ...",
+  "buyPremiumCollection": "Купить премиальные коллекции",
   "logout": "Выйти",
   "camera": "Камера",
   "photoLibrary": "Библиотека фотографий",
@@ -83,5 +84,11 @@
   "collectionDeletionFailed": "Невозможно удалить коллекцию!",
   "collectionItemDeletionFailed": "Элемент не может быть удален!",
 
-  "autocompleteNoText": "Начните печатать ..."
+  "autocompleteNoText": "Начните печатать ...",
+
+  "inAppPurchaseNotAvailable": "Покупки в приложении в настоящее время недоступны",
+  "inAppPurchaseNotAvailableContent": "Покупки в приложении в настоящее время недоступны. Повторите попытку позже.",
+  "availableInAppPurchases": "Доступные пакеты Premium Collection",
+  "inAppPurchaseSuccessful": "Ваша покупка прошла успешно!",
+  "inAppPurchaseError": "Ваша покупка не была совершена!"
 }

@@ -29,6 +29,7 @@
   "collections": "Collections",
   "loadingCollections": "Retrieving collections ...",
   "loadingProfile": "Retrieving profile data ...",
+  "buyPremiumCollection": "Buy premium collections",
   "logout": "Logout",
   "camera": "Camera",
   "photoLibrary": "Photo library",
@@ -83,5 +84,11 @@
   "collectionDeletionFailed": "Collection could not be deleted!",
   "collectionItemDeletionFailed": "Item could not be deleted!",
 
-  "autocompleteNoText": "Start typing ..."
+  "autocompleteNoText": "Start typing ...",
+
+  "inAppPurchaseNotAvailable": "In-App Purchases are currently not available",
+  "inAppPurchaseNotAvailableContent": "In-App Purchases are currently not available. Please, try again later.",
+  "availableInAppPurchases": "Available Premium Collection Packs",
+  "inAppPurchaseSuccessful": "Your purchase was successful!",
+  "inAppPurchaseError": "Your purchase was not completed!"
 }

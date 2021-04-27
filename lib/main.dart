@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app/bloc/app_configuration/app_configuration_bloc.dart';
 import 'app/bloc/auth/auth_bloc.dart';
+import 'app/bloc/in_app_purchase/in_app_purchase_bloc.dart';
 import 'app/bloc/settings/settings_bloc.dart';
 import 'app/config/app_localizations.dart';
 import 'app/routes/router.dart';
@@ -14,7 +16,9 @@ import 'app/theme/theme.dart';
 import 'util/injection/injection.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   configureInjection(Environment.prod);
+  InAppPurchaseConnection.enablePendingPurchases();
   runApp(CollectioApp());
 }
 
@@ -36,6 +40,9 @@ class CollectioApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => getIt<AppConfigurationBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => getIt<InAppPurchaseBloc>(),
         ),
       ],
       child: BlocBuilder<AppConfigurationBloc, AppConfigurationState>(

@@ -29,6 +29,7 @@
   "collections": "Zbirke",
   "loadingCollections": "Pridobivamo zbirke ...",
   "loadingProfile": "Pridobivamo profil ...",
+  "buyPremiumCollection": "Nakup premium zbirk",
   "logout": "Odjavi se",
   "camera": "Kamera",
   "photoLibrary": "Fotografije",
@@ -83,5 +84,11 @@
   "collectionDeletionFailed": "Zbirke ni bilo mogoče izbrisati",
   "collectionItemDeletionFailed": "Vnosa ni bilo mogoče izbrisati",
 
-  "autocompleteNoText": "Začnite tipkati ..."
+  "autocompleteNoText": "Začnite tipkati ...",
+
+  "inAppPurchaseNotAvailable": "Nakupi znotraj aplikacije trenutno niso na voljo",
+  "inAppPurchaseNotAvailableContent": "Nakupi znotraj aplikacije trenutno niso na voljo. Prosimo, poskusite kasneje.",
+  "availableInAppPurchases": "Paketi premium zbirk na voljo",
+  "inAppPurchaseSuccessful": "Vaš nakup je bil uspešen!",
+  "inAppPurchaseError": "Vaš nakup ni bil zaključen!"
 }
